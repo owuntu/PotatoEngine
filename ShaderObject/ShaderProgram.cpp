@@ -7,7 +7,9 @@
 namespace PotatoEngine
 {
 
-bool ShaderProgram::Create()
+bool ShaderProgram::Create(
+	const std::string& vertexShaderPath,
+	const std::string& fragmentShaderPath)
 {
 	if (m_glPrgmId != 0)
 	{
@@ -15,6 +17,39 @@ bool ShaderProgram::Create()
 		m_glPrgmId = 0;
 	}
 	m_glPrgmId = glCreateProgram();
+
+	bool bSuccess;
+	ShaderObject vertexShader;
+	ShaderObject fragmentShader;
+	bSuccess = vertexShader.CreateShaderFromFile(vertexShaderPath, ShaderObject::ShaderType::VertexShader);
+	if (!bSuccess)
+	{
+		glDeleteProgram(m_glPrgmId);
+		m_glPrgmId = 0;
+		return false;
+	}
+	
+	bSuccess = fragmentShader.CreateShaderFromFile(fragmentShaderPath, ShaderObject::ShaderType::FragmentShader);
+	if (!bSuccess)
+	{
+		glDeleteProgram(m_glPrgmId);
+		m_glPrgmId = 0;
+		return false;
+	}
+
+	bSuccess &= this->AttachShader(vertexShader);
+	bSuccess &= this->AttachShader(fragmentShader);
+
+	bSuccess &= this->Link();
+
+	if (!bSuccess)
+	{
+		return false;
+	}
+
+	vertexShader.Release();
+	fragmentShader.Release();
+
 	return true;
 }
 
@@ -58,6 +93,11 @@ bool ShaderProgram::Link()
 		return false;
 	}
 	return true;
+}
+
+void ShaderProgram::Use()
+{
+	glUseProgram(m_glPrgmId);
 }
 
 void ShaderProgram::Release()
