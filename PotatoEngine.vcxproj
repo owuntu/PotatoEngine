@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -21,11 +21,14 @@
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="glad\glad.c" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="ShaderObject\ShaderObject.cpp" />
     <ClCompile Include="ShaderObject\ShaderProgram.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="ShaderObject\ShaderObject.h" />
     <ClInclude Include="ShaderObject\ShaderProgram.h" />
   </ItemGroup>
@@ -116,13 +119,13 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Extern\glm;$(SolutionDir)Extern\glfw\include\GLFW;$(SolutionDir)Extern\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Extern\glm;$(SolutionDir)Extern\glfw\include\GLFW;$(SolutionDir)Extern\include\;$(SolutionDir)Extern\include\assimp\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
     </Link>
     <Lib>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;assimp.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)Extern\lib\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -158,7 +161,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Extern\glm;$(SolutionDir)Extern\glfw\include\GLFW;$(SolutionDir)Extern\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Extern\glm;$(SolutionDir)Extern\glfw\include\GLFW;$(SolutionDir)Extern\include\;$(SolutionDir)Extern\include\assimp\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -166,7 +169,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;assimp.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)Extern\lib\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

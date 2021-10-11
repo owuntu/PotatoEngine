@@ -1,0 +1,63 @@
+#include "Model.h"
+
+namespace PotatoEngine
+{
+	void Model::LoadModel(const std::string& path)
+	{
+		Assimp::Importer importer;
+		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate);
+
+		// check for errors
+		if (scene == nullptr || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || scene->mRootNode == nullptr)
+		{
+			std::cerr << "Error loading model: " << importer.GetErrorString() << std::endl;
+			return;
+		}
+
+		m_directory = path.substr(0, path.find_last_of('/'));
+	}
+
+	void Model::ProcessNode(std::shared_ptr<aiNode> pNode, std::shared_ptr<aiScene> pScene)
+	{
+		for (unsigned int i = 0; i < pNode->mNumMeshes; ++i)
+		{
+			std::shared_ptr<aiMesh> pMesh(pScene->mMeshes[pNode->mMeshes[i]]);
+
+			ProcessMesh(pMesh);
+		}
+
+		for (unsigned int i = 0; i < pNode->mNumChildren; ++i)
+		{
+			ProcessNode(std::shared_ptr<aiNode>(pNode->mChildren[i]), pScene);
+		}
+	}
+
+	void Model::ProcessMesh(std::shared_ptr<aiMesh> pMesh)
+	{
+		std::vector<Vertex> vertices;
+		for (unsigned int i = 0; i < pMesh->mNumVertices; ++i)
+		{
+			Vertex v;
+			v.Position.x = pMesh->mVertices[i].x;
+			v.Position.y = pMesh->mVertices[i].y;
+			v.Position.z = pMesh->mVertices[i].z;
+			v.Normal.x = pMesh->mNormals[i].x;
+			v.Normal.y = pMesh->mNormals[i].y;
+			v.Normal.z = pMesh->mNormals[i].z;
+			vertices.push_back(v);
+		}
+
+		std::vector<unsigned int> indices;
+		for (unsigned int i = 0; i < pMesh->mNumFaces; ++i)
+		{
+			aiFace face = pMesh->mFaces[i];
+			for (unsigned int j = 0; j < face.mNumIndices; ++j)
+			{
+				indices.push_back(face.mIndices[j]);
+			}
+		}
+
+		Mesh newMesh(vertices, indices);
+		m_meshes.push_back(newMesh);
+	}
+} // PotatoEngine

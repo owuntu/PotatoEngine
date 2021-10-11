@@ -22,6 +22,9 @@
     <Filter Include="glad">
       <UniqueIdentifier>{f94c17f8-cc13-4ebc-a5f0-4c7aaa88c595}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Model">
+      <UniqueIdentifier>{9e64c776-4356-4dd1-b5fd-9dbfbc8becf7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -36,6 +39,9 @@
     <ClCompile Include="glad\glad.c">
       <Filter>glad</Filter>
     </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -46,6 +52,12 @@
     </ClInclude>
     <ClInclude Include="ShaderObject\ShaderProgram.h">
       <Filter>Source Files\ShaderObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Source Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Source Files\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
