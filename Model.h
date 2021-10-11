@@ -5,6 +5,8 @@
 #include <memory>
 #include <string>
 
+#include <glm/glm.hpp>
+
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
@@ -24,6 +26,8 @@ namespace PotatoEngine
 		}
 		
 		~Model() {}
+
+		void Draw();
 
 	private:
 		std::vector<Mesh> m_meshes;

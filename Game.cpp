@@ -2,6 +2,7 @@
 #include <glad/glad.h>
 #include <glfw3.h>
 
+#include "Model.h"
 #include "ShaderObject/ShaderProgram.h"
 
 #include "Game.h"
@@ -18,7 +19,7 @@ bool Game::Init()
 	}
 
 	/* Create a windowed mode window and its OpenGL context */
-	m_window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+	m_window = glfwCreateWindow(1280, 720, "Hello World", NULL, NULL);
 	if (!m_window)
 	{
 		glfwTerminate();
@@ -50,6 +51,8 @@ int Game::Run()
 	sProgram.Create("GLSLShaders/vertexShader.vs.glsl","GLSLShaders/fragmentShader.fs.glsl");
 
 	sProgram.Use();
+
+	Model newModel("./resources/objects/backpack/backpack.obj");
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------

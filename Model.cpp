@@ -41,9 +41,13 @@ namespace PotatoEngine
 			v.Position.x = pMesh->mVertices[i].x;
 			v.Position.y = pMesh->mVertices[i].y;
 			v.Position.z = pMesh->mVertices[i].z;
-			v.Normal.x = pMesh->mNormals[i].x;
-			v.Normal.y = pMesh->mNormals[i].y;
-			v.Normal.z = pMesh->mNormals[i].z;
+
+			if (pMesh->HasNormals())
+			{
+				v.Normal.x = pMesh->mNormals[i].x;
+				v.Normal.y = pMesh->mNormals[i].y;
+				v.Normal.z = pMesh->mNormals[i].z;
+			}
 			vertices.push_back(v);
 		}
 
@@ -60,4 +64,10 @@ namespace PotatoEngine
 		Mesh newMesh(vertices, indices);
 		m_meshes.push_back(newMesh);
 	}
+
+	void Model::Draw()
+	{
+
+	}
+
 } // PotatoEngine
