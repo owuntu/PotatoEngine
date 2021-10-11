@@ -52,7 +52,7 @@ int Game::Run()
 
 	sProgram.Use();
 
-	Model newModel("./resources/objects/backpack/backpack.obj");
+	Model newModel("resources/objects/backpack/backpack.obj");
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
