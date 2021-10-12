@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="glad\glad.c" />
     <ClCompile Include="Model.cpp" />
@@ -26,6 +27,7 @@
     <ClCompile Include="ShaderObject\ShaderProgram.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
@@ -34,6 +36,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="GLSLShaders\fragmentShader.fs.glsl" />
+    <None Include="GLSLShaders\modelFragmentShader.fs.glsl" />
+    <None Include="GLSLShaders\modelVertexShader.vs.glsl" />
     <None Include="GLSLShaders\vertexShader.vs.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

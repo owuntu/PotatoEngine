@@ -42,6 +42,9 @@
     <ClCompile Include="Model.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -59,12 +62,21 @@
     <ClInclude Include="Mesh.h">
       <Filter>Source Files\Model</Filter>
     </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="GLSLShaders\fragmentShader.fs.glsl">
       <Filter>Resource Files\GLSLShaders</Filter>
     </None>
     <None Include="GLSLShaders\vertexShader.vs.glsl">
+      <Filter>Resource Files\GLSLShaders</Filter>
+    </None>
+    <None Include="GLSLShaders\modelVertexShader.vs.glsl">
+      <Filter>Resource Files\GLSLShaders</Filter>
+    </None>
+    <None Include="GLSLShaders\modelFragmentShader.fs.glsl">
       <Filter>Resource Files\GLSLShaders</Filter>
     </None>
   </ItemGroup>
