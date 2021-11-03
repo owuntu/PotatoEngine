@@ -5,14 +5,14 @@
 namespace PotatoEngine
 {
 	Camera::Camera():
-		m_position(0.f, 0.f, 10.f),
+		m_position(0.f, 0.f, 3.f),
 		m_forward(0.f, 0.f, -1.f),
 		m_right(1.f, 0.f, 0.f),
 		m_fovy(glm::radians(90.f))
 	{
 		// todo: check LH or RH
 		m_forward = glm::normalize(m_forward);
-		m_up = glm::cross(m_forward, m_right);
+		m_up = glm::cross(m_right, m_forward);
 		m_up = glm::normalize(m_up);
 	}
 
@@ -27,7 +27,7 @@ namespace PotatoEngine
 		m_fovy(glm::radians(fovy_degree))
 	{
 		// todo: validate up vector
-		m_up = glm::cross(m_forward, m_right);
+		m_up = glm::cross(m_right, m_forward);
 		m_up = glm::normalize(m_up);
 	}
 

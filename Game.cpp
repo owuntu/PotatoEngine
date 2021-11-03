@@ -8,6 +8,9 @@
 
 #include "Game.h"
 
+const static int gs_SCREEN_WIDTH = 1280;
+const static int gs_SCREEN_HEIGHT = 720;
+
 namespace PotatoEngine
 {
 
@@ -20,7 +23,7 @@ bool Game::Init()
 	}
 
 	/* Create a windowed mode window and its OpenGL context */
-	m_window = glfwCreateWindow(1280, 720, "Hello World", NULL, NULL);
+	m_window = glfwCreateWindow(gs_SCREEN_WIDTH, gs_SCREEN_HEIGHT, "Hello World", NULL, NULL);
 	if (!m_window)
 	{
 		glfwTerminate();
@@ -48,14 +51,19 @@ int Game::Run()
 		return 1;
 	}
 
+#if 0
 	ShaderProgram sProgram;
 	sProgram.Create("GLSLShaders/vertexShader.vs.glsl","GLSLShaders/fragmentShader.fs.glsl");
 
 	sProgram.Use();
+#endif
+	ShaderProgram modelShader;
+	modelShader.Create("GLSLSHaders/modelVertexShader.vs.glsl", "GLSLShaders/modelFragmentShader.fs.glsl");
+	modelShader.Use();
 
 	Camera camera0;
 	Model newModel("resources/objects/backpack/backpack.obj");
-
+#if 0
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
 	unsigned int VBO, VAO;
@@ -89,6 +97,10 @@ int Game::Run()
 	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
 	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
 	glBindVertexArray(0);
+#endif
+
+	const float aspect = (float)gs_SCREEN_WIDTH / (float)gs_SCREEN_HEIGHT;
+	glm::mat4 identity = glm::mat4(1.0f);
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(m_window))
@@ -96,8 +108,18 @@ int Game::Run()
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		//glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+		//glDrawArrays(GL_TRIANGLES, 0, 3);
+		glBindVertexArray(0);
+
+		glm::mat4 view = camera0.GetViewingMatrix();
+		glm::mat4 persp = camera0.GetPerpectiveProjectionMatrix(aspect);
+		modelShader.SetMat4("view", view);
+		modelShader.SetMat4("projection", persp);
+
+		modelShader.SetMat4("modelMat", identity);
+		newModel.Draw();
+
 		/* Swap front and back buffers */
 		glfwSwapBuffers(m_window);
 
@@ -105,9 +127,10 @@ int Game::Run()
 		glfwPollEvents();
 	}
 
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	sProgram.Release();
+	//glDeleteVertexArrays(1, &VAO);
+	//glDeleteBuffers(1, &VBO);
+	//sProgram.Release();
+	modelShader.Release();
 
 	glfwTerminate();
 

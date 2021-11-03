@@ -27,6 +27,8 @@ namespace PotatoEngine
 			SetupGL();
 		}
 
+		~Mesh();
+
 		void Draw() const;
 
 	private:

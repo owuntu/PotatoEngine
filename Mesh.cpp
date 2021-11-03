@@ -4,11 +4,19 @@
 
 namespace PotatoEngine
 {
+	Mesh::~Mesh()
+	{
+		glDeleteBuffers(1, &m_glVBO);
+		glDeleteBuffers(1, &m_glEBO);
+		glDeleteVertexArrays(1, &m_glVAO);
+	}
+
 	void Mesh::SetupGL()
 	{
 		// Create buffers/arrays
 		glGenVertexArrays(1, &m_glVAO);
 		glGenBuffers(1, &m_glVBO);
+		glGenBuffers(1, &m_glEBO);
 
 		glBindVertexArray(m_glVAO);
 		
