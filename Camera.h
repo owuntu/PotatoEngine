@@ -11,7 +11,7 @@ namespace PotatoEngine
 	{
 	public:
 		Camera();
-		Camera(const glm::vec3 pos, const glm::vec3 forward, const glm::vec3 right);
+		Camera(const glm::vec3 pos, const glm::vec3 forward, const glm::vec3 right, const float fovy_degree);
 		~Camera();
 
 		const glm::vec3& Position() const;
@@ -19,12 +19,15 @@ namespace PotatoEngine
 		const glm::vec3& Right() const;
 
 		const glm::mat4 GetViewingMatrix() const;
+		const glm::mat4 GetPerpectiveProjectionMatrix(float aspect) const;
 
 	private:
 		glm::vec3 m_position;
 		glm::vec3 m_forward;
 		glm::vec3 m_right;
 		glm::vec3 m_up;
+
+		float m_fovy; // radian
 	}; // class Camera
 } // namespace PotatoEngine
 

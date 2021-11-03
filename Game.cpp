@@ -3,6 +3,7 @@
 #include <glfw3.h>
 
 #include "Model.h"
+#include "Camera.h"
 #include "ShaderObject/ShaderProgram.h"
 
 #include "Game.h"
@@ -52,6 +53,7 @@ int Game::Run()
 
 	sProgram.Use();
 
+	Camera camera0;
 	Model newModel("resources/objects/backpack/backpack.obj");
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
