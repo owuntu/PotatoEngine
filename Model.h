@@ -27,7 +27,7 @@ namespace PotatoEngine
 		
 		~Model() {}
 
-		void Draw();
+		void Draw() const;
 
 	private:
 		std::vector<Mesh> m_meshes;

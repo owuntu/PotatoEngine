@@ -65,9 +65,12 @@ namespace PotatoEngine
 		m_meshes.push_back(newMesh);
 	}
 
-	void Model::Draw()
+	void Model::Draw() const
 	{
-
+		for (const auto& mesh : m_meshes)
+		{
+			mesh.Draw();
+		}
 	}
 
 } // PotatoEngine

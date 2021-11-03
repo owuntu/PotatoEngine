@@ -17,12 +17,23 @@ namespace PotatoEngine
 	public:
 		std::vector<Vertex> m_vertices;
 		std::vector<unsigned int> m_indices;
+		unsigned int m_glVAO;
 
 		Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
 		{
 			m_vertices = vertices;
 			m_indices = indices;
+
+			SetupGL();
 		}
+
+		void Draw() const;
+
+	private:
+		unsigned int m_glVBO;
+		unsigned int m_glEBO; // element buffer object
+
+		void SetupGL();
 	};
 } // namespace PotatoEngine
 
