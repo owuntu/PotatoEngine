@@ -57,10 +57,14 @@ int Game::Run()
 #endif
 	ShaderProgram modelShader;
 	modelShader.Create("GLSLSHaders/modelVertexShader.vs.glsl", "GLSLShaders/modelFragmentShader.fs.glsl");
+	modelShader.Use();
 
 	Camera camera0;
 	Model newModel("resources/objects/backpack/backpack.obj");
+
+	glEnable(GL_DEPTH_TEST);
 #if 1
+
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
 	unsigned int VBO, VAO;
@@ -101,7 +105,7 @@ int Game::Run()
 	while (!glfwWindowShouldClose(m_window))
 	{
 		/* Render here */
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glm::mat4 view = camera0.GetViewingMatrix();
 		glm::mat4 persp = camera0.GetPerpectiveProjectionMatrix(aspect);

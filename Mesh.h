@@ -19,7 +19,10 @@ namespace PotatoEngine
 		std::vector<unsigned int> m_indices;
 		unsigned int m_glVAO;
 
-		Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
+		Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices):
+			m_glVAO(0),
+			m_glVBO(0),
+			m_glEBO(0)
 		{
 			m_vertices = vertices;
 			m_indices = indices;
@@ -30,6 +33,7 @@ namespace PotatoEngine
 		~Mesh();
 
 		void Draw() const;
+		void Release();
 
 	private:
 		unsigned int m_glVBO;

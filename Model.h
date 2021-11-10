@@ -33,8 +33,8 @@ namespace PotatoEngine
 		std::vector<Mesh> m_meshes;
 
 		void LoadModel(const std::string& path);
-		void ProcessNode(std::shared_ptr<aiNode> pNode, std::shared_ptr<aiScene> pScene);
-		void ProcessMesh(std::shared_ptr<aiMesh> pMesh);
+		void ProcessNode(aiNode* pNode, const aiScene* pScene);
+		void ProcessMesh(aiMesh* pMesh);
 	}; // class Model
 } // namespace PotatoEngine
 

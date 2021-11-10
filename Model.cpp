@@ -15,24 +15,26 @@ namespace PotatoEngine
 		}
 
 		m_directory = path.substr(0, path.find_last_of('/'));
+
+		ProcessNode(scene->mRootNode, scene);
 	}
 
-	void Model::ProcessNode(std::shared_ptr<aiNode> pNode, std::shared_ptr<aiScene> pScene)
+	void Model::ProcessNode(aiNode* pNode, const aiScene* pScene)
 	{
 		for (unsigned int i = 0; i < pNode->mNumMeshes; ++i)
 		{
-			std::shared_ptr<aiMesh> pMesh(pScene->mMeshes[pNode->mMeshes[i]]);
+			auto* pMesh = pScene->mMeshes[pNode->mMeshes[i]];
 
 			ProcessMesh(pMesh);
 		}
 
 		for (unsigned int i = 0; i < pNode->mNumChildren; ++i)
 		{
-			ProcessNode(std::shared_ptr<aiNode>(pNode->mChildren[i]), pScene);
+			ProcessNode(pNode->mChildren[i], pScene);
 		}
 	}
 
-	void Model::ProcessMesh(std::shared_ptr<aiMesh> pMesh)
+	void Model::ProcessMesh(aiMesh* pMesh)
 	{
 		std::vector<Vertex> vertices;
 		for (unsigned int i = 0; i < pMesh->mNumVertices; ++i)
@@ -61,8 +63,7 @@ namespace PotatoEngine
 			}
 		}
 
-		Mesh newMesh(vertices, indices);
-		m_meshes.push_back(newMesh);
+		m_meshes.push_back(Mesh(vertices, indices));
 	}
 
 	void Model::Draw() const

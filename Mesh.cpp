@@ -1,10 +1,16 @@
 #include <glad/glad.h>
 
+#include "Utilities.h"
+
 #include "Mesh.h"
 
 namespace PotatoEngine
 {
 	Mesh::~Mesh()
+	{
+	}
+
+	void Mesh::Release()
 	{
 		glDeleteBuffers(1, &m_glVBO);
 		glDeleteBuffers(1, &m_glEBO);
@@ -33,6 +39,7 @@ namespace PotatoEngine
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
 
 		// Normal
+		glEnableVertexAttribArray(1);
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
 
 		glBindVertexArray(0);
@@ -42,6 +49,7 @@ namespace PotatoEngine
 	{
 		// Draw mesh
 		glBindVertexArray(m_glVAO);
+
 		glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0);
 
 		// Set everything back to default
