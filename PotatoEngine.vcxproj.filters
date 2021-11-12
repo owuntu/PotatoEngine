@@ -25,6 +25,9 @@
     <Filter Include="Source Files\Model">
       <UniqueIdentifier>{9e64c776-4356-4dd1-b5fd-9dbfbc8becf7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GLObjects">
+      <UniqueIdentifier>{384b33d3-e532-4368-9d3e-f1da6f3a77b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -48,6 +51,9 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
+    <ClCompile Include="GLObject.cpp">
+      <Filter>GLObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -70,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="Utilities.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GLObject.h">
+      <Filter>GLObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

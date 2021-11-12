@@ -118,6 +118,7 @@ int Game::Run()
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		glBindVertexArray(0);
 
+		modelShader.Use();
 		modelShader.SetMat4("view", view);
 		modelShader.SetMat4("projection", persp);
 		modelShader.SetMat4("modelMat", identity);
