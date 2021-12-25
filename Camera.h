@@ -10,6 +10,14 @@ namespace PotatoEngine
 	class Camera
 	{
 	public:
+		enum class Movement
+		{
+			FORWARD,
+			BACKWARD,
+			LEFT,
+			RIGHT
+		};
+
 		Camera();
 		Camera(const glm::vec3 pos, const glm::vec3 forward, const glm::vec3 right, const float fovy_degree);
 		~Camera();
@@ -20,6 +28,8 @@ namespace PotatoEngine
 
 		const glm::mat4 GetViewingMatrix() const;
 		const glm::mat4 GetPerpectiveProjectionMatrix(float aspect) const;
+
+		void ProcessMovement(Movement direction, float deltaTime);
 
 	private:
 		glm::vec3 m_position;

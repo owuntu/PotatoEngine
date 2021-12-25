@@ -60,4 +60,26 @@ namespace PotatoEngine
 		return glm::perspective(m_fovy, aspect, 0.1f, 1000.f);
 	}
 
+	void Camera::ProcessMovement(Camera::Movement direction, float deltaTime)
+	{
+		float speed = 2.0f; // hardcode speed
+		float distance = speed * deltaTime;
+
+		switch (direction)
+		{
+		case Movement::FORWARD:
+			m_position += m_forward * distance;
+			break;
+		case Movement::BACKWARD:
+			m_position -= m_forward * distance;
+			break;
+		case Movement::LEFT:
+			m_position -= m_right * distance;
+			break;
+		case Movement::RIGHT:
+			m_position += m_right * distance;
+			break;
+		}
+	}
+
 } // namespace PotatoEngine

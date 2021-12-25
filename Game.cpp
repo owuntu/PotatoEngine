@@ -40,6 +40,17 @@ bool Game::Init()
 		std::cerr << "Failed to initialize GLAD" << std::endl;
 		return false;
 	}
+
+	if (m_pMainCamera != nullptr)
+	{
+		delete m_pMainCamera;
+		m_pMainCamera = nullptr;
+	}
+
+	m_pMainCamera = new Camera;
+
+	m_lastFrameTime = glfwGetTime();
+
 	return true;
 }
 
@@ -55,7 +66,6 @@ int Game::Run()
 	modelShader.Create("GLSLSHaders/modelVertexShader.vs.glsl", "GLSLShaders/modelFragmentShader.fs.glsl");
 	modelShader.Use();
 
-	Camera camera0;
 	Model newModel("resources/objects/backpack/backpack.obj");
 
 	glEnable(GL_DEPTH_TEST);
@@ -66,11 +76,12 @@ int Game::Run()
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(m_window))
 	{
+		Update();
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glm::mat4 view = camera0.GetViewingMatrix();
-		glm::mat4 persp = camera0.GetPerpectiveProjectionMatrix(aspect);
+		glm::mat4 view = m_pMainCamera->GetViewingMatrix();
+		glm::mat4 persp = m_pMainCamera->GetPerpectiveProjectionMatrix(aspect);
 
 		modelShader.Use();
 		modelShader.SetMat4("view", view);
@@ -97,6 +108,62 @@ void Game::Reset()
 {
 	glfwDestroyWindow(m_window);
 	m_window = nullptr;
+
+	if (m_pMainCamera != nullptr)
+	{
+		delete m_pMainCamera;
+		m_pMainCamera = nullptr;
+	}
+}
+
+void Game::Update()
+{
+	float currentFrameTime = glfwGetTime();
+	m_deltaTime = currentFrameTime - m_lastFrameTime;
+	m_lastFrameTime = currentFrameTime;
+
+	ProcessInput();
+}
+
+void Game::ProcessInput()
+{
+	if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	{
+		glfwSetWindowShouldClose(m_window, true);
+	}
+
+	ProcessKeyboardPress(GLFW_KEY_W);
+	ProcessKeyboardPress(GLFW_KEY_S);
+	ProcessKeyboardPress(GLFW_KEY_A);
+	ProcessKeyboardPress(GLFW_KEY_D);
+}
+
+void Game::ProcessKeyboardPress(int key)
+{
+	Camera::Movement camMove;
+
+	switch (key)
+	{
+	case GLFW_KEY_W:
+		camMove = Camera::Movement::FORWARD;
+		break;
+	case GLFW_KEY_S:
+		camMove = Camera::Movement::BACKWARD;
+		break;
+	case GLFW_KEY_A:
+		camMove = Camera::Movement::LEFT;
+		break;
+	case GLFW_KEY_D:
+		camMove = Camera::Movement::RIGHT;
+		break;
+	default:
+		break;
+	}
+
+	if (glfwGetKey(m_window, key) == GLFW_PRESS)
+	{
+		m_pMainCamera->ProcessMovement(camMove, m_deltaTime);
+	}
 }
 
 } // namespace PotatoEngine
