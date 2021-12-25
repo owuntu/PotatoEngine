@@ -13,11 +13,11 @@ public:
 	int Run();
 	void Reset();
 
-	void MouseCallBack(GLFWwindow* window, double xPos, double yPos);
 private:
 	void Update();
 	void ProcessInput();
 	void ProcessKeyboardPress(int key);
+	void MouseCallBack(GLFWwindow* window, double xPos, double yPos);
 
 	float m_deltaTime = 0.f;
 	float m_lastFrameTime = 0.f;
