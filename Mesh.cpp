@@ -56,4 +56,14 @@ namespace PotatoEngine
 		glBindVertexArray(0);
 		glActiveTexture(GL_TEXTURE0);
 	}
+
+	void Mesh::DrawVertices() const
+	{
+		glBindVertexArray(m_glVAO);
+
+		glDrawArrays(GL_POINTS, 0, m_vertices.size());
+
+		glBindVertexArray(0);
+	}
+
 } // namespace PotatoEngine

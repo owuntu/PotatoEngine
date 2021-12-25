@@ -74,4 +74,12 @@ namespace PotatoEngine
 		}
 	}
 
+	void Model::DrawVertices() const
+	{
+		for (const auto& mesh : m_meshes)
+		{
+			mesh.DrawVertices();
+		}
+	}
+
 } // PotatoEngine

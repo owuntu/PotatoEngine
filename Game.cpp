@@ -76,7 +76,8 @@ int Game::Run()
 		modelShader.SetMat4("view", view);
 		modelShader.SetMat4("projection", persp);
 		modelShader.SetMat4("modelMat", identity);
-		newModel.Draw();
+		//newModel.Draw();
+		newModel.DrawVertices();
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(m_window);
