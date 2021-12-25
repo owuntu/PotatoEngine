@@ -20,7 +20,7 @@ namespace PotatoEngine
 	{
 		if (m_pCounter != nullptr)
 		{
-			*m_pCounter++;
+			(*m_pCounter)++;
 		}
 	}
 
