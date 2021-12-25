@@ -41,6 +41,18 @@ bool Game::Init()
 		return false;
 	}
 
+	m_mouseLastX = gs_SCREEN_WIDTH * 0.5f;
+	m_mouseLastY = gs_SCREEN_HEIGHT * 0.5f;
+
+	glfwSetWindowUserPointer(m_window, this);
+
+	auto mouseCallback = [](GLFWwindow* w, double x, double y)
+	{
+		static_cast<Game*>(glfwGetWindowUserPointer(w))->MouseCallBack(w, x, y);
+	};
+
+	glfwSetCursorPosCallback(m_window, mouseCallback);
+
 	if (m_pMainCamera != nullptr)
 	{
 		delete m_pMainCamera;
@@ -157,13 +169,37 @@ void Game::ProcessKeyboardPress(int key)
 		camMove = Camera::Movement::RIGHT;
 		break;
 	default:
-		break;
+		// Not supported keyboard input
+		return;
 	}
 
 	if (glfwGetKey(m_window, key) == GLFW_PRESS)
 	{
 		m_pMainCamera->ProcessMovement(camMove, m_deltaTime);
 	}
+}
+
+void Game::MouseCallBack(GLFWwindow* window, double xPos, double yPos)
+{
+	static bool bFirstMouse = true;
+	if (bFirstMouse)
+	{
+		m_mouseLastX = xPos;
+		m_mouseLastY = yPos;
+		bFirstMouse = false;
+	}
+
+	float xOffset = xPos - m_mouseLastX;
+	float yOffset = m_mouseLastY - yPos; // reverse y since y-coordinate goes from bottom to top
+
+	m_mouseLastX = xPos;
+	m_mouseLastY = yPos;
+
+	if (glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+	{
+		m_pMainCamera->ProcessMouseRotation(xOffset, yOffset);
+	}
+
 }
 
 } // namespace PotatoEngine

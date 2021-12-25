@@ -13,6 +13,7 @@ public:
 	int Run();
 	void Reset();
 
+	void MouseCallBack(GLFWwindow* window, double xPos, double yPos);
 private:
 	void Update();
 	void ProcessInput();
@@ -23,5 +24,8 @@ private:
 
 	GLFWwindow* m_window = nullptr;
 	Camera* m_pMainCamera = nullptr;
+
+	float m_mouseLastX;
+	float m_mouseLastY;
 };
 } // PotatoEngine
