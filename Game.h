@@ -13,9 +13,11 @@ public:
 	int Run();
 	void Reset();
 
-private:
-	void Update();
-	void ProcessInput();
+	virtual ~Game();
+protected:
+	virtual void Update();
+	
+	virtual void ProcessInput();
 	void ProcessKeyboardPress(int key);
 	void MouseCallBack(GLFWwindow* window, double xPos, double yPos);
 

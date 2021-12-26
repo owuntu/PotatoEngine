@@ -128,6 +128,11 @@ void Game::Reset()
 	}
 }
 
+Game::~Game()
+{
+	this->Reset();
+}
+
 void Game::Update()
 {
 	float currentFrameTime = glfwGetTime();
