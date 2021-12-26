@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 struct GLFWwindow;
 
 namespace PotatoEngine
@@ -9,13 +10,17 @@ class Camera;
 class Game
 {
 public:
-	bool Init();
-	int Run();
-	void Reset();
+	virtual bool Init();
+	virtual int Run();
+	virtual void Reset();
+
+	int ScreenWidth() const;
+	int ScreenHeight() const;
 
 	virtual ~Game();
 protected:
 	virtual void Update();
+	virtual void Render();
 	
 	virtual void ProcessInput();
 	void ProcessKeyboardPress(int key);
@@ -26,6 +31,7 @@ protected:
 
 	GLFWwindow* m_window = nullptr;
 	Camera* m_pMainCamera = nullptr;
+
 
 	float m_mouseLastX;
 	float m_mouseLastY;

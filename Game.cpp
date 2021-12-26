@@ -1,4 +1,6 @@
 #include <iostream>
+#include <iomanip>
+
 #include <glad/glad.h>
 #include <glfw3.h>
 
@@ -74,33 +76,23 @@ int Game::Run()
 		return 1;
 	}
 
-	ShaderProgram modelShader;
-	modelShader.Create("GLSLSHaders/modelVertexShader.vs.glsl", "GLSLShaders/modelFragmentShader.fs.glsl");
-	modelShader.Use();
-
-	Model newModel("resources/objects/backpack/backpack.obj");
-
 	glEnable(GL_DEPTH_TEST);
-
-	const float aspect = (float)gs_SCREEN_WIDTH / (float)gs_SCREEN_HEIGHT;
-	glm::mat4 identity = glm::mat4(1.0f);
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(m_window))
 	{
 		Update();
-		/* Render here */
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glm::mat4 view = m_pMainCamera->GetViewingMatrix();
-		glm::mat4 persp = m_pMainCamera->GetPerpectiveProjectionMatrix(aspect);
+		static float outputInterval = 0.0f;
+		if (outputInterval > 1.0f)
+		{
+			float fps = 1.0f / m_deltaTime;
+			//std::cout << "\rFPS: " << std::fixed << std::setprecision(2) << fps;
+			outputInterval = 0.0f;
+		}
+		outputInterval += m_deltaTime;
 
-		modelShader.Use();
-		modelShader.SetMat4("view", view);
-		modelShader.SetMat4("projection", persp);
-		modelShader.SetMat4("modelMat", identity);
-		//newModel.Draw();
-		newModel.DrawVertices();
+		Render();
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(m_window);
@@ -108,8 +100,6 @@ int Game::Run()
 		/* Poll for and process events */
 		glfwPollEvents();
 	}
-
-	modelShader.Release();
 
 	glfwTerminate();
 
@@ -128,6 +118,16 @@ void Game::Reset()
 	}
 }
 
+int Game::ScreenWidth() const
+{
+	return gs_SCREEN_WIDTH;
+}
+
+int Game::ScreenHeight() const
+{
+	return gs_SCREEN_HEIGHT;
+}
+
 Game::~Game()
 {
 	this->Reset();
@@ -140,6 +140,10 @@ void Game::Update()
 	m_lastFrameTime = currentFrameTime;
 
 	ProcessInput();
+}
+
+void Game::Render()
+{
 }
 
 void Game::ProcessInput()
