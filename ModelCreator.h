@@ -6,6 +6,7 @@
 
 #include "Model.h"
 #include "MeshModel.h"
+#include "PointCloudModel.h"
 
 namespace PotatoEngine
 {
@@ -14,6 +15,7 @@ namespace PotatoEngine
 		enum class Type
 		{
 			MESH_MODEL,
+			POINT_CLOUD_MODEL,
 			COUNT
 		};
 		std::shared_ptr<Model> CreateModel(const Type t, const std::string& path);

@@ -43,7 +43,7 @@ bool QueryClosestPoint::Init()
 	m_pShader->Create("GLSLSHaders/modelVertexShader.vs.glsl", "GLSLShaders/modelFragmentShader.fs.glsl");
 	m_pShader->Use();
 
-	m_pModel = ModelCreator::CreateModel(ModelCreator::Type::MESH_MODEL, "resources/objects/backpack/backpack.obj");
+	m_pModel = ModelCreator::CreateModel(ModelCreator::Type::POINT_CLOUD_MODEL, "resources/objects/backpack/backpack.obj");
 
 	return true;
 }
@@ -68,7 +68,7 @@ void QueryClosestPoint::Render()
 	m_pShader->SetMat4("projection", persp);
 	m_pShader->SetMat4("modelMat", identity);
 
-	m_pModel->DrawVertices();
+	m_pModel->Draw();
 }
 
 void QueryClosestPoint::Reset()

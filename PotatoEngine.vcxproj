@@ -27,6 +27,7 @@
     <ClCompile Include="MeshModel.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelCreator.cpp" />
+    <ClCompile Include="PointCloudModel.cpp" />
     <ClCompile Include="ShaderObject\ShaderObject.cpp" />
     <ClCompile Include="ShaderObject\ShaderProgram.cpp" />
   </ItemGroup>
@@ -38,6 +39,7 @@
     <ClInclude Include="MeshModel.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelCreator.h" />
+    <ClInclude Include="PointCloudModel.h" />
     <ClInclude Include="ShaderObject\ShaderObject.h" />
     <ClInclude Include="ShaderObject\ShaderProgram.h" />
     <ClInclude Include="Utilities.h" />

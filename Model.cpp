@@ -21,6 +21,8 @@ namespace PotatoEngine
 		}
 
 		ProcessNode(scene->mRootNode, scene);
+
+		PostSetup();
 	}
 
 	void Model::ProcessNode(aiNode* pNode, const aiScene* pScene)

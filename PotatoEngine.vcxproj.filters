@@ -60,6 +60,9 @@
     <ClCompile Include="ModelCreator.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
+    <ClCompile Include="PointCloudModel.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -90,6 +93,9 @@
       <Filter>Source Files\Model</Filter>
     </ClInclude>
     <ClInclude Include="ModelCreator.h">
+      <Filter>Source Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="PointCloudModel.h">
       <Filter>Source Files\Model</Filter>
     </ClInclude>
   </ItemGroup>

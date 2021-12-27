@@ -7,6 +7,7 @@
 namespace PotatoEngine
 {
 	class MeshModel;
+	class Model;
 	class ShaderProgram;
 } // namespace PotatoEngine
 
@@ -22,7 +23,7 @@ protected:
 
 	virtual void ProcessInput();
 
-	std::shared_ptr<PotatoEngine::MeshModel> m_pModel;
+	std::shared_ptr<PotatoEngine::Model> m_pModel;
 	// todo: refactor shader into a renderer
 	std::shared_ptr<PotatoEngine::ShaderProgram> m_pShader;
 };

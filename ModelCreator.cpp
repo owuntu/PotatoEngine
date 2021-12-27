@@ -10,6 +10,9 @@ namespace PotatoEngine
 		case Type::MESH_MODEL:
 			pModel = std::make_shared<MeshModel>(path);
 			break;
+		case Type::POINT_CLOUD_MODEL:
+			pModel = std::make_shared<PointCloudModel>(path);
+			break;
 		default:
 			break;
 		}

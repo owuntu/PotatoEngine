@@ -29,6 +29,7 @@ namespace PotatoEngine
 		std::string m_directory;
 	private:
 		virtual void ProcessMesh(aiMesh* pMesh) = 0;
+		virtual void PostSetup() {}
 	};
 } // namespace PotatoEngine
 
