@@ -17,6 +17,8 @@ public:
 	virtual ~QueryClosestPoint();
 	virtual bool Init();
 	virtual void Reset();
+
+	glm::vec3 DoQueryClosestPoint(const glm::vec3& queryPoint, float maxSearchDistance);
 protected:
 	virtual void Update();
 	virtual void Render();
@@ -26,6 +28,10 @@ protected:
 	std::shared_ptr<PotatoEngine::Model> m_pModel;
 	// todo: refactor shader into a renderer
 	std::shared_ptr<PotatoEngine::ShaderProgram> m_pShader;
+
+private:
+	glm::vec3 m_queryPoint;
+	float m_maxSearchDistance;
 };
 
 #endif // QUERY_CLOSEST_POINT_H_

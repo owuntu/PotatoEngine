@@ -4,6 +4,8 @@
 #include <glad/glad.h>
 #include <glfw3.h>
 #include <glm/glm.hpp>
+#include <glm/gtx/norm.hpp>
+
 #include "QueryClosestPoint.h"
 #include "MeshModel.h"
 #include "ModelCreator.h"
@@ -24,11 +26,21 @@ void QueryClosestPoint::ProcessInput()
 	// todo: somehow need to refactor a keyboard input module
 	if (glfwGetKey(m_window, GLFW_KEY_TAB) == GLFW_PRESS)
 	{
-		glm::vec3 point;
-		float maxDist;
+		m_queryPoint;
+		m_maxSearchDistance;
 		std::cout << "\nPlease input the queary point and max distance: x y z distance\n";
-		std::cin >> point.x >> point.y >> point.z >> maxDist;
-		std::cout << "Input point and max distance: (" << point.x << ", " << point.y << ", " << point.z << "), " << maxDist << "\n";
+		std::cin >> m_queryPoint.x >> m_queryPoint.y >> m_queryPoint.z >> m_maxSearchDistance;
+		std::cout << "Input point and max distance: ("
+			<< m_queryPoint.x << ", "
+			<< m_queryPoint.y << ", "
+			<< m_queryPoint.z << "), "
+			<< m_maxSearchDistance << "\n";
+
+		glm::vec3 closestPoint = DoQueryClosestPoint(m_queryPoint, m_maxSearchDistance);
+		if (closestPoint.x != NAN);
+		{
+			std::cout << "Closest point is: (" << closestPoint.x << ", " << closestPoint.y << ", " << closestPoint.z << ")" << std::endl;
+		}
 	}
 }
 
@@ -76,4 +88,26 @@ void QueryClosestPoint::Reset()
 	m_pShader->Release();
 
 	Game::Reset();
+}
+
+glm::vec3 QueryClosestPoint::DoQueryClosestPoint(const glm::vec3& queryPoint, float maxSearchDistance)
+{
+	using namespace PotatoEngine;
+	glm::vec3 res(NAN, NAN, NAN);
+
+	// Basic method: brute force search
+	const auto& points = reinterpret_cast<PointCloudModel*>(m_pModel.get())->GetPoints();
+	float minDist = FLT_MAX;
+	for (auto point : points)
+	{
+		float d = glm::length2(point - queryPoint);
+
+		if (d < maxSearchDistance && d < minDist)
+		{
+			minDist = d;
+			res = point;
+		}
+	}
+
+	return res;
 }

@@ -22,8 +22,8 @@ namespace PotatoEngine
 		void Draw() const;
 		void DrawVertices() const;
 
-		// todo: refactor GL object into another class
-		unsigned int m_glVAO;
+		const std::vector<glm::vec3>& GetPoints() const { return m_points; }
+		std::vector<glm::vec3>& GetPoints() { return m_points; }
 
 	private:
 		// All mesh vertex point are just put together
@@ -34,6 +34,7 @@ namespace PotatoEngine
 		void PostSetup();
 
 		// todo: refactor GL object into another class
+		unsigned int m_glVAO;
 		unsigned int m_glVBO;
 	};
 } // namespace PotatoEngine
