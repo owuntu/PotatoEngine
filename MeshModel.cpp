@@ -1,39 +1,12 @@
-#include "Model.h"
+#include <assimp/Importer.hpp>
+#include <assimp/postprocess.h>
+#include <assimp/scene.h>
+
+#include "MeshModel.h"
+
 
 namespace PotatoEngine
 {
-	void MeshModel::LoadModel(const std::string& path)
-	{
-		Assimp::Importer importer;
-		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate);
-
-		// check for errors
-		if (scene == nullptr || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || scene->mRootNode == nullptr)
-		{
-			std::cerr << "Error loading model: " << importer.GetErrorString() << std::endl;
-			return;
-		}
-
-		m_directory = path.substr(0, path.find_last_of('/'));
-
-		ProcessNode(scene->mRootNode, scene);
-	}
-
-	void MeshModel::ProcessNode(aiNode* pNode, const aiScene* pScene)
-	{
-		for (unsigned int i = 0; i < pNode->mNumMeshes; ++i)
-		{
-			auto* pMesh = pScene->mMeshes[pNode->mMeshes[i]];
-
-			ProcessMesh(pMesh);
-		}
-
-		for (unsigned int i = 0; i < pNode->mNumChildren; ++i)
-		{
-			ProcessNode(pNode->mChildren[i], pScene);
-		}
-	}
-
 	void MeshModel::ProcessMesh(aiMesh* pMesh)
 	{
 		std::vector<Vertex> vertices;

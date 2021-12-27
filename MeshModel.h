@@ -7,22 +7,23 @@
 
 #include <glm/glm.hpp>
 
-#include <assimp/Importer.hpp>
-#include <assimp/postprocess.h>
-#include <assimp/scene.h>
-
+#include "Model.h"
 #include "Mesh.h"
+
+struct aiNode;
+struct aiScene;
+struct aiMesh;
+
 
 namespace PotatoEngine
 {
-	class MeshModel
+	class MeshModel : public Model
 	{
 	public:
 		std::string m_directory;
 
-		MeshModel(const std::string& path)
+		MeshModel(const std::string& path) : Model(path)
 		{
-			this->LoadModel(path);
 		}
 		
 		~MeshModel() {}
@@ -33,10 +34,8 @@ namespace PotatoEngine
 	private:
 		std::vector<Mesh> m_meshes;
 
-		void LoadModel(const std::string& path);
-		void ProcessNode(aiNode* pNode, const aiScene* pScene);
 		void ProcessMesh(aiMesh* pMesh);
-	}; // class Model
+	}; // class MeshModel
 } // namespace PotatoEngine
 
 #endif // POTATO_ENGINE_MODEL_H_

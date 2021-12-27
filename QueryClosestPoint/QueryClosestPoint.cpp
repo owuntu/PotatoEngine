@@ -5,7 +5,8 @@
 #include <glfw3.h>
 #include <glm/glm.hpp>
 #include "QueryClosestPoint.h"
-#include "Model.h"
+#include "MeshModel.h"
+#include "ModelCreator.h"
 #include "Camera.h"
 #include "ShaderObject/ShaderProgram.h"
 
@@ -42,7 +43,7 @@ bool QueryClosestPoint::Init()
 	m_pShader->Create("GLSLSHaders/modelVertexShader.vs.glsl", "GLSLShaders/modelFragmentShader.fs.glsl");
 	m_pShader->Use();
 
-	m_pModel = std::make_shared<MeshModel>("resources/objects/backpack/backpack.obj");
+	m_pModel = ModelCreator::CreateModel(ModelCreator::Type::MESH_MODEL, "resources/objects/backpack/backpack.obj");
 
 	return true;
 }
