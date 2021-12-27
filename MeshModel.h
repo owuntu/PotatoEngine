@@ -20,9 +20,8 @@ namespace PotatoEngine
 	class MeshModel : public Model
 	{
 	public:
-		MeshModel(const std::string& path) : Model(path)
-		{
-		}
+		MeshModel()
+		{}
 		
 		~MeshModel() {}
 

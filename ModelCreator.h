@@ -7,18 +7,21 @@
 #include "Model.h"
 #include "MeshModel.h"
 #include "PointCloudModel.h"
+#include "SinglePointModel.h"
 
 namespace PotatoEngine
 {
-	namespace ModelCreator
+	class ModelCreator
 	{
+	public:
 		enum class Type
 		{
 			MESH_MODEL,
 			POINT_CLOUD_MODEL,
+			SINGLE_POINT_MODEL,
 			COUNT
 		};
-		std::shared_ptr<Model> CreateModel(const Type t, const std::string& path);
+		static std::shared_ptr<Model> CreateModel(const Type t, const std::string& path = "");
 	}; // namespace ModelCreator
 } // namespace PotatoEngine
 

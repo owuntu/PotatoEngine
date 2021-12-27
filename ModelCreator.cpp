@@ -8,19 +8,24 @@ namespace PotatoEngine
 		switch (t)
 		{
 		case Type::MESH_MODEL:
-			pModel = std::make_shared<MeshModel>(path);
+			pModel = std::make_shared<MeshModel>();
 			break;
 		case Type::POINT_CLOUD_MODEL:
-			pModel = std::make_shared<PointCloudModel>(path);
+			pModel = std::make_shared<PointCloudModel>();
+			break;
+		case Type::SINGLE_POINT_MODEL:
+			pModel = std::make_shared<SinglePointModel>();
 			break;
 		default:
 			break;
 		}
 
-		if (pModel != nullptr)
+		if (pModel != nullptr && path != "")
 		{
-			pModel->LoadModel();
+			pModel->LoadModel(path);
 		}
+
+		pModel->PostSetup();
 
 		return pModel;
 	}

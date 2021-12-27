@@ -8,10 +8,10 @@
 
 namespace PotatoEngine
 {
-	void Model::LoadModel()
+	void Model::LoadModel(const std::string& path)
 	{
 		Assimp::Importer importer;
-		const aiScene* scene = importer.ReadFile(m_directory, aiProcess_Triangulate);
+		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate);
 
 		// check for errors
 		if (scene == nullptr || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || scene->mRootNode == nullptr)
@@ -20,9 +20,9 @@ namespace PotatoEngine
 			return;
 		}
 
-		ProcessNode(scene->mRootNode, scene);
+		m_directory = path;
 
-		PostSetup();
+		ProcessNode(scene->mRootNode, scene);
 	}
 
 	void Model::ProcessNode(aiNode* pNode, const aiScene* pScene)

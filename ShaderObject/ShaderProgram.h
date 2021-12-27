@@ -26,6 +26,11 @@ public:
 		glUniformMatrix4fv(glGetUniformLocation(m_glPrgmId, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 	}
 
+	void SetVec3(const std::string& name, const glm::vec3& vec)
+	{
+		glUniform3fv(glGetUniformLocation(m_glPrgmId, name.c_str()), 1, &vec[0]);
+	}
+
 private:
 	bool AttachShader(const ShaderObject& shader);
 	bool Link();

@@ -12,7 +12,7 @@ namespace PotatoEngine
 	class PointCloudModel : public Model
 	{
 	public:
-		PointCloudModel(const std::string& path) : Model(path),
+		PointCloudModel() :
 			m_glVAO(0),
 			m_glVBO(0)
 		{}

@@ -48,6 +48,7 @@ namespace PotatoEngine
 
 	void PointCloudModel::DrawVertices() const
 	{
+		glPointSize(1.0f);
 		glBindVertexArray(m_glVAO);
 		glDrawArrays(GL_POINTS, 0, m_points.size());
 		glBindVertexArray(0);

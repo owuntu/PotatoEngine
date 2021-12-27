@@ -32,6 +32,9 @@ protected:
 private:
 	glm::vec3 m_queryPoint;
 	float m_maxSearchDistance;
+
+	std::shared_ptr<PotatoEngine::Model> m_pQueryPointModel; // only for rendering for now
+	std::shared_ptr<PotatoEngine::Model> m_pClosestPointModel;
 };
 
 #endif // QUERY_CLOSEST_POINT_H_

@@ -26,8 +26,6 @@ void QueryClosestPoint::ProcessInput()
 	// todo: somehow need to refactor a keyboard input module
 	if (glfwGetKey(m_window, GLFW_KEY_TAB) == GLFW_PRESS)
 	{
-		m_queryPoint;
-		m_maxSearchDistance;
 		std::cout << "\nPlease input the queary point and max distance: x y z distance\n";
 		std::cin >> m_queryPoint.x >> m_queryPoint.y >> m_queryPoint.z >> m_maxSearchDistance;
 		std::cout << "Input point and max distance: ("
@@ -40,7 +38,13 @@ void QueryClosestPoint::ProcessInput()
 		if (closestPoint.x != NAN);
 		{
 			std::cout << "Closest point is: (" << closestPoint.x << ", " << closestPoint.y << ", " << closestPoint.z << ")" << std::endl;
+			auto pClosestPoint = std::dynamic_pointer_cast<SinglePointModel>(m_pClosestPointModel);
+			pClosestPoint->GetPoint() = closestPoint;
 		}
+
+		auto pQueryPoint = std::dynamic_pointer_cast<SinglePointModel>(m_pQueryPointModel);
+
+		pQueryPoint->GetPoint() = m_queryPoint;
 	}
 }
 
@@ -56,6 +60,9 @@ bool QueryClosestPoint::Init()
 	m_pShader->Use();
 
 	m_pModel = ModelCreator::CreateModel(ModelCreator::Type::POINT_CLOUD_MODEL, "resources/objects/backpack/backpack.obj");
+
+	m_pQueryPointModel = ModelCreator::CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL);
+	m_pClosestPointModel = ModelCreator::CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL);
 
 	return true;
 }
@@ -80,7 +87,14 @@ void QueryClosestPoint::Render()
 	m_pShader->SetMat4("projection", persp);
 	m_pShader->SetMat4("modelMat", identity);
 
+	m_pShader->SetVec3("ModelColor", glm::vec3(1, 1, 1));
 	m_pModel->Draw();
+
+	m_pShader->SetVec3("ModelColor", glm::vec3(1, 0, 0));
+	m_pQueryPointModel->Draw();
+
+	m_pShader->SetVec3("ModelColor", glm::vec3(0, 1, 0));
+	m_pClosestPointModel->Draw();
 }
 
 void QueryClosestPoint::Reset()

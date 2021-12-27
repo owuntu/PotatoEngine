@@ -30,6 +30,7 @@
     <ClCompile Include="PointCloudModel.cpp" />
     <ClCompile Include="ShaderObject\ShaderObject.cpp" />
     <ClCompile Include="ShaderObject\ShaderProgram.cpp" />
+    <ClCompile Include="SinglePointModel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -42,6 +43,7 @@
     <ClInclude Include="PointCloudModel.h" />
     <ClInclude Include="ShaderObject\ShaderObject.h" />
     <ClInclude Include="ShaderObject\ShaderProgram.h" />
+    <ClInclude Include="SinglePointModel.h" />
     <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <ItemGroup>
