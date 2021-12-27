@@ -15,17 +15,17 @@
 
 namespace PotatoEngine
 {
-	class Model
+	class MeshModel
 	{
 	public:
 		std::string m_directory;
 
-		Model(const std::string& path)
+		MeshModel(const std::string& path)
 		{
 			this->LoadModel(path);
 		}
 		
-		~Model() {}
+		~MeshModel() {}
 
 		void Draw() const;
 		void DrawVertices() const;

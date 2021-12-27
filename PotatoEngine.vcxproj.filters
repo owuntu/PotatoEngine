@@ -42,7 +42,7 @@
     <ClCompile Include="glad\glad.c">
       <Filter>glad</Filter>
     </ClCompile>
-    <ClCompile Include="Model.cpp">
+    <ClCompile Include="MeshModel.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
@@ -65,7 +65,7 @@
     <ClInclude Include="ShaderObject\ShaderProgram.h">
       <Filter>Source Files\ShaderObject</Filter>
     </ClInclude>
-    <ClInclude Include="Model.h">
+    <ClInclude Include="MeshModel.h">
       <Filter>Source Files\Model</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">

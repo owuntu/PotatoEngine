@@ -42,9 +42,14 @@ bool QueryClosestPoint::Init()
 	m_pShader->Create("GLSLSHaders/modelVertexShader.vs.glsl", "GLSLShaders/modelFragmentShader.fs.glsl");
 	m_pShader->Use();
 
-	m_pModel = std::make_shared<Model>("resources/objects/backpack/backpack.obj");
+	m_pModel = std::make_shared<MeshModel>("resources/objects/backpack/backpack.obj");
 
 	return true;
+}
+
+void QueryClosestPoint::Update()
+{
+	Game::Update();
 }
 
 void QueryClosestPoint::Render()

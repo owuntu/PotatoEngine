@@ -2,7 +2,7 @@
 
 namespace PotatoEngine
 {
-	void Model::LoadModel(const std::string& path)
+	void MeshModel::LoadModel(const std::string& path)
 	{
 		Assimp::Importer importer;
 		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate);
@@ -19,7 +19,7 @@ namespace PotatoEngine
 		ProcessNode(scene->mRootNode, scene);
 	}
 
-	void Model::ProcessNode(aiNode* pNode, const aiScene* pScene)
+	void MeshModel::ProcessNode(aiNode* pNode, const aiScene* pScene)
 	{
 		for (unsigned int i = 0; i < pNode->mNumMeshes; ++i)
 		{
@@ -34,7 +34,7 @@ namespace PotatoEngine
 		}
 	}
 
-	void Model::ProcessMesh(aiMesh* pMesh)
+	void MeshModel::ProcessMesh(aiMesh* pMesh)
 	{
 		std::vector<Vertex> vertices;
 		for (unsigned int i = 0; i < pMesh->mNumVertices; ++i)
@@ -66,7 +66,7 @@ namespace PotatoEngine
 		m_meshes.push_back(Mesh(vertices, indices));
 	}
 
-	void Model::Draw() const
+	void MeshModel::Draw() const
 	{
 		for (const auto& mesh : m_meshes)
 		{
@@ -74,7 +74,7 @@ namespace PotatoEngine
 		}
 	}
 
-	void Model::DrawVertices() const
+	void MeshModel::DrawVertices() const
 	{
 		for (const auto& mesh : m_meshes)
 		{
