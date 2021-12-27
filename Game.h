@@ -30,7 +30,7 @@ protected:
 	float m_lastFrameTime = 0.f;
 
 	GLFWwindow* m_window = nullptr;
-	Camera* m_pMainCamera = nullptr;
+	std::shared_ptr<Camera> m_pMainCamera = nullptr;
 
 
 	float m_mouseLastX;

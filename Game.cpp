@@ -55,13 +55,9 @@ bool Game::Init()
 
 	glfwSetCursorPosCallback(m_window, mouseCallback);
 
-	if (m_pMainCamera != nullptr)
-	{
-		delete m_pMainCamera;
-		m_pMainCamera = nullptr;
-	}
+	m_pMainCamera.reset();
 
-	m_pMainCamera = new Camera;
+	m_pMainCamera = std::make_shared<Camera>();
 
 	m_lastFrameTime = glfwGetTime();
 
@@ -111,11 +107,7 @@ void Game::Reset()
 	glfwDestroyWindow(m_window);
 	m_window = nullptr;
 
-	if (m_pMainCamera != nullptr)
-	{
-		delete m_pMainCamera;
-		m_pMainCamera = nullptr;
-	}
+	m_pMainCamera.reset();
 }
 
 int Game::ScreenWidth() const
