@@ -31,7 +31,7 @@ namespace PotatoEngine
 
 	void SinglePointModel::DrawVertices() const
 	{
-		glPointSize(10.0f);
+		glPointSize(5.0f);
 		glBindVertexArray(m_glVAO);
 		glDrawArrays(GL_POINTS, 0, 1);
 		glBindVertexArray(0);
