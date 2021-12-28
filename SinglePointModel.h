@@ -2,6 +2,7 @@
 #define SINGLE_POINT_MODEL_H_
 
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "Model.h"
 
@@ -14,25 +15,35 @@ namespace PotatoEngine
 	public:
 		SinglePointModel() :
 			m_glVAO(0),
-			m_glVBO(0),
-			m_point(0)
+			m_glVBO(0)
 		{}
 
 		~SinglePointModel() {}
 
-		void Draw() const;
-		void DrawVertices() const;
+		glm::vec3 GetPosition() const
+		{
+			glm::vec3 p = m_transformation[3];
+			return p;
+		}
 
-		const glm::vec3& GetPoint() const { return m_point; }
-		glm::vec3& GetPoint() { return m_point; }
+		void SetPosition(const glm::vec3& pos)
+		{
+			glm::vec4 v(pos, 1.0f);
+			m_transformation[3] = v;
+		}
+
+		void Translate(const glm::vec3& v)
+		{
+			glm::translate(m_transformation, v);
+		}
 
 	private:
-		// All mesh vertex point are just put together
-		glm::vec3 m_point;
-
 		void ProcessMesh(aiMesh* pMesh) {}
 
 		void PostSetup();
+
+		void DoDraw() const;
+		void DoDrawVertices() const;
 
 		// todo: refactor GL object into another class
 		unsigned int m_glVAO;

@@ -41,12 +41,12 @@ namespace PotatoEngine
 		glBindVertexArray(0);
 	}
 
-	void PointCloudModel::Draw() const
+	void PointCloudModel::DoDraw() const
 	{
-		this->DrawVertices();
+		this->DoDrawVertices();
 	}
 
-	void PointCloudModel::DrawVertices() const
+	void PointCloudModel::DoDrawVertices() const
 	{
 		glPointSize(1.0f);
 		glBindVertexArray(m_glVAO);

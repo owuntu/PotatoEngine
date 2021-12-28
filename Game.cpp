@@ -110,12 +110,12 @@ void Game::Reset()
 	m_pMainCamera.reset();
 }
 
-int Game::ScreenWidth() const
+int Game::ScreenWidth()
 {
 	return gs_SCREEN_WIDTH;
 }
 
-int Game::ScreenHeight() const
+int Game::ScreenHeight()
 {
 	return gs_SCREEN_HEIGHT;
 }

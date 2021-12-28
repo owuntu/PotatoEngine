@@ -39,7 +39,7 @@ namespace PotatoEngine
 		m_meshes.push_back(Mesh(vertices, indices));
 	}
 
-	void MeshModel::Draw() const
+	void MeshModel::DoDraw() const
 	{
 		for (const auto& mesh : m_meshes)
 		{
@@ -47,7 +47,7 @@ namespace PotatoEngine
 		}
 	}
 
-	void MeshModel::DrawVertices() const
+	void MeshModel::DoDrawVertices() const
 	{
 		for (const auto& mesh : m_meshes)
 		{

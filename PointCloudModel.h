@@ -19,9 +19,6 @@ namespace PotatoEngine
 
 		~PointCloudModel() {}
 
-		void Draw() const;
-		void DrawVertices() const;
-
 		const std::vector<glm::vec3>& GetPoints() const { return m_points; }
 		std::vector<glm::vec3>& GetPoints() { return m_points; }
 
@@ -32,6 +29,9 @@ namespace PotatoEngine
 		void ProcessMesh(aiMesh* pMesh);
 
 		void PostSetup();
+
+		void DoDraw() const;
+		void DoDrawVertices() const;
 
 		// todo: refactor GL object into another class
 		unsigned int m_glVAO;

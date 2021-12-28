@@ -14,8 +14,8 @@ public:
 	virtual int Run();
 	virtual void Reset();
 
-	int ScreenWidth() const;
-	int ScreenHeight() const;
+	static int ScreenWidth();
+	static int ScreenHeight();
 
 	virtual ~Game();
 protected:

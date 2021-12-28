@@ -14,7 +14,8 @@ namespace PotatoEngine
 
 		// Load data into buffers
 		glBindBuffer(GL_ARRAY_BUFFER, m_glVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3), &m_point, GL_STATIC_DRAW);
+		glm::vec3 tmpPoint(0);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3), &tmpPoint, GL_STATIC_DRAW);
 
 		// Vertex arribute pointer
 		// Positions
@@ -24,12 +25,12 @@ namespace PotatoEngine
 		glBindVertexArray(0);
 	}
 
-	void SinglePointModel::Draw() const
+	void SinglePointModel::DoDraw() const
 	{
-		this->DrawVertices();
+		this->DoDrawVertices();
 	}
 
-	void SinglePointModel::DrawVertices() const
+	void SinglePointModel::DoDrawVertices() const
 	{
 		glPointSize(5.0f);
 		glBindVertexArray(m_glVAO);

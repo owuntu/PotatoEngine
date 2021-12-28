@@ -40,12 +40,14 @@ void QueryClosestPoint::ProcessInput()
 		if (closestPoint.x != NAN);
 		{
 			std::cout << "Closest point is: (" << closestPoint.x << ", " << closestPoint.y << ", " << closestPoint.z << ")" << std::endl;
-			m_pClosestPointModel->GetPoint() = closestPoint;
+			m_pClosestPointModel->SetPosition(closestPoint);
+			m_pClosestPointModel->SetColor(glm::vec3(0, 1, 0)); // set green as result point
 
 			m_bFoundResult = true;
 		}
 
-		m_pQueryPointModel->GetPoint() = m_queryPoint;
+		m_pQueryPointModel->SetPosition(m_queryPoint);
+		m_pQueryPointModel->SetColor(glm::vec3(1, 0, 0)); // set red as query point
 	}
 }
 
@@ -87,21 +89,12 @@ void QueryClosestPoint::Render()
 	m_pShader->SetMat4("view", view);
 	m_pShader->SetMat4("projection", persp);
 
-	m_pShader->SetMat4("modelMat", identity);
-	m_pShader->SetVec3("ModelColor", glm::vec3(1, 1, 1));
-	m_pModel->Draw();
+	m_pModel->Draw(m_pShader.get());
 
 	if (m_bFoundResult)
 	{
-		glm::mat4 transformation = glm::translate(identity, m_pQueryPointModel->GetPoint());
-		m_pShader->SetMat4("modelMat", transformation);
-		m_pShader->SetVec3("ModelColor", glm::vec3(1, 0, 0));
-		m_pQueryPointModel->Draw();
-
-		transformation = glm::translate(identity, m_pClosestPointModel->GetPoint());
-		m_pShader->SetMat4("modelMat", transformation);
-		m_pShader->SetVec3("ModelColor", glm::vec3(0, 1, 0));
-		m_pClosestPointModel->Draw();
+		m_pQueryPointModel->Draw(m_pShader.get());
+		m_pClosestPointModel->Draw(m_pShader.get());
 	}
 }
 

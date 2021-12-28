@@ -25,13 +25,12 @@ namespace PotatoEngine
 		
 		~MeshModel() {}
 
-		void Draw() const;
-		void DrawVertices() const;
-
 	private:
-		std::vector<Mesh> m_meshes;
-
 		void ProcessMesh(aiMesh* pMesh);
+		void DoDraw() const;
+		void DoDrawVertices() const;
+
+		std::vector<Mesh> m_meshes;
 	}; // class MeshModel
 } // namespace PotatoEngine
 
