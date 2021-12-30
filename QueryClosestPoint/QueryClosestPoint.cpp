@@ -26,6 +26,7 @@ QueryClosestPoint::~QueryClosestPoint()
 
 }
 
+static const glm::mat4 IDENTITY = glm::mat4(1.0f);
 int maxKdTreeDrawDepth = 16;
 
 void QueryClosestPoint::ProcessInput()
@@ -45,24 +46,32 @@ void QueryClosestPoint::ProcessInput()
 			<< m_maxSearchDistance << "\n";
 
 		glm::vec3 closestPoint = DoQueryClosestPoint(m_queryPoint, m_maxSearchDistance);
-		if (closestPoint.x != NAN);
+
+		if (!isnan(closestPoint.x))
 		{
 			std::cout << "Closest point is: (" << closestPoint.x << ", " << closestPoint.y << ", " << closestPoint.z << ")" << std::endl;
 			m_pClosestPointModel->SetPosition(closestPoint);
-			m_pClosestPointModel->SetColor(glm::vec3(0, 1, 0)); // set green as result point
+			m_pClosestPointModel->SetColor(glm::vec4(0, 1, 0, 1)); // set green as result point
 
 			m_bFoundResult = true;
 		}
 
 		m_pQueryPointModel->SetPosition(m_queryPoint);
-		m_pQueryPointModel->SetColor(glm::vec3(1, 0, 0)); // set red as query point
+		m_pQueryPointModel->SetColor(glm::vec4(1, 0, 0, 1)); // set red as query point
 	}
 
-	double sleepTime = 20.0;
+	double sleepTime = 100.0;
 	if (glfwGetKey(m_window, GLFW_KEY_I) == GLFW_PRESS)
 	{
 		maxKdTreeDrawDepth++;
+		int maxDepth = m_pModel->GetMaxDepth();
+		if (maxKdTreeDrawDepth > maxDepth)
+		{
+			maxKdTreeDrawDepth = maxDepth;
+		}
+
 		Sleep(sleepTime);
+		std::cout << "\nDraw to Kd tree depth " << maxKdTreeDrawDepth << std::endl;
 	}
 
 	if (glfwGetKey(m_window, GLFW_KEY_K) == GLFW_PRESS)
@@ -73,6 +82,7 @@ void QueryClosestPoint::ProcessInput()
 			maxKdTreeDrawDepth = -1;
 		}
 		Sleep(sleepTime);
+		std::cout << "\nDraw to Kd tree depth " << maxKdTreeDrawDepth << std::endl;
 	}
 }
 
@@ -88,7 +98,7 @@ bool QueryClosestPoint::Init()
 	m_pShader->Use();
 
 	m_pModel = std::dynamic_pointer_cast<PointCloudModel>(ModelCreator::CreateModel(ModelCreator::Type::POINT_CLOUD_MODEL, "resources/objects/backpack/backpack.obj"));
-	m_pModel->SetColor(glm::vec3(0.8f));
+	m_pModel->SetColor(glm::vec4(1.f));
 
 	m_pQueryPointModel = std::dynamic_pointer_cast<SinglePointModel>(ModelCreator::CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
 	m_pClosestPointModel = std::dynamic_pointer_cast<SinglePointModel>(ModelCreator::CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
@@ -130,14 +140,18 @@ void DrawKdTree(ShaderProgram* pShader, const KdTree::Node* pNode, int depth)
 		}
 	}
 
-	static glm::vec3 colors[3] = {
-		{1, 0, 0},
-		{0, 1, 0},
-		{0, 1, 1}
+	float alpha = 0.5f;
+	static glm::vec4 colors[3] = {
+		{0.8f, 0, 0, alpha},
+		{0, 0.8f, 0, alpha},
+		{0, 0.8f, 0.8f, alpha}
 	};
 
-	pShader->SetVec3("ModelColor", colors[depth % 3]);
-	glBegin(GL_LINE_LOOP);
+	pShader->SetMat4("modelMat", IDENTITY);
+	pShader->SetVec4("ModelColor", colors[depth % 3]);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBegin(GL_TRIANGLE_FAN);
 	glVertex3fv(&(vertices[0][0]));
 	glVertex3fv(&(vertices[1][0]));
 	glVertex3fv(&(vertices[2][0]));
@@ -148,10 +162,36 @@ void DrawKdTree(ShaderProgram* pShader, const KdTree::Node* pNode, int depth)
 	DrawKdTree(pShader, pNode->right, depth + 1);
 }
 
+static void DrawCoordAxis(ShaderProgram* pShader)
+{
+	static float axisLenght = 10.f;
+	static glm::vec3 axis[3] =
+	{
+		{axisLenght, 0, 0},
+		{0, axisLenght, 0},
+		{0, 0, axisLenght}
+	};
+
+	static glm::vec4 colors[3] = {
+		{0.8f, 0, 0, 1.f},
+		{0, 0.8f, 0, 1.f},
+		{0, 0, 0.8f, 1.f}
+	};
+
+	pShader->SetMat4("modelMat", IDENTITY);
+	for (int i = 0; i < 3; ++i)
+	{
+		pShader->SetVec4("ModelColor", glm::vec4(colors[i]));
+		glBegin(GL_LINES);
+		glVertex3f(0.f, 0.f, 0.f);
+		glVertex3fv(&(axis[i][0]));
+		glEnd();
+	}
+}
+
 void QueryClosestPoint::Render()
 {
 	static const float aspect = (float)ScreenWidth() / (float)ScreenHeight();
-	static const glm::mat4 identity = glm::mat4(1.0f);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -159,17 +199,19 @@ void QueryClosestPoint::Render()
 	glm::mat4 persp = m_pMainCamera->GetPerpectiveProjectionMatrix(aspect);
 
 	m_pShader->Use();
+	DrawCoordAxis(m_pShader.get());
 	m_pShader->SetMat4("view", view);
 	m_pShader->SetMat4("projection", persp);
 
 	m_pModel->Draw(m_pShader.get());
 	DrawKdTree(m_pShader.get(), m_pModel->GetRoot(), 0);
 
+	m_pQueryPointModel->Draw(m_pShader.get());
 	if (m_bFoundResult)
 	{
-		m_pQueryPointModel->Draw(m_pShader.get());
 		m_pClosestPointModel->Draw(m_pShader.get());
 	}
+
 }
 
 void QueryClosestPoint::Reset()
@@ -189,7 +231,7 @@ glm::vec3 QueryClosestPoint::DoQueryClosestPoint(const glm::vec3& queryPoint, fl
 glm::vec3 QueryClosestPoint::QueryBruteForce(const glm::vec3& queryPoint, float maxSearchDistance)
 {
 	using namespace PotatoEngine;
-	glm::vec3 res(NAN, NAN, NAN);
+	glm::vec3 res(nanf(""));
 
 	const auto& points = reinterpret_cast<PointCloudModel*>(m_pModel.get())->GetPoints();
 	float minDist = FLT_MAX;
@@ -211,7 +253,7 @@ glm::vec3 QueryClosestPoint::QueryBruteForce(const glm::vec3& queryPoint, float 
 glm::vec3 QueryClosestPoint::QueryKDTree(const glm::vec3& queryPoint, float maxSearchDistance)
 {
 	using namespace PotatoEngine;
-	glm::vec3 res(NAN, NAN, NAN);
+	glm::vec3 res(nanf(""));
 
 	auto* tree = m_pModel->GetRoot();
 

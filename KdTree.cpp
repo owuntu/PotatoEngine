@@ -11,6 +11,7 @@ namespace PotatoEngine
 			elements[i] = i;
 		}
 
+		m_maxDepth = 0;
 		m_root = BuildTree(elements, 0);
 	}
 
@@ -23,6 +24,8 @@ namespace PotatoEngine
 		}
 
 		Node* res = new Node();
+
+		m_maxDepth = (depth > m_maxDepth) ? depth : m_maxDepth;
 
 		// todo: remove magic number
 		if (elements.size() <= 16)

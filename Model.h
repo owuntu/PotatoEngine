@@ -18,7 +18,7 @@ namespace PotatoEngine
 	{
 	public:
 		Model() :
-			m_color(1.f, 1.f, 1.f),
+			m_color(1.f, 1.f, 1.f, 1.f),
 			m_transformation(1.f)
 		{}
 
@@ -29,14 +29,14 @@ namespace PotatoEngine
 
 		void LoadModel(const std::string& path);
 
-		void SetColor(const glm::vec3& c) { m_color = c; }
-		const glm::vec3& GetColor() const { return m_color; }
+		void SetColor(const glm::vec4& c) { m_color = c; }
+		const glm::vec4& GetColor() const { return m_color; }
 
 	protected:
 		void ProcessNode(aiNode* pNode, const aiScene* pScene);
 
 		std::string m_directory;
-		glm::vec3 m_color;
+		glm::vec4 m_color;
 		glm::mat4 m_transformation;
 	private:
 		virtual void ProcessMesh(aiMesh* pMesh) = 0;

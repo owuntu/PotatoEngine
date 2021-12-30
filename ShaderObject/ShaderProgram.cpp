@@ -122,4 +122,9 @@ namespace PotatoEngine
 	{
 		glUniform3fv(glGetUniformLocation(m_glPrgmId, name.c_str()), 1, &vec[0]);
 	}
+
+	void ShaderProgram::SetVec4(const std::string& name, const glm::vec4& vec)
+	{
+		glUniform4fv(glGetUniformLocation(m_glPrgmId, name.c_str()), 1, &vec[0]);
+	}
 }

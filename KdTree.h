@@ -30,7 +30,7 @@ namespace PotatoEngine
 		Node* BuildTree(std::vector<int> elements, int depth);
 
 		const Node* GetRoot() const { return m_root; }
-
+		const int GetMaxDepth() const { return m_maxDepth; }
 	protected:
 		virtual int GetTotalNumOfElements() const = 0;
 		virtual void Sort(std::vector<int>& elements, int axis, Node* node) = 0;
@@ -41,6 +41,8 @@ namespace PotatoEngine
 	private:
 		// Disabled copy constructor for now
 		KdTree(const KdTree& rhs) = delete;
+
+		int m_maxDepth = 0;
 	};
 } // namespace PotatoEngine
 

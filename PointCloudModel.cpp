@@ -53,10 +53,11 @@ namespace PotatoEngine
 
 	void PointCloudModel::DoDrawVertices() const
 	{
-		glPointSize(1.0f);
+		glPointSize(1.5f);
 		glBindVertexArray(m_glVAO);
 		glDrawArrays(GL_POINTS, 0, m_points.size());
 		glBindVertexArray(0);
+		glPointSize(1.0f);
 	}
 
 	void PointCloudModel::Sort(std::vector<int>& elements, int axis, Node* pNode)

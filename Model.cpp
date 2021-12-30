@@ -48,7 +48,7 @@ namespace PotatoEngine
 		if (pShader != nullptr)
 		{
 			pShader->SetMat4("modelMat", m_transformation);
-			pShader->SetVec3("ModelColor", m_color);
+			pShader->SetVec4("ModelColor", m_color);
 		}
 
 		// do draw
@@ -61,7 +61,7 @@ namespace PotatoEngine
 		if (pShader != nullptr)
 		{
 			pShader->SetMat4("modelMat", m_transformation);
-			pShader->SetVec3("ModelColor", m_color);
+			pShader->SetVec4("ModelColor", m_color);
 		}
 
 		// do draw
