@@ -9,6 +9,7 @@ namespace PotatoEngine
 	class MeshModel;
 	class Model;
 	class SinglePointModel;
+	class PointCloudModel;
 	class ShaderProgram;
 } // namespace PotatoEngine
 
@@ -26,11 +27,14 @@ protected:
 
 	virtual void ProcessInput();
 
-	std::shared_ptr<PotatoEngine::Model> m_pModel;
+	std::shared_ptr<PotatoEngine::PointCloudModel> m_pModel;
 	// todo: refactor shader into a renderer
 	std::shared_ptr<PotatoEngine::ShaderProgram> m_pShader;
 
 private:
+	glm::vec3 QueryBruteForce(const glm::vec3& queryPoint, float maxSearchDistance);
+	glm::vec3 QueryKDTree(const glm::vec3& queryPoint, float maxSearchDistance);
+
 	glm::vec3 m_queryPoint;
 	float m_maxSearchDistance;
 

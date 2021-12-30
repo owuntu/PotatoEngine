@@ -23,6 +23,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="glad\glad.c" />
     <ClCompile Include="GLObject.cpp" />
+    <ClCompile Include="KdTree.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshModel.cpp" />
     <ClCompile Include="Model.cpp" />
@@ -33,9 +34,11 @@
     <ClCompile Include="SinglePointModel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BBox.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GLObject.h" />
+    <ClInclude Include="KdTree.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshModel.h" />
     <ClInclude Include="Model.h" />

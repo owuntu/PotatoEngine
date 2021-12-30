@@ -1,6 +1,12 @@
 #include <iostream>
 #include <iomanip>
 
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
+
 #include <glad/glad.h>
 #include <glfw3.h>
 #include <glm/glm.hpp>
@@ -19,6 +25,8 @@ QueryClosestPoint::~QueryClosestPoint()
 {
 
 }
+
+int maxKdTreeDrawDepth = 16;
 
 void QueryClosestPoint::ProcessInput()
 {
@@ -49,6 +57,23 @@ void QueryClosestPoint::ProcessInput()
 		m_pQueryPointModel->SetPosition(m_queryPoint);
 		m_pQueryPointModel->SetColor(glm::vec3(1, 0, 0)); // set red as query point
 	}
+
+	double sleepTime = 20.0;
+	if (glfwGetKey(m_window, GLFW_KEY_I) == GLFW_PRESS)
+	{
+		maxKdTreeDrawDepth++;
+		Sleep(sleepTime);
+	}
+
+	if (glfwGetKey(m_window, GLFW_KEY_K) == GLFW_PRESS)
+	{
+		maxKdTreeDrawDepth--;
+		if (maxKdTreeDrawDepth <= -1)
+		{
+			maxKdTreeDrawDepth = -1;
+		}
+		Sleep(sleepTime);
+	}
 }
 
 bool QueryClosestPoint::Init()
@@ -62,7 +87,8 @@ bool QueryClosestPoint::Init()
 	m_pShader->Create("GLSLSHaders/modelVertexShader.vs.glsl", "GLSLShaders/modelFragmentShader.fs.glsl");
 	m_pShader->Use();
 
-	m_pModel = ModelCreator::CreateModel(ModelCreator::Type::POINT_CLOUD_MODEL, "resources/objects/backpack/backpack.obj");
+	m_pModel = std::dynamic_pointer_cast<PointCloudModel>(ModelCreator::CreateModel(ModelCreator::Type::POINT_CLOUD_MODEL, "resources/objects/backpack/backpack.obj"));
+	m_pModel->SetColor(glm::vec3(0.8f));
 
 	m_pQueryPointModel = std::dynamic_pointer_cast<SinglePointModel>(ModelCreator::CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
 	m_pClosestPointModel = std::dynamic_pointer_cast<SinglePointModel>(ModelCreator::CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
@@ -73,6 +99,53 @@ bool QueryClosestPoint::Init()
 void QueryClosestPoint::Update()
 {
 	Game::Update();
+}
+
+void DrawKdTree(ShaderProgram* pShader, const KdTree::Node* pNode, int depth)
+{
+	if (pNode == nullptr || pNode->splitAxis == -1 || depth > maxKdTreeDrawDepth)
+	{
+		return;
+	}
+
+	float planeSize = FLT_MAX;
+	float pos = pNode->splitPos;
+
+	glm::vec3 vertices[4] = {
+		{pos, -planeSize, -planeSize},
+		{pos,  planeSize, -planeSize},
+		{pos,  planeSize,  planeSize},
+		{pos, -planeSize,  planeSize}
+	};
+
+	for (int i = 0; i < 4; ++i)
+	{
+		std::swap(vertices[i][0], vertices[i][pNode->splitAxis]);
+		
+		for (int j = 0; j < 3; ++j)
+		{
+			float& r = vertices[i][j];
+			r = fmaxf(r, pNode->box.vmin[j]);
+			r = fminf(r, pNode->box.vmax[j]);
+		}
+	}
+
+	static glm::vec3 colors[3] = {
+		{1, 0, 0},
+		{0, 1, 0},
+		{0, 1, 1}
+	};
+
+	pShader->SetVec3("ModelColor", colors[depth % 3]);
+	glBegin(GL_LINE_LOOP);
+	glVertex3fv(&(vertices[0][0]));
+	glVertex3fv(&(vertices[1][0]));
+	glVertex3fv(&(vertices[2][0]));
+	glVertex3fv(&(vertices[3][0]));
+	glEnd();
+
+	DrawKdTree(pShader, pNode->left, depth + 1);
+	DrawKdTree(pShader, pNode->right, depth + 1);
 }
 
 void QueryClosestPoint::Render()
@@ -90,6 +163,7 @@ void QueryClosestPoint::Render()
 	m_pShader->SetMat4("projection", persp);
 
 	m_pModel->Draw(m_pShader.get());
+	DrawKdTree(m_pShader.get(), m_pModel->GetRoot(), 0);
 
 	if (m_bFoundResult)
 	{
@@ -107,10 +181,15 @@ void QueryClosestPoint::Reset()
 
 glm::vec3 QueryClosestPoint::DoQueryClosestPoint(const glm::vec3& queryPoint, float maxSearchDistance)
 {
+	return QueryBruteForce(queryPoint, maxSearchDistance);
+}
+
+// Basic method: brute force search
+glm::vec3 QueryClosestPoint::QueryBruteForce(const glm::vec3& queryPoint, float maxSearchDistance)
+{
 	using namespace PotatoEngine;
 	glm::vec3 res(NAN, NAN, NAN);
 
-	// Basic method: brute force search
 	const auto& points = reinterpret_cast<PointCloudModel*>(m_pModel.get())->GetPoints();
 	float minDist = FLT_MAX;
 	for (auto point : points)
@@ -123,6 +202,14 @@ glm::vec3 QueryClosestPoint::DoQueryClosestPoint(const glm::vec3& queryPoint, fl
 			res = point;
 		}
 	}
+
+	return res;
+}
+
+glm::vec3 QueryClosestPoint::QueryKDTree(const glm::vec3& queryPoint, float maxSearchDistance)
+{
+	using namespace PotatoEngine;
+	glm::vec3 res(NAN, NAN, NAN);
 
 	return res;
 }

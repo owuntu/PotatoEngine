@@ -3,6 +3,7 @@
 #include <assimp/scene.h>
 #include <glad/glad.h>
 
+#include <algorithm>
 #include "PointCloudModel.h"
 
 namespace PotatoEngine
@@ -39,6 +40,8 @@ namespace PotatoEngine
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
 
 		glBindVertexArray(0);
+
+		KdTree::Build();
 	}
 
 	void PointCloudModel::DoDraw() const
@@ -52,6 +55,41 @@ namespace PotatoEngine
 		glBindVertexArray(m_glVAO);
 		glDrawArrays(GL_POINTS, 0, m_points.size());
 		glBindVertexArray(0);
+	}
+
+	void PointCloudModel::Sort(std::vector<int>& elements, int axis, Node* pNode)
+	{
+		if (pNode == nullptr)
+		{
+			return;
+		}
+
+		std::sort(elements.begin(), elements.end(),
+			[&](int a, int b)
+			{
+				return m_points[a][axis] < m_points[b][axis];
+			}
+		);
+
+		pNode->splitAxis = axis;
+		glm::vec3 splitPoint = m_points[elements[elements.size() / 2]];
+		pNode->splitPos = splitPoint[axis];
+	}
+
+	int PointCloudModel::GetTotalNumOfElements() const
+	{
+		return m_points.size();
+	}
+
+	BBox PointCloudModel::GetBoundingBox(const std::vector<int>& elements) const
+	{
+		BBox box;
+		box.Init();
+		for (auto i : elements)
+		{
+			box.Add(m_points[i]);
+		}
+		return box;
 	}
 
 } // namespace PotatoEngine
