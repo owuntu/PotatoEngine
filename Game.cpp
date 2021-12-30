@@ -83,7 +83,7 @@ int Game::Run()
 		if (outputInterval > 1.0f)
 		{
 			float fps = 1.0f / m_deltaTime;
-			//std::cout << "\rFPS: " << std::fixed << std::setprecision(2) << fps;
+			std::cout << "\rFPS: " << std::fixed << std::setprecision(2) << fps;
 			outputInterval = 0.0f;
 		}
 		outputInterval += m_deltaTime;

@@ -4,6 +4,8 @@
 #include <glad/glad.h>
 
 #include <algorithm>
+#include <glm/gtx/norm.hpp>
+
 #include "PointCloudModel.h"
 
 namespace PotatoEngine
@@ -90,6 +92,53 @@ namespace PotatoEngine
 			box.Add(m_points[i]);
 		}
 		return box;
+	}
+
+	glm::vec3 PointCloudModel::SearchNearest(const glm::vec3& queryPoint)
+	{
+		float currentMin2 = FLT_MAX;
+		return SearchNearest(queryPoint, m_root, currentMin2);
+	}
+
+	glm::vec3 PointCloudModel::SearchNearest(const glm::vec3& queryPoint, const Node* pNode, float& currentMin2)
+	{
+		if (pNode->splitAxis == -1)
+		{
+			glm::vec3 res(NAN);
+			for (auto i : pNode->elements)
+			{
+				const glm::vec3& testPoint = m_points[i];
+				float d2 = glm::distance2(queryPoint, testPoint);
+				if (d2 < currentMin2)
+				{
+					currentMin2 = d2;
+					res = testPoint;
+				}
+			}
+
+			return res;
+		}
+
+		float d = queryPoint[pNode->splitAxis] - pNode->splitPos;
+		float d2 = d * d;
+		Node* left = pNode->left;
+		Node* right = pNode->right;
+		if (d >= 0.f)
+		{
+			left = right;
+			right = pNode->left;
+		}
+
+		auto res = SearchNearest(queryPoint, left, currentMin2);
+		if (isnan(res.x) || d2 < currentMin2)
+		{
+			auto tmp = SearchNearest(queryPoint, right, currentMin2);
+			if (!isnan(tmp.x))
+			{
+				res = tmp;
+			}
+		}
+		return res;
 	}
 
 } // namespace PotatoEngine

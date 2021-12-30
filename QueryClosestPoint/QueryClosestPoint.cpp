@@ -181,7 +181,8 @@ void QueryClosestPoint::Reset()
 
 glm::vec3 QueryClosestPoint::DoQueryClosestPoint(const glm::vec3& queryPoint, float maxSearchDistance)
 {
-	return QueryBruteForce(queryPoint, maxSearchDistance);
+	//return QueryBruteForce(queryPoint, maxSearchDistance);
+	return QueryKDTree(queryPoint, maxSearchDistance);
 }
 
 // Basic method: brute force search
@@ -206,10 +207,22 @@ glm::vec3 QueryClosestPoint::QueryBruteForce(const glm::vec3& queryPoint, float 
 	return res;
 }
 
+// KdTree search
 glm::vec3 QueryClosestPoint::QueryKDTree(const glm::vec3& queryPoint, float maxSearchDistance)
 {
 	using namespace PotatoEngine;
 	glm::vec3 res(NAN, NAN, NAN);
 
+	auto* tree = m_pModel->GetRoot();
+
+	glm::vec3 tmp = m_pModel->SearchNearest(queryPoint);
+	if (glm::distance2(tmp, queryPoint) > maxSearchDistance* maxSearchDistance)
+	{
+		return res;
+	}
+	res = tmp;
+
 	return res;
 }
+
+

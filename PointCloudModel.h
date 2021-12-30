@@ -23,6 +23,8 @@ namespace PotatoEngine
 		const std::vector<glm::vec3>& GetPoints() const { return m_points; }
 		std::vector<glm::vec3>& GetPoints() { return m_points; }
 
+		glm::vec3 SearchNearest(const glm::vec3& queryPoint);
+
 	protected:
 		// All mesh vertex point are just put together
 		std::vector<glm::vec3> m_points;
@@ -39,6 +41,7 @@ namespace PotatoEngine
 		void Sort(std::vector<int>& elements, int axis, Node* node);
 		int GetTotalNumOfElements() const;
 		BBox GetBoundingBox(const std::vector<int>& elements) const;
+		glm::vec3 SearchNearest(const glm::vec3& queryPoint, const Node* pNode, float& currentMin2);
 
 		// todo: refactor GL object into another class
 		unsigned int m_glVAO;
