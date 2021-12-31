@@ -153,7 +153,10 @@ namespace PotatoEngine
 		struct TmpNode
 		{
 			const Node* treeNode;
+
+			// Distance square between current closest point and the split plane of parent node.
 			float d2Parent;
+
 			TmpNode(const Node* node, float d2 = FLT_MAX):
 				treeNode(node), d2Parent(d2)
 			{}
@@ -181,6 +184,8 @@ namespace PotatoEngine
 					}
 				}
 
+				// If the distance to the parent split plane is smaller than to the current closest point,
+				// we need to continue to traverse the sibiling node
 				if (node.d2Parent < currentMin2 || isnan(res.x))
 				{
 					continue;
@@ -195,6 +200,8 @@ namespace PotatoEngine
 
 			Node* left = pNode->left;
 			Node* right = pNode->right;
+
+			// Traverse right node first if queryPoint is in the greater side of the split plane
 			if (d >= 0.f)
 			{
 				left = right;

@@ -42,7 +42,10 @@ namespace PotatoEngine
 		int GetTotalNumOfElements() const;
 		BBox GetBoundingBox(const std::vector<int>& elements) const;
 		
+		// Recursive version
 		glm::vec3 SearchNearest(const glm::vec3& queryPoint, const Node* pNode, float& currentMin2);
+		
+		// Iteration version
 		glm::vec3 SearchNearestIterate(const glm::vec3& queryPoint, const Node* pNode, float& currentMin2);
 
 		// todo: refactor GL object into another class

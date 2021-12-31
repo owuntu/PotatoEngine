@@ -111,7 +111,7 @@ void QueryClosestPoint::Update()
 	Game::Update();
 }
 
-void DrawKdTree(ShaderProgram* pShader, const KdTree::Node* pNode, int depth)
+static void DrawKdTree(ShaderProgram* pShader, const KdTree::Node* pNode, int depth)
 {
 	if (pNode == nullptr || pNode->splitAxis == -1 || depth > maxKdTreeDrawDepth)
 	{
@@ -199,12 +199,12 @@ void QueryClosestPoint::Render()
 	glm::mat4 persp = m_pMainCamera->GetPerpectiveProjectionMatrix(aspect);
 
 	m_pShader->Use();
-	DrawCoordAxis(m_pShader.get());
 	m_pShader->SetMat4("view", view);
 	m_pShader->SetMat4("projection", persp);
 
 	m_pModel->Draw(m_pShader.get());
 	DrawKdTree(m_pShader.get(), m_pModel->GetRoot(), 0);
+	DrawCoordAxis(m_pShader.get());
 
 	m_pQueryPointModel->Draw(m_pShader.get());
 	if (m_bFoundResult)

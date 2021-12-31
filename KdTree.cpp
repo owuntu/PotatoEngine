@@ -27,8 +27,7 @@ namespace PotatoEngine
 
 		m_maxDepth = (depth > m_maxDepth) ? depth : m_maxDepth;
 
-		// todo: remove magic number
-		if (elements.size() <= 16)
+		if (elements.size() <= MAX_NUM_NODE_ELEMENTS)
 		{
 			res->elements = elements;
 			res->box = GetBoundingBox(elements);
@@ -51,7 +50,7 @@ namespace PotatoEngine
 		}
 
 		{
-			vector<int>::const_iterator first = elements.begin() + elements.size() / 2 + 1;
+			vector<int>::const_iterator first = elements.begin() + elements.size() / 2;
 			vector<int>::const_iterator last = elements.end();
 			vector<int> rightArry(first, last);
 			res->right = BuildTree(rightArry, depth + 1);
