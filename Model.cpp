@@ -1,3 +1,11 @@
+#include <iostream>
+
+#include <assimp/Importer.hpp>
+#include <assimp/postprocess.h>
+#include <assimp/scene.h>
+
+#include "ShaderObject/ShaderProgram.h"
+
 #include "Model.h"
 
 namespace PotatoEngine
@@ -14,7 +22,7 @@ namespace PotatoEngine
 			return;
 		}
 
-		m_directory = path.substr(0, path.find_last_of('/'));
+		m_directory = path;
 
 		ProcessNode(scene->mRootNode, scene);
 	}
@@ -34,44 +42,30 @@ namespace PotatoEngine
 		}
 	}
 
-	void Model::ProcessMesh(aiMesh* pMesh)
+	void Model::Draw(ShaderProgram* pShader) const
 	{
-		std::vector<Vertex> vertices;
-		for (unsigned int i = 0; i < pMesh->mNumVertices; ++i)
+		// Pre draw
+		if (pShader != nullptr)
 		{
-			Vertex v;
-			v.Position.x = pMesh->mVertices[i].x;
-			v.Position.y = pMesh->mVertices[i].y;
-			v.Position.z = pMesh->mVertices[i].z;
-
-			if (pMesh->HasNormals())
-			{
-				v.Normal.x = pMesh->mNormals[i].x;
-				v.Normal.y = pMesh->mNormals[i].y;
-				v.Normal.z = pMesh->mNormals[i].z;
-			}
-			vertices.push_back(v);
+			pShader->SetMat4("modelMat", m_transformation);
+			pShader->SetVec4("ModelColor", m_color);
 		}
 
-		std::vector<unsigned int> indices;
-		for (unsigned int i = 0; i < pMesh->mNumFaces; ++i)
-		{
-			aiFace face = pMesh->mFaces[i];
-			for (unsigned int j = 0; j < face.mNumIndices; ++j)
-			{
-				indices.push_back(face.mIndices[j]);
-			}
-		}
-
-		m_meshes.push_back(Mesh(vertices, indices));
+		// do draw
+		DoDraw();
 	}
 
-	void Model::Draw() const
+	void Model::DrawVertices(ShaderProgram* pShader) const
 	{
-		for (const auto& mesh : m_meshes)
+		// Pre draw
+		if (pShader != nullptr)
 		{
-			mesh.Draw();
+			pShader->SetMat4("modelMat", m_transformation);
+			pShader->SetVec4("ModelColor", m_color);
 		}
+
+		// do draw
+		DoDrawVertices();
 	}
 
-} // PotatoEngine
+} // namespace PotatoEngine

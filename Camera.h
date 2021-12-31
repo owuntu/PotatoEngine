@@ -10,6 +10,14 @@ namespace PotatoEngine
 	class Camera
 	{
 	public:
+		enum class Movement
+		{
+			FORWARD,
+			BACKWARD,
+			LEFT,
+			RIGHT
+		};
+
 		Camera();
 		Camera(const glm::vec3 pos, const glm::vec3 forward, const glm::vec3 right, const float fovy_degree);
 		~Camera();
@@ -21,11 +29,22 @@ namespace PotatoEngine
 		const glm::mat4 GetViewingMatrix() const;
 		const glm::mat4 GetPerpectiveProjectionMatrix(float aspect) const;
 
+		void ProcessMovement(Movement direction, float deltaTime);
+		void ProcessMouseRotation(float xOffset, float yOffset, bool bConstraintPitch = true);
+
 	private:
+		void UpdateYawPitch();
+		void UpdateDirectionVectors();
+
 		glm::vec3 m_position;
+
 		glm::vec3 m_forward;
 		glm::vec3 m_right;
 		glm::vec3 m_up;
+
+		// euler angles
+		float m_yaw;
+		float m_pitch;
 
 		float m_fovy; // radian
 	}; // class Camera

@@ -9,7 +9,6 @@ uniform mat4 modelMat;
 
 void main()
 {
-	//mat4 mvp = modelMat *  view * projection;
 	mat4 mvp = projection * view * modelMat;
 	gl_Position = mvp * vec4(aPos, 1.0);
 }

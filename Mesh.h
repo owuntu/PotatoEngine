@@ -33,6 +33,7 @@ namespace PotatoEngine
 		~Mesh();
 
 		void Draw() const;
+		void DrawVertices() const;
 		void Release();
 
 	private:

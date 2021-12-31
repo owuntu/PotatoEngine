@@ -1,4 +1,6 @@
 #include <iostream>
+#include <iomanip>
+
 #include <glad/glad.h>
 #include <glfw3.h>
 
@@ -40,6 +42,25 @@ bool Game::Init()
 		std::cerr << "Failed to initialize GLAD" << std::endl;
 		return false;
 	}
+
+	m_mouseLastX = gs_SCREEN_WIDTH * 0.5f;
+	m_mouseLastY = gs_SCREEN_HEIGHT * 0.5f;
+
+	glfwSetWindowUserPointer(m_window, this);
+
+	auto mouseCallback = [](GLFWwindow* w, double x, double y)
+	{
+		static_cast<Game*>(glfwGetWindowUserPointer(w))->MouseCallBack(w, x, y);
+	};
+
+	glfwSetCursorPosCallback(m_window, mouseCallback);
+
+	m_pMainCamera.reset();
+
+	m_pMainCamera = std::make_shared<Camera>();
+
+	m_lastFrameTime = glfwGetTime();
+
 	return true;
 }
 
@@ -51,78 +72,23 @@ int Game::Run()
 		return 1;
 	}
 
-#if 1
-	ShaderProgram sProgram;
-	sProgram.Create("GLSLShaders/vertexShader.vs.glsl","GLSLShaders/fragmentShader.fs.glsl");
-#endif
-	ShaderProgram modelShader;
-	modelShader.Create("GLSLSHaders/modelVertexShader.vs.glsl", "GLSLShaders/modelFragmentShader.fs.glsl");
-	modelShader.Use();
-
-	Camera camera0;
-	Model newModel("resources/objects/backpack/backpack.obj");
-
 	glEnable(GL_DEPTH_TEST);
-#if 1
-
-	// set up vertex data (and buffer(s)) and configure vertex attributes
-	// ------------------------------------------------------------------
-	unsigned int VBO, VAO;
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-	glBindVertexArray(VAO);
-	{
-		float vertices[] = {
-			// positions         // colors
-			 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  // bottom right
-			-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  // bottom left
-			 0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // top 
-		};
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	}
-	// position attribute
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-
-	// color attribute
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-
-	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
-	glBindVertexArray(0);
-#endif
-
-	const float aspect = (float)gs_SCREEN_WIDTH / (float)gs_SCREEN_HEIGHT;
-	glm::mat4 identity = glm::mat4(1.0f);
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(m_window))
 	{
-		/* Render here */
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		Update();
 
-		glm::mat4 view = camera0.GetViewingMatrix();
-		glm::mat4 persp = camera0.GetPerpectiveProjectionMatrix(aspect);
+		static float outputInterval = 0.0f;
+		if (outputInterval > 1.0f)
+		{
+			float fps = 1.0f / m_deltaTime;
+			std::cout << "\rFPS: " << std::fixed << std::setprecision(2) << fps;
+			outputInterval = 0.0f;
+		}
+		outputInterval += m_deltaTime;
 
-		sProgram.Use();
-		sProgram.SetMat4("view", view);
-		sProgram.SetMat4("projection", persp);
-		sProgram.SetMat4("modelMat", identity);
-		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-		glBindVertexArray(0);
-
-		modelShader.Use();
-		modelShader.SetMat4("view", view);
-		modelShader.SetMat4("projection", persp);
-		modelShader.SetMat4("modelMat", identity);
-		newModel.Draw();
+		Render();
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(m_window);
@@ -130,11 +96,6 @@ int Game::Run()
 		/* Poll for and process events */
 		glfwPollEvents();
 	}
-
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	sProgram.Release();
-	modelShader.Release();
 
 	glfwTerminate();
 
@@ -145,6 +106,101 @@ void Game::Reset()
 {
 	glfwDestroyWindow(m_window);
 	m_window = nullptr;
+
+	m_pMainCamera.reset();
+}
+
+int Game::ScreenWidth()
+{
+	return gs_SCREEN_WIDTH;
+}
+
+int Game::ScreenHeight()
+{
+	return gs_SCREEN_HEIGHT;
+}
+
+Game::~Game()
+{
+	this->Reset();
+}
+
+void Game::Update()
+{
+	float currentFrameTime = glfwGetTime();
+	m_deltaTime = currentFrameTime - m_lastFrameTime;
+	m_lastFrameTime = currentFrameTime;
+
+	ProcessInput();
+}
+
+void Game::Render()
+{
+}
+
+void Game::ProcessInput()
+{
+	if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	{
+		glfwSetWindowShouldClose(m_window, true);
+	}
+
+	ProcessKeyboardPress(GLFW_KEY_W);
+	ProcessKeyboardPress(GLFW_KEY_S);
+	ProcessKeyboardPress(GLFW_KEY_A);
+	ProcessKeyboardPress(GLFW_KEY_D);
+}
+
+void Game::ProcessKeyboardPress(int key)
+{
+	Camera::Movement camMove;
+
+	switch (key)
+	{
+	case GLFW_KEY_W:
+		camMove = Camera::Movement::FORWARD;
+		break;
+	case GLFW_KEY_S:
+		camMove = Camera::Movement::BACKWARD;
+		break;
+	case GLFW_KEY_A:
+		camMove = Camera::Movement::LEFT;
+		break;
+	case GLFW_KEY_D:
+		camMove = Camera::Movement::RIGHT;
+		break;
+	default:
+		// Not supported keyboard input
+		return;
+	}
+
+	if (glfwGetKey(m_window, key) == GLFW_PRESS)
+	{
+		m_pMainCamera->ProcessMovement(camMove, m_deltaTime);
+	}
+}
+
+void Game::MouseCallBack(GLFWwindow* window, double xPos, double yPos)
+{
+	static bool bFirstMouse = true;
+	if (bFirstMouse)
+	{
+		m_mouseLastX = xPos;
+		m_mouseLastY = yPos;
+		bFirstMouse = false;
+	}
+
+	float xOffset = xPos - m_mouseLastX;
+	float yOffset = m_mouseLastY - yPos; // reverse y since y-coordinate goes from bottom to top
+
+	m_mouseLastX = xPos;
+	m_mouseLastY = yPos;
+
+	if (glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+	{
+		m_pMainCamera->ProcessMouseRotation(xOffset, yOffset);
+	}
+
 }
 
 } // namespace PotatoEngine

@@ -28,6 +28,9 @@
     <Filter Include="GLObjects">
       <UniqueIdentifier>{384b33d3-e532-4368-9d3e-f1da6f3a77b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\SpacePartition">
+      <UniqueIdentifier>{f5b6b000-9d63-46e4-a056-4ecd281ec893}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -42,7 +45,7 @@
     <ClCompile Include="glad\glad.c">
       <Filter>glad</Filter>
     </ClCompile>
-    <ClCompile Include="Model.cpp">
+    <ClCompile Include="MeshModel.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
@@ -53,6 +56,21 @@
     </ClCompile>
     <ClCompile Include="GLObject.cpp">
       <Filter>GLObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelCreator.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="PointCloudModel.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="SinglePointModel.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="KdTree.cpp">
+      <Filter>Source Files\SpacePartition</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -65,7 +83,7 @@
     <ClInclude Include="ShaderObject\ShaderProgram.h">
       <Filter>Source Files\ShaderObject</Filter>
     </ClInclude>
-    <ClInclude Include="Model.h">
+    <ClInclude Include="MeshModel.h">
       <Filter>Source Files\Model</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
@@ -79,6 +97,24 @@
     </ClInclude>
     <ClInclude Include="GLObject.h">
       <Filter>GLObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Source Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelCreator.h">
+      <Filter>Source Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="PointCloudModel.h">
+      <Filter>Source Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="SinglePointModel.h">
+      <Filter>Source Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="KdTree.h">
+      <Filter>Source Files\SpacePartition</Filter>
+    </ClInclude>
+    <ClInclude Include="BBox.h">
+      <Filter>Source Files\SpacePartition</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
