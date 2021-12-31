@@ -22,7 +22,7 @@ namespace PotatoEngine
 			BBox box;
 
 			std::vector<int> elements; // element indices to original array
-		}; // class Node
+		}; // struct Node
 
 		KdTree() {}
 
