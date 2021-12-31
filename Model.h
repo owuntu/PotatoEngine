@@ -30,6 +30,7 @@ namespace PotatoEngine
 		void LoadModel(const std::string& path);
 
 		void SetColor(const glm::vec4& c) { m_color = c; }
+		void SetColor(const glm::vec3& c) { m_color = glm::vec4(c, 1.0f); }
 		const glm::vec4& GetColor() const { return m_color; }
 
 	protected:

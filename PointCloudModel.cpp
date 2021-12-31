@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 
 #include <algorithm>
+#include <stack>
 #include <glm/gtx/norm.hpp>
 
 #include "PointCloudModel.h"
@@ -99,6 +100,7 @@ namespace PotatoEngine
 	{
 		float currentMin2 = FLT_MAX;
 		return SearchNearest(queryPoint, m_root, currentMin2);
+		//return SearchNearestIterate(queryPoint, m_root, currentMin2);
 	}
 
 	glm::vec3 PointCloudModel::SearchNearest(const glm::vec3& queryPoint, const Node* pNode, float& currentMin2)
@@ -139,6 +141,70 @@ namespace PotatoEngine
 				res = tmp;
 			}
 		}
+		return res;
+	}
+
+	glm::vec3 PointCloudModel::SearchNearestIterate(const glm::vec3& queryPoint, const Node* root, float& currentMin2)
+	{
+		using namespace std;
+		
+		glm::vec3 res(NAN);
+
+		struct TmpNode
+		{
+			const Node* treeNode;
+			float d2Parent;
+			TmpNode(const Node* node, float d2 = FLT_MAX):
+				treeNode(node), d2Parent(d2)
+			{}
+		};
+
+		stack<TmpNode> nodeStack;
+		nodeStack.push(TmpNode(root));
+
+		while (!nodeStack.empty())
+		{
+			auto node = nodeStack.top();
+			const Node* pNode = node.treeNode;
+			nodeStack.pop();
+
+			if (pNode->splitAxis == -1)
+			{
+				for (auto i : pNode->elements)
+				{
+					const glm::vec3& testPoint = m_points[i];
+					float d2 = glm::distance2(queryPoint, testPoint);
+					if (d2 < currentMin2)
+					{
+						currentMin2 = d2;
+						res = testPoint;
+					}
+				}
+
+				if (node.d2Parent < currentMin2 || isnan(res.x))
+				{
+					continue;
+				}
+
+				break;
+			}
+
+			// distance to split plane
+			float d = queryPoint[pNode->splitAxis] - pNode->splitPos;
+			float d2 = d * d;
+
+			Node* left = pNode->left;
+			Node* right = pNode->right;
+			if (d >= 0.f)
+			{
+				left = right;
+				right = pNode->left;
+			}
+
+			nodeStack.push(TmpNode(right));
+			nodeStack.push(TmpNode(left, d2));
+		}
+
 		return res;
 	}
 

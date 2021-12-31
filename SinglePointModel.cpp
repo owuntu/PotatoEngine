@@ -32,10 +32,11 @@ namespace PotatoEngine
 
 	void SinglePointModel::DoDrawVertices() const
 	{
-		glPointSize(5.0f);
+		glPointSize(10.0f);
 		glBindVertexArray(m_glVAO);
 		glDrawArrays(GL_POINTS, 0, 1);
 		glBindVertexArray(0);
+		glPointSize(1.0f);
 	}
 
 } // namespace PotatoEngine
