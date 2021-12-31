@@ -13,23 +13,23 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\ShaderObject">
-      <UniqueIdentifier>{ffdbd9bb-4028-444d-8743-1e99d496416b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\GLSLShaders">
       <UniqueIdentifier>{424d5154-6ce8-4169-b92c-cf285f3ab728}</UniqueIdentifier>
     </Filter>
     <Filter Include="glad">
       <UniqueIdentifier>{f94c17f8-cc13-4ebc-a5f0-4c7aaa88c595}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Model">
-      <UniqueIdentifier>{9e64c776-4356-4dd1-b5fd-9dbfbc8becf7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GLObjects">
       <UniqueIdentifier>{384b33d3-e532-4368-9d3e-f1da6f3a77b7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\SpacePartition">
+    <Filter Include="SpacePartition">
       <UniqueIdentifier>{f5b6b000-9d63-46e4-a056-4ecd281ec893}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model">
+      <UniqueIdentifier>{9e64c776-4356-4dd1-b5fd-9dbfbc8becf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderObject">
+      <UniqueIdentifier>{ffdbd9bb-4028-444d-8743-1e99d496416b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -37,40 +37,40 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ShaderObject\ShaderObject.cpp">
-      <Filter>Source Files\ShaderObject</Filter>
+      <Filter>ShaderObject</Filter>
     </ClCompile>
     <ClCompile Include="ShaderObject\ShaderProgram.cpp">
-      <Filter>Source Files\ShaderObject</Filter>
+      <Filter>ShaderObject</Filter>
     </ClCompile>
     <ClCompile Include="glad\glad.c">
       <Filter>glad</Filter>
     </ClCompile>
     <ClCompile Include="MeshModel.cpp">
-      <Filter>Source Files\Model</Filter>
+      <Filter>Model</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files\Model</Filter>
+      <Filter>Model</Filter>
     </ClCompile>
     <ClCompile Include="GLObject.cpp">
       <Filter>GLObjects</Filter>
     </ClCompile>
     <ClCompile Include="Model.cpp">
-      <Filter>Source Files\Model</Filter>
+      <Filter>Model</Filter>
     </ClCompile>
     <ClCompile Include="ModelCreator.cpp">
-      <Filter>Source Files\Model</Filter>
+      <Filter>Model</Filter>
     </ClCompile>
     <ClCompile Include="PointCloudModel.cpp">
-      <Filter>Source Files\Model</Filter>
+      <Filter>Model</Filter>
     </ClCompile>
     <ClCompile Include="SinglePointModel.cpp">
-      <Filter>Source Files\Model</Filter>
+      <Filter>Model</Filter>
     </ClCompile>
     <ClCompile Include="KdTree.cpp">
-      <Filter>Source Files\SpacePartition</Filter>
+      <Filter>SpacePartition</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -78,16 +78,16 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ShaderObject\ShaderObject.h">
-      <Filter>Source Files\ShaderObject</Filter>
+      <Filter>ShaderObject</Filter>
     </ClInclude>
     <ClInclude Include="ShaderObject\ShaderProgram.h">
-      <Filter>Source Files\ShaderObject</Filter>
+      <Filter>ShaderObject</Filter>
     </ClInclude>
     <ClInclude Include="MeshModel.h">
-      <Filter>Source Files\Model</Filter>
+      <Filter>Model</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>Source Files\Model</Filter>
+      <Filter>Model</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Source Files</Filter>
@@ -99,22 +99,22 @@
       <Filter>GLObjects</Filter>
     </ClInclude>
     <ClInclude Include="Model.h">
-      <Filter>Source Files\Model</Filter>
+      <Filter>Model</Filter>
     </ClInclude>
     <ClInclude Include="ModelCreator.h">
-      <Filter>Source Files\Model</Filter>
+      <Filter>Model</Filter>
     </ClInclude>
     <ClInclude Include="PointCloudModel.h">
-      <Filter>Source Files\Model</Filter>
+      <Filter>Model</Filter>
     </ClInclude>
     <ClInclude Include="SinglePointModel.h">
-      <Filter>Source Files\Model</Filter>
+      <Filter>Model</Filter>
     </ClInclude>
     <ClInclude Include="KdTree.h">
-      <Filter>Source Files\SpacePartition</Filter>
+      <Filter>SpacePartition</Filter>
     </ClInclude>
     <ClInclude Include="BBox.h">
-      <Filter>Source Files\SpacePartition</Filter>
+      <Filter>SpacePartition</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

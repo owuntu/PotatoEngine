@@ -225,7 +225,6 @@ void QueryClosestPoint::Reset()
 
 glm::vec3 QueryClosestPoint::DoQueryClosestPoint(const glm::vec3& queryPoint, float maxSearchDistance)
 {
-	//return QueryBruteForce(queryPoint, maxSearchDistance);
 	return QueryKDTree(queryPoint, maxSearchDistance);
 }
 

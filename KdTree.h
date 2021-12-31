@@ -11,7 +11,7 @@ namespace PotatoEngine
 	class KdTree
 	{
 	public:
-		static const int MAX_NUM_NODE_ELEMENTS = 16;
+		static const int MAX_NUM_NODE_ELEMENTS = 32;
 		struct Node
 		{
 			Node* left = nullptr;
