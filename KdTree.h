@@ -28,8 +28,6 @@ namespace PotatoEngine
 
 		void Build();
 
-		Node* BuildTree(int start, int end, int depth);
-
 		const Node* GetRoot() const { return m_root; }
 		const int GetMaxDepth() const { return m_maxDepth; }
 	protected:
@@ -40,6 +38,9 @@ namespace PotatoEngine
 		Node* m_root = nullptr;
 		std::vector<int> m_tmpElements; // All element indices to original array
 	private:
+		Node* BuildTree(int start, int end, int depth);
+		Node* BuildTreeIteration();
+
 		// Disabled copy constructor for now
 		KdTree(const KdTree& rhs) = delete;
 
