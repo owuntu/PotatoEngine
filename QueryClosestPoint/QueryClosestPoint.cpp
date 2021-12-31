@@ -236,14 +236,15 @@ glm::vec3 QueryClosestPoint::QueryBruteForce(const glm::vec3& queryPoint, float 
 	glm::vec3 res(nanf(""));
 
 	const auto& points = reinterpret_cast<PointCloudModel*>(m_pModel.get())->GetPoints();
-	float minDist = FLT_MAX;
+	float minDist2 = FLT_MAX;
+	float md2 = maxSearchDistance * maxSearchDistance;
 	for (auto point : points)
 	{
-		float d = glm::length2(point - queryPoint);
+		float d2 = glm::length2(point - queryPoint);
 
-		if (d < maxSearchDistance && d < minDist)
+		if (d2 < md2 && d2 < minDist2)
 		{
-			minDist = d;
+			minDist2 = d2;
 			res = point;
 		}
 	}

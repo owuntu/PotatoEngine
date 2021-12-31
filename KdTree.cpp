@@ -61,6 +61,7 @@ namespace PotatoEngine
 		return res;
 	}
 
+#if 0
 	// todo: Need to be fixed. There is overlap split plane using iteration.
 	KdTree::Node* KdTree::BuildTreeIteration()
 	{
@@ -155,4 +156,5 @@ namespace PotatoEngine
 
 		return m_root;
 	}
+#endif
 } // namesapce PotatoEngine

@@ -39,7 +39,9 @@ namespace PotatoEngine
 		std::vector<int> m_tmpElements; // All element indices to original array
 	private:
 		Node* BuildTree(int start, int end, int depth);
-		Node* BuildTreeIteration();
+
+		// todo: Need to be fixed. There is overlap split plane using iteration.
+		//Node* BuildTreeIteration();
 
 		// Disabled copy constructor for now
 		KdTree(const KdTree& rhs) = delete;

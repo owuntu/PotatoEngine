@@ -100,6 +100,8 @@ namespace PotatoEngine
 	{
 		float currentMin2 = FLT_MAX;
 		return SearchNearest(queryPoint, m_root, currentMin2);
+
+		// todo: Incorrect search result
 		//return SearchNearestIterate(queryPoint, m_root, currentMin2);
 	}
 
