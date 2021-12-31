@@ -61,22 +61,38 @@ namespace PotatoEngine
 		glPointSize(1.0f);
 	}
 
-	void PointCloudModel::Sort(std::vector<int>& elements, int axis, Node* pNode)
+	void PointCloudModel::Sort(int start, int end, int axis, Node* pNode)
 	{
 		if (pNode == nullptr)
 		{
 			return;
 		}
 
-		std::sort(elements.begin(), elements.end(),
+#if 1
+		std::sort(m_tmpElements.begin() + start, m_tmpElements.begin() + end,
 			[&](int a, int b)
 			{
 				return m_points[a][axis] < m_points[b][axis];
 			}
 		);
+#else
+		struct Tmp
+		{
+			const std::vector<glm::vec3>& points;
+			const int m_axis;
+			Tmp(const std::vector<glm::vec3>& p, int a) : points(p), m_axis(a) {}
+			bool operator() (int i, int j)
+			{
+				return points[i][m_axis] < points[j][m_axis];
+			}
+		};
+
+		Tmp compareObj(m_points, axis);
+		std::sort(m_tmpElements.begin() + start, m_tmpElements.begin() + end, compareObj);
+#endif
 
 		pNode->splitAxis = axis;
-		glm::vec3 splitPoint = m_points[elements[elements.size() / 2]];
+		glm::vec3 splitPoint = m_points[m_tmpElements[(end + start) / 2]];
 		pNode->splitPos = splitPoint[axis];
 	}
 

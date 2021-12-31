@@ -38,7 +38,7 @@ namespace PotatoEngine
 		void DoDrawVertices() const;
 
 		// KdTree method
-		void Sort(std::vector<int>& elements, int axis, Node* node);
+		void Sort(int start, int end, int axis, Node* node);
 		int GetTotalNumOfElements() const;
 		BBox GetBoundingBox(const std::vector<int>& elements) const;
 		

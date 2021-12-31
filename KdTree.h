@@ -28,17 +28,17 @@ namespace PotatoEngine
 
 		void Build();
 
-		Node* BuildTree(std::vector<int> elements, int depth);
+		Node* BuildTree(int start, int end, int depth);
 
 		const Node* GetRoot() const { return m_root; }
 		const int GetMaxDepth() const { return m_maxDepth; }
 	protected:
 		virtual int GetTotalNumOfElements() const = 0;
-		virtual void Sort(std::vector<int>& elements, int axis, Node* node) = 0;
+		virtual void Sort(int start, int end, int axis, Node* node) = 0;
 		virtual BBox GetBoundingBox(const std::vector<int>& elements) const = 0;
 
 		Node* m_root = nullptr;
-
+		std::vector<int> m_tmpElements; // All element indices to original array
 	private:
 		// Disabled copy constructor for now
 		KdTree(const KdTree& rhs) = delete;
