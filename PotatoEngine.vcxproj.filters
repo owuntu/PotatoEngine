@@ -118,12 +118,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="GLSLShaders\fragmentShader.fs.glsl">
-      <Filter>Resource Files\GLSLShaders</Filter>
-    </None>
-    <None Include="GLSLShaders\vertexShader.vs.glsl">
-      <Filter>Resource Files\GLSLShaders</Filter>
-    </None>
     <None Include="GLSLShaders\modelVertexShader.vs.glsl">
       <Filter>Resource Files\GLSLShaders</Filter>
     </None>

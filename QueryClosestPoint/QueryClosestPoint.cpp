@@ -94,7 +94,6 @@ void QueryClosestPoint::ProcessInput()
 		}
 		
 		int maxDepth = m_pModel->GetMaxDepth();
-		maxKdTreeDrawDepth = std::max(maxKdTreeDrawDepth, maxDepth);
 		maxKdTreeDrawDepth = std::clamp(maxKdTreeDrawDepth, -1, maxDepth);
 		Sleep(sleepTime);
 		std::cout << "\nDraw to Kd tree depth " << maxKdTreeDrawDepth << std::endl;

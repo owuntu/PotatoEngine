@@ -50,10 +50,8 @@
     <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="GLSLShaders\fragmentShader.fs.glsl" />
     <None Include="GLSLShaders\modelFragmentShader.fs.glsl" />
     <None Include="GLSLShaders\modelVertexShader.vs.glsl" />
-    <None Include="GLSLShaders\vertexShader.vs.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
