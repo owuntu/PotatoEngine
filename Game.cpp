@@ -25,7 +25,7 @@ bool Game::Init()
 	}
 
 	/* Create a windowed mode window and its OpenGL context */
-	m_window = glfwCreateWindow(gs_SCREEN_WIDTH, gs_SCREEN_HEIGHT, "Hello World", NULL, NULL);
+	m_window = glfwCreateWindow(gs_SCREEN_WIDTH, gs_SCREEN_HEIGHT, "Potato Engine", NULL, NULL);
 	if (!m_window)
 	{
 		glfwTerminate();

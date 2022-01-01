@@ -14,8 +14,8 @@ namespace PotatoEngine
 		}
 
 		m_maxDepth = 0;
-		//m_root = BuildTree(0, numElements, 0);
-		m_root = BuildTreeIteration();
+		m_root = BuildTree(0, numElements, 0);
+		//m_root = BuildTreeIteration();
 		m_tmpElements.clear();
 	}
 
@@ -45,15 +45,15 @@ namespace PotatoEngine
 		int axis = depth % 3;
 		Sort(start, end, axis, res);
 
-		int midPoint = (start + end) / 2;
+		int median = (start + end) / 2;
 
-		res->left = BuildTree(start, midPoint, depth + 1);
+		res->left = BuildTree(start, median, depth + 1);
 		if (res->left != nullptr)
 		{
 			res->box.Add(res->left->box);
 		}
 
-		res->right = BuildTree(midPoint, end, depth + 1);
+		res->right = BuildTree(median, end, depth + 1);
 		if (res->right != nullptr)
 		{
 			res->box.Add(res->right->box);
@@ -61,6 +61,8 @@ namespace PotatoEngine
 		return res;
 	}
 
+#if 0
+	// todo: Need to be fixed. There is overlap split plane using iteration.
 	KdTree::Node* KdTree::BuildTreeIteration()
 	{
 		using namespace std;
@@ -78,6 +80,7 @@ namespace PotatoEngine
 			int depth;
 			int start;
 			int end;
+			bool bFirstVisit = true;
 			TmpNode(Node* iNode, int iDepth, int iStart, int iEnd)
 				: pNode(iNode), depth(iDepth), start(iStart), end(iEnd)
 			{}
@@ -92,44 +95,48 @@ namespace PotatoEngine
 			tStack.pop();
 
 			auto* pNode = tNode.pNode;
-			int& depth = tNode.depth;
-			int& start = tNode.start;
-			int& end = tNode.end;
 
-			m_maxDepth = (depth > m_maxDepth) ? depth : m_maxDepth;
-			int numElements = end - start;
-			if (numElements <= MAX_NUM_NODE_ELEMENTS)
-			{
-				for (int i = start; i < end; ++i)
-				{
-					pNode->elements.push_back(m_tmpElements[i]);
-				}
-				pNode->box = GetBoundingBox(pNode->elements);
-				continue;
-			}
-
-			if (pNode->right == nullptr && pNode->left == nullptr)
+			if (tNode.bFirstVisit)
 			{
 				// First time visiting this node
+				tNode.bFirstVisit = false;
+
+				int& depth = tNode.depth;
+				int& start = tNode.start;
+				int& end = tNode.end;
+
+				m_maxDepth = (depth > m_maxDepth) ? depth : m_maxDepth;
+				int numElements = end - start;
+				if (numElements <= MAX_NUM_NODE_ELEMENTS)
+				{
+					// Leaf node
+					for (int i = start; i < end; ++i)
+					{
+						pNode->elements.push_back(m_tmpElements[i]);
+					}
+					pNode->box = GetBoundingBox(pNode->elements);
+					continue;
+				}
+
 				pNode->box.Init();
 				int axis = depth % 3;
 				Sort(start, end, axis, pNode);
 
-				int midPoint = (start + end) / 2;
+				int median = (start + end) / 2;
 
 				// Push current node back for later bounding box accumulation
 				tStack.push(tNode);
 
-				if (end > midPoint)
+				if (end > median)
 				{
 					pNode->right = new Node();
-					tStack.push(TmpNode(pNode->right, depth + 1, midPoint, end));
+					tStack.push(TmpNode(pNode->right, depth + 1, median, end));
 				}
 
-				if (midPoint > start)
+				if (median > start)
 				{
 					pNode->left = new Node();
-					tStack.push(TmpNode(pNode->left, depth + 1, start, midPoint));
+					tStack.push(TmpNode(pNode->left, depth + 1, start, median));
 				}
 			}
 			else
@@ -149,4 +156,5 @@ namespace PotatoEngine
 
 		return m_root;
 	}
+#endif
 } // namesapce PotatoEngine

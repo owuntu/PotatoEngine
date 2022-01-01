@@ -1,6 +1,7 @@
 #ifndef QUERY_CLOSEST_POINT_H_
 #define QUERY_CLOSEST_POINT_H_
 #include <memory>
+#include <string>
 #include <glm/glm.hpp>
 #include "Game.h"
 
@@ -17,10 +18,17 @@ class QueryClosestPoint : public PotatoEngine::Game
 {
 public:
 	virtual ~QueryClosestPoint();
-	virtual bool Init();
+	bool Init(const std::string& modelPath);
 	virtual void Reset();
 
 	glm::vec3 DoQueryClosestPoint(const glm::vec3& queryPoint, float maxSearchDistance);
+	glm::vec3 QueryClosestPointKDTree(const glm::vec3& queryPoint, float maxSearchDistance);
+	glm::vec3 QueryClosestPointBruteForce(const glm::vec3& queryPoint, float maxSearchDistance);
+
+	const std::shared_ptr<PotatoEngine::PointCloudModel> GetModel() const { return m_pModel; }
+
+	static std::shared_ptr<QueryClosestPoint> Create(const std::string& modelPath);
+
 protected:
 	virtual void Update();
 	virtual void Render();
@@ -28,12 +36,11 @@ protected:
 	virtual void ProcessInput();
 
 	std::shared_ptr<PotatoEngine::PointCloudModel> m_pModel;
+
 	// todo: refactor shader into a renderer
 	std::shared_ptr<PotatoEngine::ShaderProgram> m_pShader;
 
 private:
-	glm::vec3 QueryBruteForce(const glm::vec3& queryPoint, float maxSearchDistance);
-	glm::vec3 QueryKDTree(const glm::vec3& queryPoint, float maxSearchDistance);
 
 	glm::vec3 m_queryPoint;
 	float m_maxSearchDistance;
