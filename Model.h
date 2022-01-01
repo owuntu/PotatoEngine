@@ -1,3 +1,4 @@
+// Model interface class
 #ifndef POTATOENGINE_MODEL_H_
 #define POTATOENGINE_MODEL_H_
 
@@ -27,7 +28,7 @@ namespace PotatoEngine
 		void Draw(ShaderProgram* pShader = nullptr) const;
 		void DrawVertices(ShaderProgram* pShader = nullptr) const;
 
-		void LoadModel(const std::string& path);
+		void LoadModel(const std::string& objModelPath);
 
 		void SetColor(const glm::vec4& c) { m_color = c; }
 		void SetColor(const glm::vec3& c) { m_color = glm::vec4(c, 1.0f); }

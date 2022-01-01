@@ -1,3 +1,5 @@
+// Wrap GL object into shared_ptr style.
+// Unfinished.
 #pragma once
 
 namespace PotatoEngine

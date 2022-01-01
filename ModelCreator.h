@@ -1,3 +1,4 @@
+// Factory class to create Model
 #ifndef POTATO_ENGINE_MODEL_CREATOR_H_
 #define POTATO_ENGINE_MODEL_CREATOR_H_
 
@@ -21,7 +22,7 @@ namespace PotatoEngine
 			SINGLE_POINT_MODEL,
 			COUNT
 		};
-		static std::shared_ptr<Model> CreateModel(const Type t, const std::string& path = "");
+		static std::shared_ptr<Model> CreateModel(const Type t, const std::string& objModelPath = "");
 	}; // namespace ModelCreator
 } // namespace PotatoEngine
 

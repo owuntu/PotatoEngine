@@ -1,3 +1,4 @@
+// Trianglated mesh
 #ifndef POTATO_ENGINE_MESH_H_
 #define POTATO_ENGINE_MESH_H_
 

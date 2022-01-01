@@ -2,7 +2,7 @@
 
 namespace PotatoEngine
 {
-	std::shared_ptr<Model> ModelCreator::CreateModel(const Type t, const std::string& path)
+	std::shared_ptr<Model> ModelCreator::CreateModel(const Type t, const std::string& objModelPath)
 	{
 		std::shared_ptr<Model> pModel = nullptr;
 		switch (t)
@@ -20,9 +20,9 @@ namespace PotatoEngine
 			break;
 		}
 
-		if (pModel != nullptr && path != "")
+		if (pModel != nullptr && objModelPath != "")
 		{
-			pModel->LoadModel(path);
+			pModel->LoadModel(objModelPath);
 		}
 
 		pModel->PostSetup();
