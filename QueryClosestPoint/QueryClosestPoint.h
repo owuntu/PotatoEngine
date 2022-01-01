@@ -1,6 +1,7 @@
 #ifndef QUERY_CLOSEST_POINT_H_
 #define QUERY_CLOSEST_POINT_H_
 #include <memory>
+#include <string>
 #include <glm/glm.hpp>
 #include "Game.h"
 
@@ -17,7 +18,7 @@ class QueryClosestPoint : public PotatoEngine::Game
 {
 public:
 	virtual ~QueryClosestPoint();
-	virtual bool Init();
+	bool Init(const std::string& modelPath);
 	virtual void Reset();
 
 	glm::vec3 DoQueryClosestPoint(const glm::vec3& queryPoint, float maxSearchDistance);
@@ -25,6 +26,8 @@ public:
 	glm::vec3 QueryClosestPointBruteForce(const glm::vec3& queryPoint, float maxSearchDistance);
 
 	const std::shared_ptr<PotatoEngine::PointCloudModel> GetModel() const { return m_pModel; }
+
+	static std::shared_ptr<QueryClosestPoint> Create(const std::string& modelPath);
 
 protected:
 	virtual void Update();

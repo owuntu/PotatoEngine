@@ -24,12 +24,18 @@
     <ClCompile Include="UnitTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="HelperDraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QueryClosestPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UnitTests.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HelperDraw.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

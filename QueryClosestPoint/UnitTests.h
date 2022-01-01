@@ -12,6 +12,10 @@ public:
 	std::vector<glm::vec3> m_testPoints;
 	std::vector<glm::vec3> m_expResults;
 
+	ClosestPointUnitTest(const std::string& modelPath)
+		: m_testModelPath(modelPath)
+	{}
+
 	void GenerateTestPointsAndResults();
 	void LoadTestData();
 
@@ -29,6 +33,8 @@ private:
 	// Hard code file name
 	const std::string m_testDataFileName = "QueryClosestPoint/testFile.txt";
 	const std::string m_resultDataFileName = "QueryClosestPoint/resultFile.txt";
+
+	const std::string m_testModelPath;
 };
 
 #endif

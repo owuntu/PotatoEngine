@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <iomanip>
 
@@ -18,12 +19,29 @@
 #include "ModelCreator.h"
 #include "Camera.h"
 #include "ShaderObject/ShaderProgram.h"
+#include "HelperDraw.h"
 
 using namespace PotatoEngine;
 
+std::shared_ptr<QueryClosestPoint> QueryClosestPoint::Create(const std::string& modelPath)
+{
+	if (modelPath == "")
+	{
+		std::cout << "Warning: empty model path\n";
+	}
+
+	std::shared_ptr<QueryClosestPoint> pGame = std::make_shared<QueryClosestPoint>();
+	if (!pGame->Init(modelPath))
+	{
+		return nullptr;
+	}
+
+	return pGame;
+}
+
 QueryClosestPoint::~QueryClosestPoint()
 {
-
+	this->Reset();
 }
 
 static const glm::mat4 IDENTITY = glm::mat4(1.0f);
@@ -32,12 +50,13 @@ int maxKdTreeDrawDepth = 16;
 void QueryClosestPoint::ProcessInput()
 {
 	Game::ProcessInput();
+
 	// Press TAB to switch to console input
 	// todo: somehow need to refactor a keyboard input module
 	if (glfwGetKey(m_window, GLFW_KEY_TAB) == GLFW_PRESS)
 	{
 		m_bFoundResult = false;
-		std::cout << "\nPlease input the queary point and max distance: x y z distance\n";
+		std::cout << "\nPlease input the queary point and max search distance: x y z distance\n";
 		std::cin >> m_queryPoint.x >> m_queryPoint.y >> m_queryPoint.z >> m_maxSearchDistance;
 		std::cout << "Input point and max distance: ("
 			<< m_queryPoint.x << ", "
@@ -51,43 +70,40 @@ void QueryClosestPoint::ProcessInput()
 		{
 			std::cout << "Closest point is: (" << closestPoint.x << ", " << closestPoint.y << ", " << closestPoint.z << ")" << std::endl;
 			m_pClosestPointModel->SetPosition(closestPoint);
-			m_pClosestPointModel->SetColor(glm::vec4(0, 1, 0, 1)); // set green as result point
+			m_pClosestPointModel->SetColor(glm::vec4(0, 1, 0, 1)); // set result point green
 
 			m_bFoundResult = true;
 		}
 
 		m_pQueryPointModel->SetPosition(m_queryPoint);
-		m_pQueryPointModel->SetColor(glm::vec4(1, 0, 0, 1)); // set red as query point
+		m_pQueryPointModel->SetColor(glm::vec4(1, 0, 0, 1)); // set query point red
 	}
 
 	double sleepTime = 100.0;
-	if (glfwGetKey(m_window, GLFW_KEY_I) == GLFW_PRESS)
+	bool bIPress = (glfwGetKey(m_window, GLFW_KEY_I) == GLFW_PRESS);
+	bool bKPress = (glfwGetKey(m_window, GLFW_KEY_K) == GLFW_PRESS);
+	if (bIPress || bKPress)
 	{
-		maxKdTreeDrawDepth++;
+		if (bIPress)
+		{
+			maxKdTreeDrawDepth++;
+		}
+		if (bKPress)
+		{
+			maxKdTreeDrawDepth--;
+		}
+		
 		int maxDepth = m_pModel->GetMaxDepth();
-		if (maxKdTreeDrawDepth > maxDepth)
-		{
-			maxKdTreeDrawDepth = maxDepth;
-		}
-
-		Sleep(sleepTime);
-		std::cout << "\nDraw to Kd tree depth " << maxKdTreeDrawDepth << std::endl;
-	}
-
-	if (glfwGetKey(m_window, GLFW_KEY_K) == GLFW_PRESS)
-	{
-		maxKdTreeDrawDepth--;
-		if (maxKdTreeDrawDepth <= -1)
-		{
-			maxKdTreeDrawDepth = -1;
-		}
+		maxKdTreeDrawDepth = std::max(maxKdTreeDrawDepth, maxDepth);
+		maxKdTreeDrawDepth = std::clamp(maxKdTreeDrawDepth, -1, maxDepth);
 		Sleep(sleepTime);
 		std::cout << "\nDraw to Kd tree depth " << maxKdTreeDrawDepth << std::endl;
 	}
 }
 
-bool QueryClosestPoint::Init()
+bool QueryClosestPoint::Init(const std::string& modelPath)
 {
+	// Base class Init() must be call before doing other initialization
 	if (!Game::Init())
 	{
 		return false;
@@ -97,7 +113,7 @@ bool QueryClosestPoint::Init()
 	m_pShader->Create("GLSLSHaders/modelVertexShader.vs.glsl", "GLSLShaders/modelFragmentShader.fs.glsl");
 	m_pShader->Use();
 
-	m_pModel = std::dynamic_pointer_cast<PointCloudModel>(ModelCreator::CreateModel(ModelCreator::Type::POINT_CLOUD_MODEL, "resources/objects/backpack/backpack.obj"));
+	m_pModel = std::dynamic_pointer_cast<PointCloudModel>(ModelCreator::CreateModel(ModelCreator::Type::POINT_CLOUD_MODEL, modelPath));
 	m_pModel->SetColor(glm::vec3(0.8f));
 
 	maxKdTreeDrawDepth = m_pModel->GetMaxDepth();
@@ -113,83 +129,6 @@ void QueryClosestPoint::Update()
 	Game::Update();
 }
 
-static void DrawKdTree(ShaderProgram* pShader, const KdTree::Node* pNode, int depth)
-{
-	if (pNode == nullptr || pNode->splitAxis == -1 || depth > maxKdTreeDrawDepth)
-	{
-		return;
-	}
-
-	float planeSize = FLT_MAX;
-	float pos = pNode->splitPos;
-
-	glm::vec3 vertices[4] = {
-		{pos, -planeSize, -planeSize},
-		{pos,  planeSize, -planeSize},
-		{pos,  planeSize,  planeSize},
-		{pos, -planeSize,  planeSize}
-	};
-
-	for (int i = 0; i < 4; ++i)
-	{
-		std::swap(vertices[i][0], vertices[i][pNode->splitAxis]);
-		
-		for (int j = 0; j < 3; ++j)
-		{
-			float& r = vertices[i][j];
-			r = fmaxf(r, pNode->box.vmin[j]);
-			r = fminf(r, pNode->box.vmax[j]);
-		}
-	}
-
-	float alpha = 0.5f;
-	static glm::vec4 colors[3] = {
-		{0.8f, 0, 0, alpha},
-		{0, 0.8f, 0, alpha},
-		{0, 0.8f, 0.8f, alpha}
-	};
-
-	pShader->SetMat4("modelMat", IDENTITY);
-	pShader->SetVec4("ModelColor", colors[depth % 3]);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glBegin(GL_TRIANGLE_FAN);
-	glVertex3fv(&(vertices[0][0]));
-	glVertex3fv(&(vertices[1][0]));
-	glVertex3fv(&(vertices[2][0]));
-	glVertex3fv(&(vertices[3][0]));
-	glEnd();
-
-	DrawKdTree(pShader, pNode->left, depth + 1);
-	DrawKdTree(pShader, pNode->right, depth + 1);
-}
-
-static void DrawCoordAxis(ShaderProgram* pShader)
-{
-	static float axisLenght = 10.f;
-	static glm::vec3 axis[3] =
-	{
-		{axisLenght, 0, 0},
-		{0, axisLenght, 0},
-		{0, 0, axisLenght}
-	};
-
-	static glm::vec4 colors[3] = {
-		{0.8f, 0, 0, 1.f},
-		{0, 0.8f, 0, 1.f},
-		{0, 0, 0.8f, 1.f}
-	};
-
-	pShader->SetMat4("modelMat", IDENTITY);
-	for (int i = 0; i < 3; ++i)
-	{
-		pShader->SetVec4("ModelColor", glm::vec4(colors[i]));
-		glBegin(GL_LINES);
-		glVertex3f(0.f, 0.f, 0.f);
-		glVertex3fv(&(axis[i][0]));
-		glEnd();
-	}
-}
 
 void QueryClosestPoint::Render()
 {
@@ -205,7 +144,7 @@ void QueryClosestPoint::Render()
 	m_pShader->SetMat4("projection", persp);
 
 	m_pModel->Draw(m_pShader.get());
-	DrawKdTree(m_pShader.get(), m_pModel->GetRoot(), 0);
+	DrawKdTree(m_pShader.get(), m_pModel->GetRoot(), 0, maxKdTreeDrawDepth);
 	DrawCoordAxis(m_pShader.get());
 
 	m_pQueryPointModel->Draw(m_pShader.get());

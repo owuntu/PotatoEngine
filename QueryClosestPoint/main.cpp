@@ -7,21 +7,18 @@ int main()
 {
 	using namespace PotatoEngine;
 #ifdef UNIT_TESTS
-	ClosestPointUnitTest test;
+	ClosestPointUnitTest test("resources/objects/backpack/backpack.obj");
 	//test.GenerateTestPointsAndResults();
 	test.RunAllTests();
 #else
-	QueryClosestPoint sampleGame;
+	auto sampleGame = QueryClosestPoint::Create("resources/objects/backpack/backpack.obj");
 
-	bool res = sampleGame.Init();
-	if (!res)
+	if (sampleGame == nullptr)
 	{
 		return 1;
 	}
 
-	sampleGame.Run();
-
-	sampleGame.Reset();
+	sampleGame->Run();
 #endif
 
 	return 0;
