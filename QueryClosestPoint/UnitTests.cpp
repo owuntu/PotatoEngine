@@ -1,7 +1,8 @@
-#include <iostream>
-#include <fstream>
-#include <sstream>
+#include <cassert>
 #include <chrono>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
 #include <glm/gtc/epsilon.hpp>
 

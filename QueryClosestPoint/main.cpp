@@ -1,17 +1,26 @@
-#include <cassert>
+#include <iostream>
 #include "QueryClosestPoint.h"
 #include "UnitTests.h"
 
 
-int main()
+int main(int argc, const char** argv)
 {
 	using namespace PotatoEngine;
+	if (argc < 2)
+	{
+		std::cout << "Usage: QueryClosestPoint [model path]\n";
+		return 1;
+	}
+
+	std::string modelPath = argv[1];
+
 #ifdef UNIT_TESTS
-	ClosestPointUnitTest test("resources/objects/backpack/backpack.obj");
+	ClosestPointUnitTest test(modelPath);
+	// Uncomment bellow line to regenerate test files.
 	//test.GenerateTestPointsAndResults();
 	test.RunAllTests();
 #else
-	auto sampleGame = QueryClosestPoint::Create("resources/objects/backpack/backpack.obj");
+	auto sampleGame = QueryClosestPoint::Create(modelPath);
 
 	if (sampleGame == nullptr)
 	{
