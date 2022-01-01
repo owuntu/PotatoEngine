@@ -145,6 +145,7 @@ void Game::ProcessInput()
 		glfwSetWindowShouldClose(m_window, true);
 	}
 
+	// todo: Refactor these into camera?
 	ProcessKeyboardPress(GLFW_KEY_W);
 	ProcessKeyboardPress(GLFW_KEY_S);
 	ProcessKeyboardPress(GLFW_KEY_A);

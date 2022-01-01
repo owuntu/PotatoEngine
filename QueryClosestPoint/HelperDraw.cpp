@@ -69,9 +69,9 @@ void DrawCoordAxis(ShaderProgram* pShader)
 	};
 
 	static glm::vec4 colors[3] = {
-		{0.8f, 0, 0, 1.f},
-		{0, 0.8f, 0, 1.f},
-		{0, 0, 0.8f, 1.f}
+		{.8f, .2f, .2f, 1.f},
+		{.2f, .8f, .2f, 1.f},
+		{.2f, .2f, .8f, 1.f}
 	};
 
 	pShader->SetMat4("modelMat", IDENTITY);

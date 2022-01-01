@@ -19,6 +19,7 @@ class QueryClosestPoint : public PotatoEngine::Game
 public:
 	virtual ~QueryClosestPoint();
 	bool Init(const std::string& modelPath);
+	virtual int Run();
 	virtual void Reset();
 
 	glm::vec3 DoQueryClosestPoint(const glm::vec3& queryPoint, float maxSearchDistance);
@@ -34,6 +35,8 @@ protected:
 	virtual void Render();
 
 	virtual void ProcessInput();
+	// todo: may want to refactor into another input class
+	void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 	std::shared_ptr<PotatoEngine::PointCloudModel> m_pModel;
 
@@ -49,6 +52,7 @@ private:
 	std::shared_ptr<PotatoEngine::SinglePointModel> m_pClosestPointModel;
 
 	bool m_bFoundResult = false;
+	bool m_bToQuery = false;
 };
 
 #endif // QUERY_CLOSEST_POINT_H_

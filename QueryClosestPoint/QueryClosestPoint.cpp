@@ -23,6 +23,10 @@
 
 using namespace PotatoEngine;
 
+static const glm::mat4 IDENTITY = glm::mat4(1.0f);
+static int gs_maxKdTreeDrawDepth = 16;
+static bool gs_drawKdTree = false;
+
 std::shared_ptr<QueryClosestPoint> QueryClosestPoint::Create(const std::string& modelPath)
 {
 	if (modelPath == "")
@@ -44,18 +48,24 @@ QueryClosestPoint::~QueryClosestPoint()
 	this->Reset();
 }
 
-static const glm::mat4 IDENTITY = glm::mat4(1.0f);
-int maxKdTreeDrawDepth = 16;
-
 void QueryClosestPoint::ProcessInput()
 {
 	Game::ProcessInput();
 
+	
+}
+
+void QueryClosestPoint::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	if (action != GLFW_PRESS)
+	{
+		return;
+	}
+
 	// Press TAB to switch to console input
 	// todo: somehow need to refactor a keyboard input module
-	if (glfwGetKey(m_window, GLFW_KEY_TAB) == GLFW_PRESS)
+	if (key == GLFW_KEY_TAB)
 	{
-		m_bFoundResult = false;
 		std::cout << "\nPlease input the queary point and max search distance: x y z distance\n";
 		std::cin >> m_queryPoint.x >> m_queryPoint.y >> m_queryPoint.z >> m_maxSearchDistance;
 		std::cout << "Input point and max distance: ("
@@ -64,6 +74,78 @@ void QueryClosestPoint::ProcessInput()
 			<< m_queryPoint.z << "), "
 			<< m_maxSearchDistance << "\n";
 
+		m_bToQuery = true;
+	}
+
+	// Handel kd tree draw
+	bool bChangeDraw = false;
+	if (key == GLFW_KEY_O)
+	{
+		gs_drawKdTree = !gs_drawKdTree;
+		bChangeDraw = true;
+	}
+
+	if (gs_drawKdTree)
+	{
+		if (key == GLFW_KEY_I)
+		{
+			gs_maxKdTreeDrawDepth++;
+			bChangeDraw = true;
+		}
+
+		if (key == GLFW_KEY_K)
+		{
+			gs_maxKdTreeDrawDepth--;
+			bChangeDraw = true;
+		}
+
+		if (bChangeDraw)
+		{
+			int maxDepth = m_pModel->GetMaxDepth();
+			gs_maxKdTreeDrawDepth = std::clamp(gs_maxKdTreeDrawDepth, -1, maxDepth);
+			std::cout << "\nDraw to Kd tree depth " << gs_maxKdTreeDrawDepth << std::endl;
+		}
+	}
+
+}
+
+bool QueryClosestPoint::Init(const std::string& modelPath)
+{
+	// Base class Init() must be call before doing other initialization
+	if (!Game::Init())
+	{
+		return false;
+	}
+
+	auto keyCallback = [](GLFWwindow* w, int key, int scancode, int action, int mods)
+	{
+		static_cast<QueryClosestPoint*>(glfwGetWindowUserPointer(w))->KeyCallback(w, key, scancode, action, mods);
+	};
+	glfwSetKeyCallback(m_window, keyCallback);
+
+	m_pShader = std::make_shared<ShaderProgram>();
+	m_pShader->Create("GLSLSHaders/modelVertexShader.vs.glsl", "GLSLShaders/modelFragmentShader.fs.glsl");
+	m_pShader->Use();
+
+	m_pModel = std::dynamic_pointer_cast<PointCloudModel>(ModelCreator::CreateModel(ModelCreator::Type::POINT_CLOUD_MODEL, modelPath));
+	m_pModel->SetColor(glm::vec3(0.8f));
+
+	gs_maxKdTreeDrawDepth = m_pModel->GetMaxDepth();
+
+	m_pQueryPointModel = std::dynamic_pointer_cast<SinglePointModel>(ModelCreator::CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
+	m_pClosestPointModel = std::dynamic_pointer_cast<SinglePointModel>(ModelCreator::CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
+
+	return true;
+}
+
+void QueryClosestPoint::Update()
+{
+	Game::Update();
+
+	if (m_bToQuery)
+	{
+		m_bFoundResult = false;
+		m_bToQuery = false;
 		glm::vec3 closestPoint = DoQueryClosestPoint(m_queryPoint, m_maxSearchDistance);
 
 		if (!isnan(closestPoint.x))
@@ -78,54 +160,6 @@ void QueryClosestPoint::ProcessInput()
 		m_pQueryPointModel->SetPosition(m_queryPoint);
 		m_pQueryPointModel->SetColor(glm::vec4(1, 0, 0, 1)); // set query point red
 	}
-
-	double sleepTime = 100.0;
-	bool bIPress = (glfwGetKey(m_window, GLFW_KEY_I) == GLFW_PRESS);
-	bool bKPress = (glfwGetKey(m_window, GLFW_KEY_K) == GLFW_PRESS);
-	if (bIPress || bKPress)
-	{
-		if (bIPress)
-		{
-			maxKdTreeDrawDepth++;
-		}
-		if (bKPress)
-		{
-			maxKdTreeDrawDepth--;
-		}
-		
-		int maxDepth = m_pModel->GetMaxDepth();
-		maxKdTreeDrawDepth = std::clamp(maxKdTreeDrawDepth, -1, maxDepth);
-		Sleep(sleepTime);
-		std::cout << "\nDraw to Kd tree depth " << maxKdTreeDrawDepth << std::endl;
-	}
-}
-
-bool QueryClosestPoint::Init(const std::string& modelPath)
-{
-	// Base class Init() must be call before doing other initialization
-	if (!Game::Init())
-	{
-		return false;
-	}
-
-	m_pShader = std::make_shared<ShaderProgram>();
-	m_pShader->Create("GLSLSHaders/modelVertexShader.vs.glsl", "GLSLShaders/modelFragmentShader.fs.glsl");
-	m_pShader->Use();
-
-	m_pModel = std::dynamic_pointer_cast<PointCloudModel>(ModelCreator::CreateModel(ModelCreator::Type::POINT_CLOUD_MODEL, modelPath));
-	m_pModel->SetColor(glm::vec3(0.8f));
-
-	maxKdTreeDrawDepth = m_pModel->GetMaxDepth();
-
-	m_pQueryPointModel = std::dynamic_pointer_cast<SinglePointModel>(ModelCreator::CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
-	m_pClosestPointModel = std::dynamic_pointer_cast<SinglePointModel>(ModelCreator::CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
-
-	return true;
-}
-
-void QueryClosestPoint::Update()
-{
-	Game::Update();
 }
 
 
@@ -143,7 +177,10 @@ void QueryClosestPoint::Render()
 	m_pShader->SetMat4("projection", persp);
 
 	m_pModel->Draw(m_pShader.get());
-	DrawKdTree(m_pShader.get(), m_pModel->GetRoot(), 0, maxKdTreeDrawDepth);
+	if (gs_drawKdTree)
+	{
+		DrawKdTree(m_pShader.get(), m_pModel->GetRoot(), 0, gs_maxKdTreeDrawDepth);
+	}
 	DrawCoordAxis(m_pShader.get());
 
 	m_pQueryPointModel->Draw(m_pShader.get());
@@ -159,6 +196,14 @@ void QueryClosestPoint::Reset()
 	m_pShader->Release();
 
 	Game::Reset();
+}
+
+int QueryClosestPoint::Run()
+{
+	std::cout << "Press TAB key to enter query point and search distance\n";
+	std::cout << "Press I/K key to increase/decrease kd tree draw depth\n";
+	std::cout << "Press O key to toggle kd tree draw\n";
+	return Game::Run();
 }
 
 glm::vec3 QueryClosestPoint::DoQueryClosestPoint(const glm::vec3& queryPoint, float maxSearchDistance)
