@@ -19,6 +19,7 @@ namespace PotatoEngine
 		m_tmpElements.clear();
 	}
 
+	// A basic implementation of kd tree
 	KdTree::Node* KdTree::BuildTree(int start, int end, int depth)
 	{
 		using namespace std;
@@ -30,9 +31,11 @@ namespace PotatoEngine
 		Node* res = new Node();
 
 		m_maxDepth = (depth > m_maxDepth) ? depth : m_maxDepth;
+
 		int numElements = end - start;
 		if (numElements <= MAX_NUM_NODE_ELEMENTS)
 		{
+			// Reach leaf node
 			for (int i = start; i < end; ++i)
 			{
 				res->elements.push_back(m_tmpElements[i]);
@@ -42,9 +45,12 @@ namespace PotatoEngine
 		}
 
 		res->box.Init();
+
+		// Cycle through different axis
 		int axis = depth % 3;
 		Sort(start, end, axis, res);
 
+		// Using the median point for split plane
 		int median = (start + end) / 2;
 
 		res->left = BuildTree(start, median, depth + 1);

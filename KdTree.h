@@ -12,6 +12,7 @@ namespace PotatoEngine
 	{
 	public:
 		static const int MAX_NUM_NODE_ELEMENTS = 32;
+		
 		struct Node
 		{
 			Node* left = nullptr;
@@ -19,9 +20,12 @@ namespace PotatoEngine
 			int splitAxis = -1;
 			float splitPos = 0.f;
 
+			// Bounding box
 			BBox box;
 
-			std::vector<int> elements; // element indices to original array
+			// element indices to original array
+			// This vector is non-empty only if the node is a leaf node 
+			std::vector<int> elements;
 		}; // struct Node
 
 		KdTree() {}
