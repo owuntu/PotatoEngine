@@ -15,7 +15,7 @@ int main(int argc, const char** argv)
 	std::string modelPath = argv[1];
 
 #ifdef UNIT_TESTS
-	ClosestPointUnitTest test(modelPath);
+	ClosestPointUnitTest test(modelPath, 1.5f, 10);
 	// Uncomment bellow line to regenerate test files.
 	//test.GenerateTestPointsAndResults();
 	test.RunAllTests();

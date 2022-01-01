@@ -17,7 +17,15 @@
 #define ASSERT(x) x
 #endif // _DEBUG
 
-bool WritePointsToFile(const std::vector<glm::vec3>& points, const std::string& fileName)
+void WritePointsToFile(const std::vector<glm::vec3>& points, std::ofstream& testFile)
+{
+	for (auto point : points)
+	{
+		testFile << point.x << " " << point.y << " " << point.z << "\n";
+	}
+}
+
+void WritePointsToFile(const std::vector<glm::vec3>& points, const std::string& fileName)
 {
 	std::ofstream testFile(fileName);
 	if (!testFile.is_open())
@@ -26,15 +34,55 @@ bool WritePointsToFile(const std::vector<glm::vec3>& points, const std::string& 
 		throw std::exception(msg.c_str());
 	}
 
-	for (auto point : points)
-	{
-		testFile << point.x << " " << point.y << " " << point.z << "\n";
-	}
+	WritePointsToFile(points, testFile);
 	testFile.close();
+}
+
+void ReadFileToPoints(std::vector<glm::vec3>& points, std::ifstream& file)
+{
+	using namespace std;
+	while (!file.eof())
+	{
+		string line = "";
+		getline(file, line);
+		if (line.size() <= 1)
+		{
+			continue;
+		}
+
+		istringstream s(line);
+		glm::vec3 point;
+		for (int axis = 0; axis < 3; ++axis)
+		{
+			if (!(s >> point[axis]))
+			{
+				point.x = point.y = point.z = NAN;
+				break;
+			}
+		}
+		points.push_back(point);
+	}
+}
+
+void ReadFileToPoints(std::vector<glm::vec3>& points, const std::string& fileName)
+{
+	using namespace std;
+	ifstream file(fileName);
+
+	if (!file.is_open())
+	{
+		string msg = "Cannot open file " + fileName;
+		throw std::exception(msg.c_str());
+	}
+
+	ReadFileToPoints(points, file);
+
+	file.close();
 }
 
 void ClosestPointUnitTest::GenerateTestPointsAndResults()
 {
+	std::cout << "Generating test data and result files\n";
 	using namespace PotatoEngine;
 	auto sampleGame = QueryClosestPoint::Create(m_testModelPath);
 
@@ -71,56 +119,54 @@ void ClosestPointUnitTest::GenerateTestPointsAndResults()
 		m_expResults.push_back(res);
 	}
 
-	WritePointsToFile(m_testPoints, m_testDataFileName);
+	{
+		std::ofstream testFile(m_testDataFileName);
+		if (!testFile.is_open())
+		{
+			std::string msg = "Cannot open file " + m_testDataFileName;
+			throw std::exception(msg.c_str());
+		}
+
+		testFile << m_maxSearchDistance << "\n";
+		for (auto point : m_testPoints)
+		{
+			testFile << point.x << " " << point.y << " " << point.z << "\n";
+		}
+		testFile.close();
+	}
+
+	//WritePointsToFile(m_testPoints, m_testDataFileName);
 	WritePointsToFile(m_expResults, m_resultDataFileName);
 }
 
-void ReadFileToPoints(std::vector<glm::vec3>& points, const std::string& fileName)
-{
-	using namespace std;
-	ifstream file(fileName);
-
-	if (!file.is_open())
-	{
-		string msg = "Cannot open file " + fileName;
-		throw std::exception(msg.c_str());
-	}
-
-	while (!file.eof())
-	{
-		string line = "";
-		getline(file, line);
-		if (line.size() <= 1)
-		{
-			continue;
-		}
-
-		istringstream s(line);
-		glm::vec3 point;
-		for (int axis = 0; axis < 3; ++axis)
-		{
-			if (!(s >> point[axis]))
-			{
-				point.x = point.y = point.z = NAN;
-				break;
-			}
-		}
-		points.push_back(point);
-	}
-
-	file.close();
-}
 
 void ClosestPointUnitTest::LoadTestData()
 {
 	m_testPoints.clear();
 	m_expResults.clear();
-	ReadFileToPoints(m_testPoints, m_testDataFileName);
+
+	{
+		using namespace std;
+		ifstream testFile(m_testDataFileName);
+		if (!testFile.is_open())
+		{
+			std::string msg = "Cannot open file " + m_testDataFileName;
+			throw std::exception(msg.c_str());
+		}
+
+		// The first line is the max search distance
+		testFile >> m_maxSearchDistance;
+		ReadFileToPoints(m_testPoints, testFile);
+		testFile.close();
+	}
+
+	//ReadFileToPoints(m_testPoints, m_testDataFileName);
 	ReadFileToPoints(m_expResults, m_resultDataFileName);
 }
 
 void ClosestPointUnitTest::RunAllTests()
 {
+	std::cout << "Running all tests\n";
 	LoadTestData();
 	// todo: may use test framework such as Google Test
 	ASSERT(TestKDTreeSearch());
@@ -177,6 +223,7 @@ bool ClosestPointUnitTest::Verify(const std::vector<glm::vec3>& results)
 	bool bSuccess = true;
 	if (results.size() != m_expResults.size())
 	{
+		std::cerr << "Number of result data doesn't match expected one.\n";
 		return false;
 	}
 

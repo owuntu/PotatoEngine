@@ -12,8 +12,10 @@ public:
 	std::vector<glm::vec3> m_testPoints;
 	std::vector<glm::vec3> m_expResults;
 
-	ClosestPointUnitTest(const std::string& modelPath)
-		: m_testModelPath(modelPath)
+	ClosestPointUnitTest(const std::string& modelPath, float maxSearchDistance, int numPointsPerDim)
+		: m_testModelPath(modelPath),
+		m_maxSearchDistance(maxSearchDistance),
+		m_numPointsPerDim(numPointsPerDim)
 	{}
 
 	void GenerateTestPointsAndResults();
@@ -26,9 +28,8 @@ private:
 	bool TestBruteForceSearch();
 	bool Verify(const std::vector<glm::vec3>& results);
 
-	// Hard code search distance and number of points per dimension
-	float m_maxSearchDistance = 1.5f;
-	int m_numPointsPerDim = 4;
+	float m_maxSearchDistance ;
+	int m_numPointsPerDim;
 
 	// Hard code file name
 	const std::string m_testDataFileName = "QueryClosestPoint/testFile.txt";
