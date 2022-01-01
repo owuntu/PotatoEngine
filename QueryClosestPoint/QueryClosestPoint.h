@@ -21,9 +21,11 @@ public:
 	virtual void Reset();
 
 	glm::vec3 DoQueryClosestPoint(const glm::vec3& queryPoint, float maxSearchDistance);
-#ifdef UNIT_TESTS
-	friend class ClosestPointUnitTest;
-#endif // UNIT_TESTS
+	glm::vec3 QueryClosestPointKDTree(const glm::vec3& queryPoint, float maxSearchDistance);
+	glm::vec3 QueryClosestPointBruteForce(const glm::vec3& queryPoint, float maxSearchDistance);
+
+	const std::shared_ptr<PotatoEngine::PointCloudModel> GetModel() const { return m_pModel; }
+
 protected:
 	virtual void Update();
 	virtual void Render();
@@ -36,8 +38,6 @@ protected:
 	std::shared_ptr<PotatoEngine::ShaderProgram> m_pShader;
 
 private:
-	glm::vec3 QueryKDTree(const glm::vec3& queryPoint, float maxSearchDistance);
-	glm::vec3 QueryBruteForce(const glm::vec3& queryPoint, float maxSearchDistance);
 
 	glm::vec3 m_queryPoint;
 	float m_maxSearchDistance;

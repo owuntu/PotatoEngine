@@ -10,12 +10,19 @@
 #include "QueryClosestPoint.h"
 #include "UnitTests.h"
 
+#ifdef _DEBUG
+#define ASSERT(x) assert(x)
+#else
+#define ASSERT(x) x
+#endif // _DEBUG
+
 bool WritePointsToFile(const std::vector<glm::vec3>& points, const std::string& fileName)
 {
 	std::ofstream testFile(fileName);
 	if (!testFile.is_open())
 	{
-		throw std::exception("Cannot open testFile.txt");
+		std::string msg = "Cannot open file " + fileName;
+		throw std::exception(msg.c_str());
 	}
 
 	for (auto point : points)
@@ -31,7 +38,7 @@ void ClosestPointUnitTest::GenerateTestPointsAndResults()
 	QueryClosestPoint sampleGame;
 	sampleGame.Init();
 
-	std::shared_ptr<PointCloudModel> pModel = sampleGame.m_pModel;
+	const std::shared_ptr<PointCloudModel> pModel = sampleGame.GetModel();
 	BBox box = pModel->GetRoot()->box;
 
 	// scale up the bounding box for larger area test
@@ -60,7 +67,7 @@ void ClosestPointUnitTest::GenerateTestPointsAndResults()
 
 	for (auto point : m_testPoints)
 	{
-		auto res = sampleGame.QueryBruteForce(point, m_maxSearchDistance);
+		auto res = sampleGame.QueryClosestPointBruteForce(point, m_maxSearchDistance);
 		m_expResults.push_back(res);
 	}
 
@@ -77,7 +84,7 @@ void ReadFileToPoints(std::vector<glm::vec3>& points, const std::string& fileNam
 
 	if (!file.is_open())
 	{
-		string msg = "Cannot open file" + fileName;
+		string msg = "Cannot open file " + fileName;
 		throw std::exception(msg.c_str());
 	}
 
@@ -114,10 +121,16 @@ void ClosestPointUnitTest::LoadTestData()
 	ReadFileToPoints(m_expResults, m_resultDataFileName);
 }
 
-bool ClosestPointUnitTest::TestKDTreeSearch()
+void ClosestPointUnitTest::RunAllTests()
 {
 	LoadTestData();
+	// todo: may use test framework such as Google Test
+	ASSERT(TestKDTreeSearch());
+	ASSERT(TestBruteForceSearch());
+}
 
+bool ClosestPointUnitTest::TestKDTreeSearch()
+{
 	QueryClosestPoint sampleGame;
 	sampleGame.Init();
 
@@ -127,7 +140,7 @@ bool ClosestPointUnitTest::TestKDTreeSearch()
 	auto start = std::chrono::high_resolution_clock::now();
 	for (auto point : m_testPoints)
 	{
-		auto res = sampleGame.QueryKDTree(point, m_maxSearchDistance);
+		auto res = sampleGame.QueryClosestPointKDTree(point, m_maxSearchDistance);
 		results.push_back(res);
 	}
 	auto finish = std::chrono::high_resolution_clock::now();
@@ -143,8 +156,6 @@ bool ClosestPointUnitTest::TestKDTreeSearch()
 
 bool ClosestPointUnitTest::TestBruteForceSearch()
 {
-	LoadTestData();
-
 	QueryClosestPoint sampleGame;
 	sampleGame.Init();
 
@@ -154,7 +165,7 @@ bool ClosestPointUnitTest::TestBruteForceSearch()
 	auto start = std::chrono::high_resolution_clock::now();
 	for (auto point : m_testPoints)
 	{
-		auto res = sampleGame.QueryBruteForce(point, m_maxSearchDistance);
+		auto res = sampleGame.QueryClosestPointBruteForce(point, m_maxSearchDistance);
 		results.push_back(res);
 	}
 	auto finish = std::chrono::high_resolution_clock::now();

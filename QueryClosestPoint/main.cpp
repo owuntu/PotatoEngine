@@ -2,11 +2,6 @@
 #include "QueryClosestPoint.h"
 #include "UnitTests.h"
 
-#ifdef _DEBUG
-#define ASSERT(x) assert(x)
-#else
-#define ASSERT(x) x
-#endif // _DEBUG
 
 int main()
 {
@@ -14,9 +9,7 @@ int main()
 #ifdef UNIT_TESTS
 	ClosestPointUnitTest test;
 	//test.GenerateTestPointsAndResults();
-	test.LoadTestData();
-	ASSERT(test.TestKDTreeSearch());
-	ASSERT(test.TestBruteForceSearch());
+	test.RunAllTests();
 #else
 	QueryClosestPoint sampleGame;
 

@@ -15,12 +15,14 @@ public:
 	void GenerateTestPointsAndResults();
 	void LoadTestData();
 
-	bool TestKDTreeSearch();
-	bool TestBruteForceSearch();
+	void RunAllTests();
 
 private:
+	bool TestKDTreeSearch();
+	bool TestBruteForceSearch();
 	bool Verify(const std::vector<glm::vec3>& results);
 
+	// Hard code search distance and number of points per dimension
 	float m_maxSearchDistance = 1.5f;
 	int m_numPointsPerDim = 4;
 
