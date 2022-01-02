@@ -16,7 +16,12 @@ public:
 		: m_testModelPath(modelPath),
 		m_maxSearchDistance(maxSearchDistance),
 		m_numPointsPerDim(numPointsPerDim)
-	{}
+	{
+		std::string testFileDir = "QueryClosestPoint/";
+		std::string modelFileName = modelPath.substr(modelPath.find_last_of("/\\") + 1);
+		m_testDataFileName = testFileDir + modelFileName + "__test_data.txt";
+		m_resultDataFileName = testFileDir + modelFileName + "__result_data.txt";
+	}
 
 	void GenerateTestPointsAndResults();
 	void LoadTestData();
@@ -31,9 +36,8 @@ private:
 	float m_maxSearchDistance ;
 	int m_numPointsPerDim;
 
-	// Hard code file name
-	const std::string m_testDataFileName = "QueryClosestPoint/testFile.txt";
-	const std::string m_resultDataFileName = "QueryClosestPoint/resultFile.txt";
+	std::string m_testDataFileName;
+	std::string m_resultDataFileName;
 
 	const std::string m_testModelPath;
 };
