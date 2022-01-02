@@ -212,9 +212,9 @@ void QueryClosestPoint::Reset()
 
 int QueryClosestPoint::Run()
 {
-	std::cout << "Press TAB key to enter query point and search distance\n";
-	std::cout << "Press I/K key to increase/decrease kd tree draw depth\n";
-	std::cout << "Press O key to toggle kd tree draw\n";
+	std::cout << "Press TAB key to enter query point and search distance (you need to manually switch focus window to console).\n";
+	std::cout << "Press I/K key to increase/decrease kd tree draw depth.\n";
+	std::cout << "Press O key to toggle kd tree draw.\n";
 	return Game::Run();
 }
 
