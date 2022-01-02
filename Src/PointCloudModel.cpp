@@ -162,7 +162,7 @@ namespace PotatoEngine
 		//return SearchNearestIterate(queryPoint, m_root, currentMin2);
 	}
 
-	glm::vec3 PointCloudModel::SearchNearest(const glm::vec3& queryPoint, const Node* pNode, float& currentMin2)
+	glm::vec3 PointCloudModel::SearchNearest(const glm::vec3& queryPoint, const Node* pNode, float& currentMin2) const
 	{
 		if (pNode->splitAxis == -1)
 		{

@@ -48,7 +48,7 @@ namespace PotatoEngine
 		int GetSplitAxisVariance(int start, int end);
 		
 		// Recursive version
-		glm::vec3 SearchNearest(const glm::vec3& queryPoint, const Node* pNode, float& currentMin2);
+		glm::vec3 SearchNearest(const glm::vec3& queryPoint, const Node* pNode, float& currentMin2) const;
 		
 		// Iteration version
 		//glm::vec3 SearchNearestIterate(const glm::vec3& queryPoint, const Node* pNode, float& currentMin2);
