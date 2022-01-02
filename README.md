@@ -26,6 +26,7 @@ If you change the parameter in `ClosestPiontUnitTest` constructor, you will have
 ```
 QueryClosestPoint [modelPath]
 ```
+The query point is red and the result closest point is green.
 
 # Operations:
 1. Press TAB key to switch to console for query point and max search distance input. You need to manually switch the focus window to console
@@ -35,3 +36,9 @@ QueryClosestPoint [modelPath]
 
 # Assumption
 This application generate a KD tree for the test model for fast closest point query. It is a basic KD tree implementation which assume all model vertices are spread in 3D space evenly. It cycle through each dimension and choose the median point for split plane in each depth. That is, it doesn't consider situation that some points may only spread out in one dimension. I have also implemented different split axis choosing method, but for the Stanford dragon model, it doesn't seem improvement.
+
+# Notes
+1. The kd-tree search code is in `PotatoEngine::SearchNearest(\**\)`
+2. MeshModel class is for surface rendering, and the shader isn't finished yet, please ignore it.
+3. GLObject class is for share_ptr style managing OpenGL object. It isn't finished so ignore it as well.
+4. There is still a lot of engineering need to be done such as a renderer, input/output, etc.
