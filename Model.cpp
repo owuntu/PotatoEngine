@@ -13,7 +13,7 @@ namespace PotatoEngine
 	void Model::LoadModel(const std::string& objModelPath)
 	{
 		Assimp::Importer importer;
-		const aiScene* scene = importer.ReadFile(objModelPath, aiProcess_Triangulate);
+		const aiScene* scene = importer.ReadFile(objModelPath, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
 
 		// check for errors
 		if (scene == nullptr || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || scene->mRootNode == nullptr)
