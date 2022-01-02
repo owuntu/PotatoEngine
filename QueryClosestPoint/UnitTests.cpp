@@ -135,7 +135,6 @@ void ClosestPointUnitTest::GenerateTestPointsAndResults()
 		}
 	}
 
-	auto pModel = sampleGame->GetModel();
 	const auto& points = pModel->GetPoints();
 	for (auto point : m_testPoints)
 	{
