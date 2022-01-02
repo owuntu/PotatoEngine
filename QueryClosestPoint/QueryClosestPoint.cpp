@@ -130,10 +130,24 @@ bool QueryClosestPoint::Init(const std::string& modelPath)
 	m_pModel = std::dynamic_pointer_cast<PointCloudModel>(ModelCreator::CreateModel(ModelCreator::Type::POINT_CLOUD_MODEL, modelPath));
 	m_pModel->SetColor(glm::vec3(0.8f));
 
+	// Adapth camera movement speed to the model size
+	const auto& box = m_pModel->GetRoot()->box;
+	auto diff = box.vmax - box.vmin;
+	float maxDim = fmaxf(diff.x, fmaxf(diff.y, diff.z));
+	m_pMainCamera->SetMoveSpeed(maxDim / 2.f);
+
+	// Camera default look at direction (0, 0, -1), adapt camera position to the front of 
+	// the bounding box front face
+	auto midPoint = (box.vmax + box.vmin) / 2.f;
+	m_pMainCamera->SetPosition(glm::vec3(midPoint.x, midPoint.y, box.vmax.z * 2.f));
+
 	gs_maxKdTreeDrawDepth = m_pModel->GetMaxDepth();
 
 	m_pQueryPointModel = std::dynamic_pointer_cast<SinglePointModel>(ModelCreator::CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
+	m_pQueryPointModel->SetColor(glm::vec4(1, 0, 0, 1)); // set query point red
+
 	m_pClosestPointModel = std::dynamic_pointer_cast<SinglePointModel>(ModelCreator::CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
+	m_pClosestPointModel->SetColor(glm::vec4(0, 1, 0, 1)); // set result point green
 
 	return true;
 }
@@ -152,13 +166,11 @@ void QueryClosestPoint::Update()
 		{
 			std::cout << "Closest point is: (" << closestPoint.x << ", " << closestPoint.y << ", " << closestPoint.z << ")" << std::endl;
 			m_pClosestPointModel->SetPosition(closestPoint);
-			m_pClosestPointModel->SetColor(glm::vec4(0, 1, 0, 1)); // set result point green
 
 			m_bFoundResult = true;
 		}
 
 		m_pQueryPointModel->SetPosition(m_queryPoint);
-		m_pQueryPointModel->SetColor(glm::vec4(1, 0, 0, 1)); // set query point red
 	}
 }
 

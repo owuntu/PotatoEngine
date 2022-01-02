@@ -22,6 +22,9 @@ namespace PotatoEngine
 		Camera(const glm::vec3 pos, const glm::vec3 forward, const glm::vec3 right, const float fovy_degree);
 		~Camera();
 
+		void SetMoveSpeed(float speed) { m_moveSpeed = speed; }
+		void SetPosition(const glm::vec3& pos) { m_position = pos; }
+
 		const glm::vec3& Position() const;
 		const glm::vec3& Forward() const;
 		const glm::vec3& Right() const;
@@ -47,6 +50,8 @@ namespace PotatoEngine
 		float m_pitch;
 
 		float m_fovy; // radian
+
+		float m_moveSpeed = 2.f;
 	}; // class Camera
 } // namespace PotatoEngine
 

@@ -5,7 +5,7 @@
 namespace PotatoEngine
 {
 	Camera::Camera():
-		m_position(0.f, 0.f, 3.f),
+		m_position(0.f, 0.f, 1.f),
 		m_forward(0.f, 0.f, -1.f),
 		m_right(1.f, 0.f, 0.f),
 		m_fovy(glm::radians(90.f)),
@@ -62,13 +62,12 @@ namespace PotatoEngine
 
 	const glm::mat4 Camera::GetPerpectiveProjectionMatrix(float aspect) const
 	{
-		return glm::perspective(m_fovy, aspect, 0.1f, 1000.f);
+		return glm::perspective(m_fovy, aspect, 0.001f, 1000.f);
 	}
 
 	void Camera::ProcessMovement(Camera::Movement direction, float deltaTime)
 	{
-		float speed = 2.0f; // hardcode speed
-		float distance = speed * deltaTime;
+		float distance = m_moveSpeed * deltaTime;
 
 		switch (direction)
 		{
