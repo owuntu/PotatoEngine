@@ -37,10 +37,15 @@ namespace PotatoEngine
 		void DoDraw() const;
 		void DoDrawVertices() const;
 
+
 		// KdTree method
 		void Sort(int start, int end, int axis, Node* node);
 		int GetTotalNumOfElements() const;
 		BBox GetBoundingBox(const std::vector<int>& elements) const;
+		int GetSplitAxis(int start, int end, int depth);
+		
+		int GetSplitAxisRange(int start, int end);
+		int GetSplitAxisVariance(int start, int end);
 		
 		// Recursive version
 		glm::vec3 SearchNearest(const glm::vec3& queryPoint, const Node* pNode, float& currentMin2);

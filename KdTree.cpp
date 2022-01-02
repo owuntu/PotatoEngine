@@ -50,7 +50,7 @@ namespace PotatoEngine
 		res->box.Init();
 
 		// Cycle through different axis
-		int axis = depth % 3;
+		int axis = GetSplitAxis(start, end, depth);
 		Sort(start, end, axis, res);
 
 		// Using the median point for split plane

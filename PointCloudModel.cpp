@@ -62,6 +62,7 @@ namespace PotatoEngine
 		glPointSize(1.0f);
 	}
 
+	// KD tree methods
 	void PointCloudModel::Sort(int start, int end, int axis, Node* pNode)
 	{
 		if (pNode == nullptr)
@@ -95,6 +96,61 @@ namespace PotatoEngine
 			box.Add(m_points[i]);
 		}
 		return box;
+	}
+
+	int PointCloudModel::GetSplitAxis(int start, int end, int depth)
+	{
+		int axis = depth % 3;
+		return axis;
+
+		// Doesn't see improvement using below method to decide split axis
+		//return GetSplitAxisRange(start, end);
+		//return GetSplitAxisVariance(start, end);
+	}
+
+	int PointCloudModel::GetSplitAxisRange(int start, int end)
+	{
+		glm::vec3 vmax(-FLT_MAX);
+		glm::vec3 vmin(FLT_MAX);
+
+		for (int i = start; i < end; ++i)
+		{
+			auto point = m_points[m_tmpElements[i]];
+			for (int x = 0; x < 3; ++x)
+			{
+				vmax[x] = fmaxf(vmax[x], point[x]);
+				vmin[x] = fminf(vmin[x], point[x]);
+			}
+		}
+
+		glm::vec3 diff = vmax - vmin;
+		return (diff[0] > diff[1] && diff[0] > diff[2]) ? 
+				0 : (diff[1] > diff[2] ?
+						1 : 2);
+	}
+
+	int PointCloudModel::GetSplitAxisVariance(int start, int end)
+	{
+		glm::vec3 mean(0.f);
+		glm::vec3 variance(0.f);
+		int n = end - start;
+		for (int i = start; i < end; ++i)
+		{
+			auto point = m_points[m_tmpElements[i]];
+			mean += point;
+		}
+		mean /= n;
+
+		for (int i = start; i < end; ++i)
+		{
+			auto point = m_points[m_tmpElements[i]];
+			auto diff = point - mean;
+			variance += (diff * diff);
+		}
+		variance /= n;
+		return (variance[0] > variance[1] && variance[0] > variance[2]) ?
+				0 : (variance[1] > variance[2] ?
+					1 : 2);
 	}
 
 	glm::vec3 PointCloudModel::SearchNearest(const glm::vec3& queryPoint)
