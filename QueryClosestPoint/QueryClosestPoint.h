@@ -25,9 +25,6 @@ public:
 	// Return NAN vec3 if such closest point cannot be found within the search distance.
 	// Assume the input queryPoint and maxSearchDistance is always non-NAN
 	glm::vec3 DoQueryClosestPoint(const glm::vec3& queryPoint, float maxSearchDistance);
-	
-	glm::vec3 QueryClosestPointKDTree(const glm::vec3& queryPoint, float maxSearchDistance);
-	glm::vec3 QueryClosestPointBruteForce(const glm::vec3& queryPoint, float maxSearchDistance);
 
 	const std::shared_ptr<PotatoEngine::PointCloudModel> GetModel() const { return m_pModel; }
 
@@ -40,6 +37,8 @@ protected:
 	virtual void ProcessInput();
 	// todo: may want to refactor into another input class
 	void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+
+	glm::vec3 QueryClosestPointKDTree(const glm::vec3& queryPoint, float maxSearchDistance);
 
 	std::shared_ptr<PotatoEngine::PointCloudModel> m_pModel;
 
