@@ -1,4 +1,4 @@
-The QueryCloestPoint project is build on top of my personal rendering engine PotatoEngine. The engine is in the very early stage but have basic 3D rendering. I thought it would be good to visualize the mesh, query point and the cloest point result, so I use my own engine to do the job.
+The ClosestPointQuery project is build on top of my personal rendering engine PotatoEngine. The engine is in the very early stage but have basic 3D rendering. I thought it would be good to visualize the mesh, query point and the cloest point result, so I use my own engine to do the job.
 
 # Build:
 For now only Visual Studio 2019 build is supported.
@@ -8,8 +8,8 @@ For now only Visual Studio 2019 build is supported.
    git submodule update
    ```
 2. Open `PotatoEngine.sln`.
-3. Right click project `QueryClosestPoint`, select "Set as Start Up Project".
-4. In `QueryClosestPoint` project properties, Configuration Properties->Debugging, change "Working Directory" to `$(SolutionDir)`.
+3. Right click project `ClosestPointQuery`, select "Set as Start Up Project".
+4. In `ClosestPointQuery` project properties, Configuration Properties->Debugging, change "Working Directory" to `$(SolutionDir)`.
 5. Desire obj model path need to be fill in "Command Arguments". In resources/objects, there are some obj you can try. For example, you can enter `resources/objects/dragon/dragon.obj`.
 6. Select desire build. Build platform need to be x64.
 7. Press F5 to build and run the application.
@@ -24,7 +24,7 @@ If you change the parameter in `ClosestPiontUnitTest` constructor, you will have
 
 # Usage: 
 ```
-QueryClosestPoint [modelPath]
+ClosestPointQuery [modelPath]
 ```
 The query point is red and the result closest point is green.
 
@@ -41,4 +41,3 @@ This application generate a KD tree for the test model for fast closest point qu
 1. The kd-tree search code is in `PotatoEngine::SearchNearest(\**\)`
 2. MeshModel class is for surface rendering, and the shader isn't finished yet, please ignore it.
 3. GLObject class is for share_ptr style managing OpenGL object. It isn't finished so ignore it as well.
-4. There is still a lot of engineering need to be done such as a renderer, input/output, etc.
