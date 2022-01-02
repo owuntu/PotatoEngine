@@ -40,6 +40,7 @@
     <ProjectGuid>{a5df6eb8-d14a-4701-ab8b-0a73998b7d67}</ProjectGuid>
     <RootNamespace>QueryClosestPoint</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>ClosestPointQuery</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -295,12 +296,12 @@
   <ItemGroup>
     <ClCompile Include="HelperDraw.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="QueryClosestPoint.cpp" />
+    <ClCompile Include="ClosestPointQuery.cpp" />
     <ClCompile Include="UnitTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HelperDraw.h" />
-    <ClInclude Include="QueryClosestPoint.h" />
+    <ClInclude Include="ClosestPointQuery.h" />
     <ClInclude Include="UnitTests.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -13,10 +13,10 @@ namespace PotatoEngine
 	class ShaderProgram;
 } // namespace PotatoEngine
 
-class QueryClosestPoint : public PotatoEngine::Game
+class ClosestPointQuery : public PotatoEngine::Game
 {
 public:
-	virtual ~QueryClosestPoint();
+	virtual ~ClosestPointQuery();
 	bool Init(const std::string& modelPath);
 	virtual int Run();
 	virtual void Reset();
@@ -28,7 +28,7 @@ public:
 
 	const std::shared_ptr<PotatoEngine::PointCloudModel> GetModel() const { return m_pModel; }
 
-	static std::shared_ptr<QueryClosestPoint> Create(const std::string& modelPath);
+	static std::shared_ptr<ClosestPointQuery> Create(const std::string& modelPath);
 
 protected:
 	virtual void Update();

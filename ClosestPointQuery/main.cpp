@@ -1,5 +1,5 @@
 #include <iostream>
-#include "QueryClosestPoint.h"
+#include "ClosestPointQuery.h"
 #include "UnitTests.h"
 
 
@@ -8,7 +8,7 @@ int main(int argc, const char** argv)
 	using namespace PotatoEngine;
 	if (argc < 2)
 	{
-		std::cout << "Usage: QueryClosestPoint [model path]\n";
+		std::cout << "Usage: ClosestPointQuery [model path]\n";
 		return 1;
 	}
 
@@ -20,7 +20,7 @@ int main(int argc, const char** argv)
 	//test.GenerateTestPointsAndResults();
 	test.RunAllTests();
 #else
-	auto sampleGame = QueryClosestPoint::Create(modelPath);
+	auto sampleGame = ClosestPointQuery::Create(modelPath);
 
 	if (sampleGame == nullptr)
 	{

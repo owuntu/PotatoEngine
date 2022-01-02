@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PotatoEngine", "PotatoEngine.vcxproj", "{62CF7EB8-5EE0-4C4C-8D3D-9704CDEEEA3B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QueryClosestPoint", "QueryClosestPoint\QueryClosestPoint.vcxproj", "{A5DF6EB8-D14A-4701-AB8B-0A73998B7D67}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClosestPointQuery", "ClosestPointQuery\ClosestPointQuery.vcxproj", "{A5DF6EB8-D14A-4701-AB8B-0A73998B7D67}"
 	ProjectSection(ProjectDependencies) = postProject
 		{62CF7EB8-5EE0-4C4C-8D3D-9704CDEEEA3B} = {62CF7EB8-5EE0-4C4C-8D3D-9704CDEEEA3B}
 	EndProjectSection
