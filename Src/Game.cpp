@@ -59,7 +59,7 @@ bool Game::Init()
 
 	m_pMainCamera = std::make_shared<Camera>();
 
-	m_lastFrameTime = glfwGetTime();
+	m_lastFrameTime = static_cast<float>(glfwGetTime());
 
 	return true;
 }
@@ -127,7 +127,7 @@ Game::~Game()
 
 void Game::Update()
 {
-	float currentFrameTime = glfwGetTime();
+	float currentFrameTime = static_cast<float>(glfwGetTime());
 	m_deltaTime = currentFrameTime - m_lastFrameTime;
 	m_lastFrameTime = currentFrameTime;
 
@@ -184,18 +184,20 @@ void Game::ProcessKeyboardPress(int key)
 void Game::MouseCallBack(GLFWwindow* window, double xPos, double yPos)
 {
 	static bool bFirstMouse = true;
+	float xp = static_cast<float>(xPos);
+	float yp = static_cast<float>(yPos);
 	if (bFirstMouse)
 	{
-		m_mouseLastX = xPos;
-		m_mouseLastY = yPos;
+		m_mouseLastX = xp;
+		m_mouseLastY = yp;
 		bFirstMouse = false;
 	}
 
-	float xOffset = xPos - m_mouseLastX;
-	float yOffset = m_mouseLastY - yPos; // reverse y since y-coordinate goes from bottom to top
+	float xOffset = xp - m_mouseLastX;
+	float yOffset = m_mouseLastY - yp; // reverse y since y-coordinate goes from bottom to top
 
-	m_mouseLastX = xPos;
-	m_mouseLastY = yPos;
+	m_mouseLastX = xp;
+	m_mouseLastY = yp;
 
 	if (glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 	{
