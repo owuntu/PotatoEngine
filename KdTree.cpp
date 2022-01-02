@@ -5,6 +5,7 @@
 namespace PotatoEngine
 {
 	const int KdTree::MAX_NUM_NODE_ELEMENTS = 32;
+
 	void KdTree::Build()
 	{
 		int numElements = GetTotalNumOfElements();
