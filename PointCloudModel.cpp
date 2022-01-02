@@ -1,10 +1,11 @@
+#include <algorithm>
+#include <stack>
+
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
 #include <glad/glad.h>
 
-#include <algorithm>
-#include <stack>
 #include <glm/gtx/norm.hpp>
 
 #include "PointCloudModel.h"
@@ -135,7 +136,7 @@ namespace PotatoEngine
 		}
 
 		auto res = SearchNearest(queryPoint, left, currentMin2);
-		if (isnan(res.x) || d2 < currentMin2)
+		if (d2 < currentMin2)
 		{
 			auto tmp = SearchNearest(queryPoint, right, currentMin2);
 			if (!isnan(tmp.x))
@@ -146,6 +147,8 @@ namespace PotatoEngine
 		return res;
 	}
 
+#if 0
+	// todo: Incorrect search result
 	glm::vec3 PointCloudModel::SearchNearestIterate(const glm::vec3& queryPoint, const Node* root, float& currentMin2)
 	{
 		using namespace std;
@@ -216,5 +219,6 @@ namespace PotatoEngine
 
 		return res;
 	}
+#endif
 
 } // namespace PotatoEngine

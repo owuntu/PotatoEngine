@@ -4,6 +4,7 @@
 
 namespace PotatoEngine
 {
+	const int KdTree::MAX_NUM_NODE_ELEMENTS = 32;
 	void KdTree::Build()
 	{
 		int numElements = GetTotalNumOfElements();
@@ -29,6 +30,7 @@ namespace PotatoEngine
 		}
 
 		Node* res = new Node();
+		res->elements.clear();
 
 		m_maxDepth = (depth > m_maxDepth) ? depth : m_maxDepth;
 
