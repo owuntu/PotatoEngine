@@ -19,35 +19,35 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Game.cpp" />
     <ClCompile Include="glad\glad.c" />
-    <ClCompile Include="GLObject.cpp" />
-    <ClCompile Include="KdTree.cpp" />
-    <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="MeshModel.cpp" />
-    <ClCompile Include="Model.cpp" />
-    <ClCompile Include="ModelCreator.cpp" />
-    <ClCompile Include="PointCloudModel.cpp" />
     <ClCompile Include="ShaderObject\ShaderObject.cpp" />
     <ClCompile Include="ShaderObject\ShaderProgram.cpp" />
-    <ClCompile Include="SinglePointModel.cpp" />
+    <ClCompile Include="Src\Camera.cpp" />
+    <ClCompile Include="Src\Game.cpp" />
+    <ClCompile Include="Src\GLObject.cpp" />
+    <ClCompile Include="Src\KdTree.cpp" />
+    <ClCompile Include="Src\Mesh.cpp" />
+    <ClCompile Include="Src\MeshModel.cpp" />
+    <ClCompile Include="Src\Model.cpp" />
+    <ClCompile Include="Src\ModelCreator.cpp" />
+    <ClCompile Include="Src\PointCloudModel.cpp" />
+    <ClCompile Include="Src\SinglePointModel.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BBox.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="GLObject.h" />
-    <ClInclude Include="KdTree.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="MeshModel.h" />
-    <ClInclude Include="Model.h" />
-    <ClInclude Include="ModelCreator.h" />
-    <ClInclude Include="PointCloudModel.h" />
     <ClInclude Include="ShaderObject\ShaderObject.h" />
     <ClInclude Include="ShaderObject\ShaderProgram.h" />
-    <ClInclude Include="SinglePointModel.h" />
-    <ClInclude Include="Utilities.h" />
+    <ClInclude Include="Src\BBox.h" />
+    <ClInclude Include="Src\Camera.h" />
+    <ClInclude Include="Src\Game.h" />
+    <ClInclude Include="Src\GLObject.h" />
+    <ClInclude Include="Src\KdTree.h" />
+    <ClInclude Include="Src\Mesh.h" />
+    <ClInclude Include="Src\MeshModel.h" />
+    <ClInclude Include="Src\Model.h" />
+    <ClInclude Include="Src\ModelCreator.h" />
+    <ClInclude Include="Src\PointCloudModel.h" />
+    <ClInclude Include="Src\SinglePointModel.h" />
+    <ClInclude Include="Src\Utilities.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GLSLShaders\modelFragmentShader.fs.glsl" />
@@ -136,7 +136,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Extern\glm;$(SolutionDir)Extern\glfw\include\GLFW;$(SolutionDir)Extern\include\;$(SolutionDir)Extern\include\assimp\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Extern\glm;$(SolutionDir)Extern\glfw\include\GLFW;$(SolutionDir)Extern\include\;$(SolutionDir)Extern\include\assimp\;$(SolutionDir)Src;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -178,7 +178,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Extern\glm;$(SolutionDir)Extern\glfw\include\GLFW;$(SolutionDir)Extern\include\;$(SolutionDir)Extern\include\assimp\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Extern\glm;$(SolutionDir)Extern\glfw\include\GLFW;$(SolutionDir)Extern\include\;$(SolutionDir)Extern\include\assimp\;$(SolutionDir)Src;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

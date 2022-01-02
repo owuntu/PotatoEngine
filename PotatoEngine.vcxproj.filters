@@ -29,9 +29,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ShaderObject\ShaderObject.cpp">
       <Filter>ShaderObject</Filter>
     </ClCompile>
@@ -41,32 +38,35 @@
     <ClCompile Include="glad\glad.c">
       <Filter>glad</Filter>
     </ClCompile>
-    <ClCompile Include="MeshModel.cpp">
-      <Filter>Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
+    <ClCompile Include="Src\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Model</Filter>
+    <ClCompile Include="Src\Game.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GLObject.cpp">
+    <ClCompile Include="Src\Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\GLObject.cpp">
       <Filter>GLObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Model</Filter>
-    </ClCompile>
-    <ClCompile Include="ModelCreator.cpp">
-      <Filter>Model</Filter>
-    </ClCompile>
-    <ClCompile Include="PointCloudModel.cpp">
-      <Filter>Model</Filter>
-    </ClCompile>
-    <ClCompile Include="SinglePointModel.cpp">
-      <Filter>Model</Filter>
-    </ClCompile>
-    <ClCompile Include="KdTree.cpp">
+    <ClCompile Include="Src\KdTree.cpp">
       <Filter>SpacePartition</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MeshModel.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Model.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ModelCreator.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\PointCloudModel.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\SinglePointModel.cpp">
+      <Filter>Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -76,40 +76,40 @@
     <ClInclude Include="ShaderObject\ShaderProgram.h">
       <Filter>ShaderObject</Filter>
     </ClInclude>
-    <ClInclude Include="MeshModel.h">
-      <Filter>Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GLObject.h">
+    <ClInclude Include="Src\GLObject.h">
       <Filter>GLObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Model</Filter>
-    </ClInclude>
-    <ClInclude Include="ModelCreator.h">
-      <Filter>Model</Filter>
-    </ClInclude>
-    <ClInclude Include="PointCloudModel.h">
-      <Filter>Model</Filter>
-    </ClInclude>
-    <ClInclude Include="SinglePointModel.h">
-      <Filter>Model</Filter>
-    </ClInclude>
-    <ClInclude Include="KdTree.h">
+    <ClInclude Include="Src\BBox.h">
       <Filter>SpacePartition</Filter>
     </ClInclude>
-    <ClInclude Include="BBox.h">
+    <ClInclude Include="Src\KdTree.h">
       <Filter>SpacePartition</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h">
+    <ClInclude Include="Src\Mesh.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MeshModel.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Model.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ModelCreator.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\PointCloudModel.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\SinglePointModel.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Camera.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Utilities.h">
+    <ClInclude Include="Src\Game.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Utilities.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
