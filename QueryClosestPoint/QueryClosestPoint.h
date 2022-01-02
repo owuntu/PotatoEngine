@@ -7,7 +7,6 @@
 
 namespace PotatoEngine
 {
-	class MeshModel;
 	class Model;
 	class SinglePointModel;
 	class PointCloudModel;
@@ -22,7 +21,11 @@ public:
 	virtual int Run();
 	virtual void Reset();
 
+	// Method to query the closest point in m_pModel given a query point and max search distance.
+	// Return NAN vec3 if such closest point cannot be found within the search distance.
+	// Assume the input queryPoint and maxSearchDistance is always non-NAN
 	glm::vec3 DoQueryClosestPoint(const glm::vec3& queryPoint, float maxSearchDistance);
+	
 	glm::vec3 QueryClosestPointKDTree(const glm::vec3& queryPoint, float maxSearchDistance);
 	glm::vec3 QueryClosestPointBruteForce(const glm::vec3& queryPoint, float maxSearchDistance);
 
