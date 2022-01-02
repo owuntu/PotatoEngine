@@ -77,7 +77,7 @@ bool ShaderObject::CreateShaderFromFile(const std::string filePath, ShaderType s
 	file.read(&m_shaderSource[0], fileSize);
 	file.close();
 
-	std::cout << "Input shader source:\n" << m_shaderSource << std::endl;
+	//std::cout << "Input shader source:\n" << m_shaderSource << std::endl;
 
 	return this->CreateShader(m_shaderSource.c_str(), sType);
 }
