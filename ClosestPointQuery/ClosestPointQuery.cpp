@@ -14,7 +14,7 @@
 #include <glm/gtx/norm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "QueryClosestPoint.h"
+#include "ClosestPointQuery.h"
 #include "MeshModel.h"
 #include "ModelCreator.h"
 #include "Camera.h"
@@ -27,14 +27,14 @@ static const glm::mat4 IDENTITY = glm::mat4(1.0f);
 static int gs_maxKdTreeDrawDepth = 16;
 static bool gs_drawKdTree = false;
 
-std::shared_ptr<QueryClosestPoint> QueryClosestPoint::Create(const std::string& modelPath)
+std::shared_ptr<ClosestPointQuery> ClosestPointQuery::Create(const std::string& modelPath)
 {
 	if (modelPath == "")
 	{
 		std::cout << "Warning: empty model path\n";
 	}
 
-	std::shared_ptr<QueryClosestPoint> pGame = std::make_shared<QueryClosestPoint>();
+	std::shared_ptr<ClosestPointQuery> pGame = std::make_shared<ClosestPointQuery>();
 	if (!pGame->Init(modelPath))
 	{
 		return nullptr;
@@ -43,19 +43,19 @@ std::shared_ptr<QueryClosestPoint> QueryClosestPoint::Create(const std::string& 
 	return pGame;
 }
 
-QueryClosestPoint::~QueryClosestPoint()
+ClosestPointQuery::~ClosestPointQuery()
 {
 	this->Reset();
 }
 
-void QueryClosestPoint::ProcessInput()
+void ClosestPointQuery::ProcessInput()
 {
 	Game::ProcessInput();
 
 	
 }
 
-void QueryClosestPoint::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+void ClosestPointQuery::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	if (action != GLFW_PRESS)
 	{
@@ -109,7 +109,7 @@ void QueryClosestPoint::KeyCallback(GLFWwindow* window, int key, int scancode, i
 
 }
 
-bool QueryClosestPoint::Init(const std::string& modelPath)
+bool ClosestPointQuery::Init(const std::string& modelPath)
 {
 	// Base class Init() must be call before doing other initialization
 	if (!Game::Init())
@@ -119,7 +119,7 @@ bool QueryClosestPoint::Init(const std::string& modelPath)
 
 	auto keyCallback = [](GLFWwindow* w, int key, int scancode, int action, int mods)
 	{
-		static_cast<QueryClosestPoint*>(glfwGetWindowUserPointer(w))->KeyCallback(w, key, scancode, action, mods);
+		static_cast<ClosestPointQuery*>(glfwGetWindowUserPointer(w))->KeyCallback(w, key, scancode, action, mods);
 	};
 	glfwSetKeyCallback(m_window, keyCallback);
 
@@ -152,7 +152,7 @@ bool QueryClosestPoint::Init(const std::string& modelPath)
 	return true;
 }
 
-void QueryClosestPoint::Update()
+void ClosestPointQuery::Update()
 {
 	Game::Update();
 
@@ -175,7 +175,7 @@ void QueryClosestPoint::Update()
 }
 
 
-void QueryClosestPoint::Render()
+void ClosestPointQuery::Render()
 {
 	static const float aspect = (float)ScreenWidth() / (float)ScreenHeight();
 
@@ -203,14 +203,14 @@ void QueryClosestPoint::Render()
 
 }
 
-void QueryClosestPoint::Reset()
+void ClosestPointQuery::Reset()
 {
 	m_pShader->Release();
 
 	Game::Reset();
 }
 
-int QueryClosestPoint::Run()
+int ClosestPointQuery::Run()
 {
 	std::cout << "Press TAB key to enter query point and search distance (you need to manually switch focus window to console).\n";
 	std::cout << "Press I/K key to increase/decrease kd tree draw depth.\n";
@@ -218,13 +218,13 @@ int QueryClosestPoint::Run()
 	return Game::Run();
 }
 
-glm::vec3 QueryClosestPoint::DoQueryClosestPoint(const glm::vec3& queryPoint, float maxSearchDistance)
+glm::vec3 ClosestPointQuery::DoQueryClosestPoint(const glm::vec3& queryPoint, float maxSearchDistance)
 {
 	return QueryClosestPointKDTree(queryPoint, maxSearchDistance);
 }
 
 // KdTree search
-glm::vec3 QueryClosestPoint::QueryClosestPointKDTree(const glm::vec3& queryPoint, float maxSearchDistance)
+glm::vec3 ClosestPointQuery::QueryClosestPointKDTree(const glm::vec3& queryPoint, float maxSearchDistance)
 {
 	using namespace PotatoEngine;
 

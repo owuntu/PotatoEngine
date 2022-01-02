@@ -9,7 +9,7 @@
 
 #include "BBox.h"
 #include "PointCloudModel.h"
-#include "QueryClosestPoint.h"
+#include "ClosestPointQuery.h"
 #include "UnitTests.h"
 
 #ifdef _DEBUG
@@ -106,7 +106,7 @@ void ClosestPointUnitTest::GenerateTestPointsAndResults()
 {
 	std::cout << "Generating test data and result files\n";
 	using namespace PotatoEngine;
-	auto sampleGame = QueryClosestPoint::Create(m_testModelPath);
+	auto sampleGame = ClosestPointQuery::Create(m_testModelPath);
 
 	const std::shared_ptr<PointCloudModel> pModel = sampleGame->GetModel();
 	BBox box = pModel->GetRoot()->box;
@@ -198,7 +198,7 @@ void ClosestPointUnitTest::RunAllTests()
 
 bool ClosestPointUnitTest::TestKDTreeSearch()
 {
-	auto sampleGame = QueryClosestPoint::Create(m_testModelPath);
+	auto sampleGame = ClosestPointQuery::Create(m_testModelPath);
 
 	std::vector<glm::vec3> results;
 
@@ -221,7 +221,7 @@ bool ClosestPointUnitTest::TestKDTreeSearch()
 
 bool ClosestPointUnitTest::TestBruteForceSearch()
 {
-	auto sampleGame = QueryClosestPoint::Create(m_testModelPath);
+	auto sampleGame = ClosestPointQuery::Create(m_testModelPath);
 
 	std::vector<glm::vec3> results;
 
