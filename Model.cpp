@@ -13,6 +13,9 @@ namespace PotatoEngine
 	void Model::LoadModel(const std::string& objModelPath)
 	{
 		Assimp::Importer importer;
+		// todo: provide option for whether to join identical vertices.
+		// For now it is for query closest point solution, we don't really need the duplicated
+		// vertices which aim to improve rendering performance.
 		const aiScene* scene = importer.ReadFile(objModelPath, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
 
 		// check for errors
