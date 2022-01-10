@@ -26,6 +26,7 @@
     <ClCompile Include="Src\Game.cpp" />
     <ClCompile Include="Src\GLObject.cpp" />
     <ClCompile Include="Src\KdTree.cpp" />
+    <ClCompile Include="Src\KdTreeFixed.cpp" />
     <ClCompile Include="Src\Mesh.cpp" />
     <ClCompile Include="Src\MeshModel.cpp" />
     <ClCompile Include="Src\Model.cpp" />
@@ -41,6 +42,7 @@
     <ClInclude Include="Src\Game.h" />
     <ClInclude Include="Src\GLObject.h" />
     <ClInclude Include="Src\KdTree.h" />
+    <ClInclude Include="Src\KdTreeFixed.h" />
     <ClInclude Include="Src\Mesh.h" />
     <ClInclude Include="Src\MeshModel.h" />
     <ClInclude Include="Src\Model.h" />

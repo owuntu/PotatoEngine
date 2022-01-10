@@ -11,7 +11,7 @@ namespace PotatoEngine
 	class KdTree
 	{
 	public:
-		static const int MAX_NUM_NODE_ELEMENTS;
+		static const int MAX_NUM_NODE_ELEMENTS = 32;
 		
 		struct Node
 		{
@@ -27,10 +27,11 @@ namespace PotatoEngine
 			// This vector is non-empty only if the node is a leaf node 
 			std::vector<int> elements;
 		}; // struct Node
+		
 
 		KdTree() {}
 
-		void Build();
+		virtual void Build();
 
 		const Node* GetRoot() const { return m_root; }
 		const int GetMaxDepth() const { return m_maxDepth; }

@@ -68,6 +68,9 @@
     <ClCompile Include="Src\SinglePointModel.cpp">
       <Filter>Model</Filter>
     </ClCompile>
+    <ClCompile Include="Src\KdTreeFixed.cpp">
+      <Filter>SpacePartition</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ShaderObject\ShaderObject.h">
@@ -111,6 +114,9 @@
     </ClInclude>
     <ClInclude Include="Src\Utilities.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\KdTreeFixed.h">
+      <Filter>SpacePartition</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

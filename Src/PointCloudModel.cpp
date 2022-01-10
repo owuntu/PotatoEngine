@@ -45,7 +45,7 @@ namespace PotatoEngine
 
 		glBindVertexArray(0);
 
-		KdTree::Build();
+		Build();
 	}
 
 	void PointCloudModel::DoDraw() const
@@ -156,11 +156,59 @@ namespace PotatoEngine
 	glm::vec3 PointCloudModel::SearchNearest(const glm::vec3& queryPoint)
 	{
 		float currentMin2 = FLT_MAX;
-		return SearchNearest(queryPoint, m_root, currentMin2);
+		return SearchNearest(queryPoint, 0, currentMin2);
+		//return SearchNearest(queryPoint, m_root, currentMin2);
 
 		// todo: Incorrect search result
 		//return SearchNearestIterate(queryPoint, m_root, currentMin2);
 	}
+
+	glm::vec3 PointCloudModel::SearchNearest(const glm::vec3& queryPoint, int offset, float& currentMin2) const
+	{
+		auto& node = m_nodeArry[offset];
+		if (node.bIsLeaf)
+		{
+			glm::vec3 res(NAN);
+			for (auto i : node.elements)
+			{
+				const glm::vec3& testPoint = m_points[i];
+				float d2 = glm::distance2(queryPoint, testPoint);
+				if (d2 < currentMin2)
+				{
+					currentMin2 = d2;
+					res = testPoint;
+				}
+			}
+
+			return res;
+		}
+
+		float d = queryPoint[node.nodeData.splitAxis] - node.nodeData.splitPos;
+		float d2 = d * d;
+		int off2 = offset << 1;
+		int left = off2 + 1;
+		int right = off2 + 2;
+		if (d >= 0.f)
+		{
+			int t = left;
+			left = right;
+			right = t;
+		}
+
+		auto res = SearchNearest(queryPoint, left, currentMin2);
+		if (d2 < currentMin2)
+		{
+			auto tmp = SearchNearest(queryPoint, right, currentMin2);
+			if (!isnan(tmp.x))
+			{
+				res = tmp;
+			}
+		}
+		return res;
+	}
+
+
+#if 1
 
 	glm::vec3 PointCloudModel::SearchNearest(const glm::vec3& queryPoint, const Node* pNode, float& currentMin2) const
 	{
@@ -202,7 +250,7 @@ namespace PotatoEngine
 		}
 		return res;
 	}
-
+#endif
 #if 0
 	// todo: Incorrect search result
 	glm::vec3 PointCloudModel::SearchNearestIterate(const glm::vec3& queryPoint, const Node* root, float& currentMin2)
