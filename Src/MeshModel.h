@@ -27,6 +27,8 @@ namespace PotatoEngine
 
 	private:
 		void ProcessMesh(aiMesh* pMesh);
+		virtual void PostSetup();
+
 		void DoDraw() const;
 		void DoDrawVertices() const;
 

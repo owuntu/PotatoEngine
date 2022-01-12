@@ -39,6 +39,35 @@ namespace PotatoEngine
 		m_meshes.push_back(Mesh(vertices, indices));
 	}
 
+	void MeshModel::PostSetup()
+	{
+		// Merging all meshes into one.
+		// todo: provide option to whether to merge
+		using namespace std;
+		vector<Vertex> vertices;
+		vector<unsigned int> indices;
+		std::size_t offset = vertices.size();
+
+		for (std::size_t i = 0; i < m_meshes.size(); ++i)
+		{
+			auto& mesh = m_meshes[i];
+			for (std::size_t vi = 0; vi < mesh.m_vertices.size(); ++vi)
+			{
+				vertices.push_back(mesh.m_vertices[vi]);
+			}
+
+			for (std::size_t ii = 0; ii < mesh.m_indices.size(); ++ii)
+			{
+				indices.push_back(mesh.m_indices[ii] + offset);
+			}
+			offset += mesh.m_vertices.size();
+			mesh.Release();
+		}
+
+		m_meshes.clear();
+		m_meshes.push_back(Mesh(vertices, indices));
+	}
+
 	void MeshModel::DoDraw() const
 	{
 		for (const auto& mesh : m_meshes)
