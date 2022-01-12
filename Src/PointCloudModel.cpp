@@ -207,9 +207,7 @@ namespace PotatoEngine
 		return res;
 	}
 
-
 #if 1
-
 	glm::vec3 PointCloudModel::SearchNearest(const glm::vec3& queryPoint, const Node* pNode, float& currentMin2) const
 	{
 		if (pNode->splitAxis == -1)
@@ -248,79 +246,6 @@ namespace PotatoEngine
 				res = tmp;
 			}
 		}
-		return res;
-	}
-#endif
-#if 0
-	// todo: Incorrect search result
-	glm::vec3 PointCloudModel::SearchNearestIterate(const glm::vec3& queryPoint, const Node* root, float& currentMin2)
-	{
-		using namespace std;
-		
-		glm::vec3 res(NAN);
-
-		struct TmpNode
-		{
-			const Node* treeNode;
-
-			// Distance square between current closest point and the split plane of parent node.
-			float d2Parent;
-
-			TmpNode(const Node* node, float d2 = FLT_MAX):
-				treeNode(node), d2Parent(d2)
-			{}
-		};
-
-		stack<TmpNode> nodeStack;
-		nodeStack.push(TmpNode(root));
-
-		while (!nodeStack.empty())
-		{
-			auto node = nodeStack.top();
-			const Node* pNode = node.treeNode;
-			nodeStack.pop();
-
-			if (pNode->splitAxis == -1)
-			{
-				for (auto i : pNode->elements)
-				{
-					const glm::vec3& testPoint = m_points[i];
-					float d2 = glm::distance2(queryPoint, testPoint);
-					if (d2 < currentMin2)
-					{
-						currentMin2 = d2;
-						res = testPoint;
-					}
-				}
-
-				// If the distance to the parent split plane is smaller than to the current closest point,
-				// we need to continue to traverse the sibiling node
-				if (node.d2Parent < currentMin2 || isnan(res.x))
-				{
-					continue;
-				}
-
-				break;
-			}
-
-			// distance to split plane
-			float d = queryPoint[pNode->splitAxis] - pNode->splitPos;
-			float d2 = d * d;
-
-			Node* left = pNode->left;
-			Node* right = pNode->right;
-
-			// Traverse right node first if queryPoint is in the greater side of the split plane
-			if (d >= 0.f)
-			{
-				left = right;
-				right = pNode->left;
-			}
-
-			nodeStack.push(TmpNode(right));
-			nodeStack.push(TmpNode(left, d2));
-		}
-
 		return res;
 	}
 #endif
