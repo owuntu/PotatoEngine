@@ -10,6 +10,7 @@ namespace PotatoEngine
 	class Model;
 	class SinglePointModel;
 	class PointCloudModel;
+	class MeshModel;
 	class ShaderProgram;
 } // namespace PotatoEngine
 
@@ -26,7 +27,7 @@ public:
 	// Assume the input queryPoint and maxSearchDistance is always non-NAN
 	glm::vec3 DoQueryClosestPoint(const glm::vec3& queryPoint, float maxSearchDistance);
 
-	const std::shared_ptr<PotatoEngine::PointCloudModel> GetModel() const { return m_pModel; }
+	const std::shared_ptr<PotatoEngine::MeshModel> GetModel() const { return m_pMeshModel; }
 
 	static std::shared_ptr<ClosestPointQuery> Create(const std::string& modelPath);
 
@@ -38,9 +39,7 @@ protected:
 	// todo: may want to refactor into another input class
 	void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
-	glm::vec3 QueryClosestPointKDTree(const glm::vec3& queryPoint, float maxSearchDistance);
-
-	std::shared_ptr<PotatoEngine::PointCloudModel> m_pModel;
+	std::shared_ptr<PotatoEngine::MeshModel> m_pMeshModel;
 
 	// todo: refactor shader into a renderer
 	std::shared_ptr<PotatoEngine::ShaderProgram> m_pShader;

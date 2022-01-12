@@ -24,8 +24,6 @@
 using namespace PotatoEngine;
 
 static const glm::mat4 IDENTITY = glm::mat4(1.0f);
-static int gs_maxKdTreeDrawDepth = 16;
-static bool gs_drawKdTree = false;
 
 std::shared_ptr<ClosestPointQuery> ClosestPointQuery::Create(const std::string& modelPath)
 {
@@ -77,36 +75,6 @@ void ClosestPointQuery::KeyCallback(GLFWwindow* window, int key, int scancode, i
 		m_bToQuery = true;
 	}
 
-	// Handel kd tree draw
-	bool bChangeDraw = false;
-	if (key == GLFW_KEY_O)
-	{
-		gs_drawKdTree = !gs_drawKdTree;
-		bChangeDraw = true;
-	}
-
-	if (gs_drawKdTree)
-	{
-		if (key == GLFW_KEY_I)
-		{
-			gs_maxKdTreeDrawDepth++;
-			bChangeDraw = true;
-		}
-
-		if (key == GLFW_KEY_K)
-		{
-			gs_maxKdTreeDrawDepth--;
-			bChangeDraw = true;
-		}
-
-		if (bChangeDraw)
-		{
-			int maxDepth = m_pModel->GetMaxDepth();
-			gs_maxKdTreeDrawDepth = std::clamp(gs_maxKdTreeDrawDepth, -1, maxDepth);
-			std::cout << "\nDraw to Kd tree depth " << gs_maxKdTreeDrawDepth << std::endl;
-		}
-	}
-
 }
 
 bool ClosestPointQuery::Init(const std::string& modelPath)
@@ -127,21 +95,23 @@ bool ClosestPointQuery::Init(const std::string& modelPath)
 	m_pShader->Create("GLSLSHaders/modelVertexShader.vs.glsl", "GLSLShaders/modelFragmentShader.fs.glsl");
 	m_pShader->Use();
 
-	m_pModel = std::dynamic_pointer_cast<PointCloudModel>(ModelCreator::CreateModel(ModelCreator::Type::POINT_CLOUD_MODEL, modelPath));
-	m_pModel->SetColor(glm::vec3(0.8f));
+	m_pMeshModel = std::dynamic_pointer_cast<MeshModel>(ModelCreator::CreateModel(ModelCreator::Type::MESH_MODEL, modelPath));
+	m_pMeshModel->SetColor(glm::vec3(0.8f));
 
+#if 0
 	// Adapth camera movement speed to the model size
 	const auto& box = m_pModel->GetRoot()->box;
 	auto diff = box.vmax - box.vmin;
 	float maxDim = fmaxf(diff.x, fmaxf(diff.y, diff.z));
 	m_pMainCamera->SetMoveSpeed(maxDim / 2.f);
 
+
 	// Camera default look at direction (0, 0, -1), adapt camera position to the front of 
 	// the bounding box front face
 	auto midPoint = (box.vmax + box.vmin) / 2.f;
 	m_pMainCamera->SetPosition(glm::vec3(midPoint.x, midPoint.y, box.vmax.z * 2.f));
 
-	gs_maxKdTreeDrawDepth = m_pModel->GetMaxDepth();
+#endif
 
 	m_pQueryPointModel = std::dynamic_pointer_cast<SinglePointModel>(ModelCreator::CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
 	m_pQueryPointModel->SetColor(glm::vec4(1, 0, 0, 1)); // set query point red
@@ -188,11 +158,8 @@ void ClosestPointQuery::Render()
 	m_pShader->SetMat4("view", view);
 	m_pShader->SetMat4("projection", persp);
 
-	m_pModel->Draw(m_pShader.get());
-	if (gs_drawKdTree)
-	{
-		DrawKdTree(m_pShader.get(), m_pModel->GetRoot(), 0, gs_maxKdTreeDrawDepth);
-	}
+	m_pMeshModel->Draw(m_pShader.get());
+
 	DrawCoordAxis(m_pShader.get());
 
 	m_pQueryPointModel->Draw(m_pShader.get());
@@ -213,27 +180,13 @@ void ClosestPointQuery::Reset()
 int ClosestPointQuery::Run()
 {
 	std::cout << "Press TAB key to enter query point and search distance (you need to manually switch focus window to console).\n";
-	std::cout << "Press I/K key to increase/decrease kd tree draw depth.\n";
-	std::cout << "Press O key to toggle kd tree draw.\n";
 	return Game::Run();
 }
 
 glm::vec3 ClosestPointQuery::DoQueryClosestPoint(const glm::vec3& queryPoint, float maxSearchDistance)
 {
-	return QueryClosestPointKDTree(queryPoint, maxSearchDistance);
+	// todo:
+	return glm::vec3(NAN);
 }
 
-// KdTree search
-glm::vec3 ClosestPointQuery::QueryClosestPointKDTree(const glm::vec3& queryPoint, float maxSearchDistance)
-{
-	using namespace PotatoEngine;
-
-	glm::vec3 res = m_pModel->SearchNearest(queryPoint);
-	if (glm::distance2(res, queryPoint) > maxSearchDistance* maxSearchDistance)
-	{
-		return glm::vec3(NAN);
-	}
-	return res;
-}
-
-
+// Brute force method
