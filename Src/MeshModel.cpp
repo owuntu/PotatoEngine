@@ -36,7 +36,7 @@ namespace PotatoEngine
 			}
 		}
 
-		m_meshes.push_back(Mesh(vertices, indices));
+		m_tmpMeshes.push_back(Mesh(vertices, indices));
 	}
 
 	void MeshModel::PostSetup()
@@ -48,9 +48,9 @@ namespace PotatoEngine
 		vector<unsigned int> indices;
 		std::size_t offset = vertices.size();
 
-		for (std::size_t i = 0; i < m_meshes.size(); ++i)
+		for (std::size_t i = 0; i < m_tmpMeshes.size(); ++i)
 		{
-			auto& mesh = m_meshes[i];
+			auto& mesh = m_tmpMeshes[i];
 			for (std::size_t vi = 0; vi < mesh.m_vertices.size(); ++vi)
 			{
 				vertices.push_back(mesh.m_vertices[vi]);
@@ -64,24 +64,18 @@ namespace PotatoEngine
 			mesh.Release();
 		}
 
-		m_meshes.clear();
-		m_meshes.push_back(Mesh(vertices, indices));
+		m_tmpMeshes.clear();
+		m_mesh = Mesh(vertices, indices);
 	}
 
 	void MeshModel::DoDraw() const
 	{
-		for (const auto& mesh : m_meshes)
-		{
-			mesh.Draw();
-		}
+		m_mesh.Draw();
 	}
 
 	void MeshModel::DoDrawVertices() const
 	{
-		for (const auto& mesh : m_meshes)
-		{
-			mesh.DrawVertices();
-		}
+		m_mesh.DrawVertices();
 	}
 
 } // PotatoEngine

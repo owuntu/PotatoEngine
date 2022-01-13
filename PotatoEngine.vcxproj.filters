@@ -27,6 +27,9 @@
     <Filter Include="ShaderObject">
       <UniqueIdentifier>{ffdbd9bb-4028-444d-8743-1e99d496416b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CollisionDetection">
+      <UniqueIdentifier>{1e06df6c-7733-4ff3-93ff-c655e4642d0f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShaderObject\ShaderObject.cpp">
@@ -67,6 +70,9 @@
     </ClCompile>
     <ClCompile Include="Src\SinglePointModel.cpp">
       <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ClosestPointTest.cpp">
+      <Filter>CollisionDetection</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -111,6 +117,9 @@
     </ClInclude>
     <ClInclude Include="Src\Utilities.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ClosestPointTest.h">
+      <Filter>CollisionDetection</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

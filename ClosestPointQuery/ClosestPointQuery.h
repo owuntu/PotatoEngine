@@ -27,6 +27,8 @@ public:
 	// Assume the input queryPoint and maxSearchDistance is always non-NAN
 	glm::vec3 DoQueryClosestPoint(const glm::vec3& queryPoint, float maxSearchDistance);
 
+	glm::vec3 QueryBruteForce(const glm::vec3& queryPoint, float maxSearchDistance);
+
 	const std::shared_ptr<PotatoEngine::MeshModel> GetModel() const { return m_pMeshModel; }
 
 	static std::shared_ptr<ClosestPointQuery> Create(const std::string& modelPath);

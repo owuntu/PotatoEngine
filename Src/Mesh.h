@@ -31,6 +31,12 @@ namespace PotatoEngine
 			SetupGL();
 		}
 
+		Mesh() :
+			m_glVAO(0),
+			m_glVBO(0),
+			m_glEBO(0)
+		{}
+
 		~Mesh();
 
 		void Draw() const;

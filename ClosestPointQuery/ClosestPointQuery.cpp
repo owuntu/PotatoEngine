@@ -20,6 +20,7 @@
 #include "Camera.h"
 #include "ShaderObject/ShaderProgram.h"
 #include "HelperDraw.h"
+#include "ClosestPointTest.h"
 
 using namespace PotatoEngine;
 
@@ -185,8 +186,36 @@ int ClosestPointQuery::Run()
 
 glm::vec3 ClosestPointQuery::DoQueryClosestPoint(const glm::vec3& queryPoint, float maxSearchDistance)
 {
-	// todo:
-	return glm::vec3(NAN);
+	return QueryBruteForce(queryPoint, maxSearchDistance);
 }
 
 // Brute force method
+glm::vec3 ClosestPointQuery::QueryBruteForce(const glm::vec3& queryPoint, float maxSearchDistance)
+{
+	auto& mesh = m_pMeshModel->GetMesh();
+	const auto& indices = mesh.m_indices;
+	const auto& vertices = mesh.m_vertices;
+
+	float minDist2 = FLT_MAX;
+	glm::vec3 res(NAN);
+	for (std::size_t i = 0; i < indices.size(); i += 3)
+	{
+		auto& v0 = vertices[indices[i]].Position;
+		auto& v1 = vertices[indices[i + 1]].Position;
+		auto& v2 = vertices[indices[i + 2]].Position;
+		glm::vec3 tres = ClosestPointOnTriangle(queryPoint, v0, v1, v2);
+		float d2 = glm::distance2(queryPoint, tres);
+		if (d2 < minDist2)
+		{
+			minDist2 = d2;
+			res = tres;
+		}
+	}
+
+	if (minDist2 < maxSearchDistance * maxSearchDistance)
+	{
+		return res;
+	}
+
+	return glm::vec3(NAN);
+}
