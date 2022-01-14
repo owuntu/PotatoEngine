@@ -161,10 +161,15 @@ void ClosestPointQuery::Render()
 	m_pShader->SetMat4("view", view);
 	m_pShader->SetMat4("projection", persp);
 
+	m_pShader->SetInt("bUseLighting", 1);
 	m_pMeshModel->Draw(m_pShader.get());
+
+	m_pShader->SetInt("bUseLighting", 0);
+	DrawBVH(m_pShader.get(), m_pMeshModel->GetRoot(), 0);
 
 	DrawCoordAxis(m_pShader.get());
 
+	m_pShader->SetInt("bUseLighting", 0);
 	m_pQueryPointModel->Draw(m_pShader.get());
 	if (m_bFoundResult)
 	{

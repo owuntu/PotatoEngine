@@ -26,6 +26,8 @@ public:
 	void SetVec3(const std::string& name, const glm::vec3& vec);
 	void SetVec4(const std::string& name, const glm::vec4& vec);
 
+	void SetInt(const std::string& name, const int v);
+
 private:
 	bool AttachShader(const ShaderObject& shader);
 	bool Link();
