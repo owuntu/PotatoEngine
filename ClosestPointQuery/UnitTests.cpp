@@ -8,7 +8,7 @@
 #include <glm/gtx/norm.hpp>
 
 #include "BBox.h"
-#include "PointCloudModel.h"
+#include "MeshModelBVH.h"
 #include "ClosestPointQuery.h"
 #include "UnitTests.h"
 
@@ -109,8 +109,7 @@ void ClosestPointUnitTest::GenerateTestPointsAndResults()
 	auto sampleGame = ClosestPointQuery::Create(m_testModelPath);
 
 	// todo: adapt the new test
-#if 0
-	const std::shared_ptr<PointCloudModel> pModel = sampleGame->GetModel();
+	const auto pModel = sampleGame->GetModel();
 	BBox box = pModel->GetRoot()->box;
 
 	// scale up the bounding box for larger area test
@@ -137,10 +136,9 @@ void ClosestPointUnitTest::GenerateTestPointsAndResults()
 		}
 	}
 
-	const auto& points = pModel->GetPoints();
 	for (auto point : m_testPoints)
 	{
-		auto res = QueryClosestPointBruteForce(points, point, m_maxSearchDistance);
+		auto res = sampleGame->QueryBruteForce(point, m_maxSearchDistance);
 		m_expResults.push_back(res);
 	}
 
@@ -162,7 +160,6 @@ void ClosestPointUnitTest::GenerateTestPointsAndResults()
 
 	//WritePointsToFile(m_testPoints, m_testDataFileName);
 	WritePointsToFile(m_expResults, m_resultDataFileName);
-#endif
 }
 
 
@@ -195,11 +192,11 @@ void ClosestPointUnitTest::RunAllTests()
 	std::cout << "Running all tests\n";
 	LoadTestData();
 	// todo: may use test framework such as Google Test
-	ASSERT(TestKDTreeSearch());
+	ASSERT(TestBVHSearch());
 	ASSERT(TestBruteForceSearch());
 }
 
-bool ClosestPointUnitTest::TestKDTreeSearch()
+bool ClosestPointUnitTest::TestBVHSearch()
 {
 	auto sampleGame = ClosestPointQuery::Create(m_testModelPath);
 
@@ -213,19 +210,18 @@ bool ClosestPointUnitTest::TestKDTreeSearch()
 		results.push_back(res);
 	}
 	auto finish = std::chrono::high_resolution_clock::now();
-	std::cout << "All KD Tree search took "
+	std::cout << "All BVH search took "
 		<< std::chrono::duration_cast<milli>(finish - start).count()
 		<< " milliseconds\n";
 
 	bool bPassed = Verify(results);
-
 	return bPassed;
 }
 
 bool ClosestPointUnitTest::TestBruteForceSearch()
 {
 	// todo: adapt the new test
-#if 0
+
 	auto sampleGame = ClosestPointQuery::Create(m_testModelPath);
 
 	std::vector<glm::vec3> results;
@@ -233,10 +229,9 @@ bool ClosestPointUnitTest::TestBruteForceSearch()
 	using milli = std::chrono::milliseconds;
 	auto start = std::chrono::high_resolution_clock::now();
 	auto pModel = sampleGame->GetModel();
-	const auto& points = pModel->GetPoints();
 	for (auto point : m_testPoints)
 	{
-		auto res = QueryClosestPointBruteForce(points, point, m_maxSearchDistance);
+		auto res = sampleGame->QueryBruteForce(point, m_maxSearchDistance);
 		results.push_back(res);
 	}
 	auto finish = std::chrono::high_resolution_clock::now();
@@ -245,10 +240,8 @@ bool ClosestPointUnitTest::TestBruteForceSearch()
 		<< " milliseconds\n";
 
 	bool bPassed = Verify(results);
+
 	return bPassed;
-#else
-	return true;
-#endif
 }
 
 bool ClosestPointUnitTest::Verify(const std::vector<glm::vec3>& results)
@@ -272,7 +265,7 @@ bool ClosestPointUnitTest::Verify(const std::vector<glm::vec3>& results)
 			std::cout << "Incorrect result at " << i << std::endl;
 			std::cout << "Result: (" << res.x << ", " << res.y << ", " << res.z << ")\n";
 			std::cout << "Expected: (" << exp.x << ", " << exp.y << ", " << exp.z << ")\n";
-			break;
+			//break;
 		}
 	}
 
