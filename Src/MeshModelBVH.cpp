@@ -68,17 +68,11 @@ namespace PotatoEngine
 			// on leaf node, find closest point on triangle
 			glm::vec3 res(NAN);
 			auto& mesh = GetMesh();
-			const auto& indices = mesh.m_indices;
-			const auto& vertices = mesh.m_vertices;
-			const auto& triangles = mesh.m_triangles;
 			for (unsigned int i = 0; i < pNode->numElements; ++i)
 			{
-				auto& tri = triangles[m_elements[i + pNode->elementOffset]];
-				auto& v0 = vertices[indices[tri.v[0]]].Position;
-				auto& v1 = vertices[indices[tri.v[1]]].Position;
-				auto& v2 = vertices[indices[tri.v[2]]].Position;
+				auto index = m_elements[i + pNode->elementOffset];
 				
-				glm::vec3 tres = ClosestPointOnTriangle(queryPoint, v0, v1, v2);
+				glm::vec3 tres = mesh.ClosestPointOnTriangle(queryPoint, index);
 				float dist2 = glm::distance2(queryPoint, tres);
 				if (dist2 <= searchDist2 && dist2 < currentMin2)
 				{

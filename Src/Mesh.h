@@ -60,6 +60,8 @@ namespace PotatoEngine
 		void DrawVertices() const;
 		void Release();
 
+		glm::vec3 ClosestPointOnTriangle(const glm::vec3& p, std::size_t triangleIndex) const;
+
 		std::size_t NumTriangles() const { return m_triangles.size(); }
 		const Triangle& GetTriangle(std::size_t i) const { return m_triangles[i]; }
 

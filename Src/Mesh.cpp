@@ -1,5 +1,6 @@
 #include <glad/glad.h>
 
+#include "ClosestPointTest.h"
 #include "Utilities.h"
 
 #include "Mesh.h"
@@ -47,6 +48,7 @@ namespace PotatoEngine
 
 	void Mesh::Draw() const
 	{
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glBindVertexArray(m_glVAO);
 
 		glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0);
@@ -60,6 +62,16 @@ namespace PotatoEngine
 		glBindVertexArray(m_glVAO);
 		glDrawArrays(GL_POINTS, 0, m_vertices.size());
 		glBindVertexArray(0);
+	}
+
+	glm::vec3 Mesh::ClosestPointOnTriangle(const glm::vec3& p, std::size_t triangleIndex) const
+	{
+		const auto& triangle = m_triangles[triangleIndex];
+		const auto& v0 = m_vertices[m_indices[triangle.v[0]]].Position;
+		const auto& v1 = m_vertices[m_indices[triangle.v[1]]].Position;
+		const auto& v2 = m_vertices[m_indices[triangle.v[2]]].Position;
+
+		return PotatoEngine::ClosestPointOnTriangle(p, v0, v1, v2);
 	}
 
 } // namespace PotatoEngine
