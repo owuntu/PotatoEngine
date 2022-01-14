@@ -13,7 +13,7 @@ namespace PotatoEngine
 	public:
 		static const unsigned int ms_maxLeafElements = 8;
 
-	private:
+	//private:
 		struct Node
 		{
 			BBox box;
@@ -24,6 +24,8 @@ namespace PotatoEngine
 			unsigned int numElements = 0;
 			unsigned int elementOffset = 0;
 		};
+
+		const Node* GetRoot() const { return m_root; }
 
 	protected:
 		virtual ~BVH();

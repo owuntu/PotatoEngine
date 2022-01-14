@@ -69,10 +69,7 @@ namespace PotatoEngine
 			}
 		}
 
-		BBox box;
-
 		Node* child1 = new Node();
-		box.Init();
 
 		child1->elementOffset = node->elementOffset;
 		child1->numElements = child1EleCount;
@@ -82,11 +79,10 @@ namespace PotatoEngine
 			auto index = m_elements[i];
 			BBox tbox;
 			GetElementBound(index, tbox);
-			box += tbox;
+			child1->box += tbox;
 		}
 
 		Node* child2 = new Node();
-		box.Init();
 
 		child2->elementOffset = child1EleCount;
 		child2->numElements = node->numElements - child1EleCount;
@@ -95,7 +91,7 @@ namespace PotatoEngine
 			auto index = m_elements[i];
 			BBox tbox;
 			GetElementBound(index, tbox);
-			box += tbox;
+			child2->box += tbox;
 		}
 
 		SplitNode(child1);
