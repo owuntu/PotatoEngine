@@ -62,7 +62,7 @@ namespace PotatoEngine
 		unsigned int child1NumElements = MeanSplit(node);
 		if (child1NumElements == 0 || child1NumElements >= node->numElements)
 		{
-			// we must split
+			// Force split
 			child1NumElements = node->numElements / 2;
 		}
 

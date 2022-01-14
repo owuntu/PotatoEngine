@@ -25,7 +25,6 @@ namespace PotatoEngine
 		std::vector<Vertex> m_vertices;
 		std::vector<unsigned int> m_indices;
 		std::vector<Triangle> m_triangles;
-		unsigned int m_glVAO;
 
 		Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices):
 			m_glVAO(0),
@@ -72,6 +71,7 @@ namespace PotatoEngine
 		const unsigned int GetIndex(std::size_t i) const { return m_indices[i]; }
 
 	private:
+		unsigned int m_glVAO;
 		unsigned int m_glVBO;
 		unsigned int m_glEBO; // element buffer object
 
