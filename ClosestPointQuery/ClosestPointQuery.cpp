@@ -214,7 +214,7 @@ glm::vec3 ClosestPointQuery::QueryBruteForce(const glm::vec3& queryPoint, float 
 
 	float minDist2 = FLT_MAX;
 	glm::vec3 res(NAN);
-	for (std::size_t i = 0; i < triangles.size(); i += 3)
+	for (std::size_t i = 0; i < triangles.size(); ++i)
 	{
 		glm::vec3 tres = mesh.ClosestPointOnTriangle(queryPoint, i);
 		float d2 = glm::distance2(queryPoint, tres);
