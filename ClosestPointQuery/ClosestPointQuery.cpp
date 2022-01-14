@@ -25,6 +25,7 @@
 using namespace PotatoEngine;
 
 static const glm::mat4 IDENTITY = glm::mat4(1.0f);
+static int gs_depthToDraw = 0;
 
 std::shared_ptr<ClosestPointQuery> ClosestPointQuery::Create(const std::string& modelPath)
 {
@@ -76,6 +77,16 @@ void ClosestPointQuery::KeyCallback(GLFWwindow* window, int key, int scancode, i
 		m_bToQuery = true;
 	}
 
+	if (key == GLFW_KEY_I)
+	{
+		gs_depthToDraw++;
+	}
+
+	if (key == GLFW_KEY_K)
+	{
+		gs_depthToDraw--;
+	}
+
 }
 
 bool ClosestPointQuery::Init(const std::string& modelPath)
@@ -100,20 +111,18 @@ bool ClosestPointQuery::Init(const std::string& modelPath)
 	m_pMeshModel = std::dynamic_pointer_cast<MeshModelBVH>(bvhModelCreator.CreateModel(ModelCreator::Type::MESH_MODEL, modelPath));
 	m_pMeshModel->SetColor(glm::vec3(0.8f));
 
-#if 0
+#
 	// Adapth camera movement speed to the model size
-	const auto& box = m_pModel->GetRoot()->box;
+	const auto& box = m_pMeshModel->GetRoot()->box;
 	auto diff = box.vmax - box.vmin;
 	float maxDim = fmaxf(diff.x, fmaxf(diff.y, diff.z));
 	m_pMainCamera->SetMoveSpeed(maxDim / 2.f);
-
 
 	// Camera default look at direction (0, 0, -1), adapt camera position to the front of 
 	// the bounding box front face
 	auto midPoint = (box.vmax + box.vmin) / 2.f;
 	m_pMainCamera->SetPosition(glm::vec3(midPoint.x, midPoint.y, box.vmax.z * 2.f));
 
-#endif
 
 	ModelCreator modelCreator;
 	m_pQueryPointModel = std::dynamic_pointer_cast<SinglePointModel>(modelCreator.CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
@@ -165,7 +174,7 @@ void ClosestPointQuery::Render()
 	m_pMeshModel->Draw(m_pShader.get());
 
 	m_pShader->SetInt("bUseLighting", 0);
-	DrawBVH(m_pShader.get(), m_pMeshModel->GetRoot(), 0);
+	DrawBVH(m_pShader.get(), m_pMeshModel->GetRoot(), 0, gs_depthToDraw);
 
 	DrawCoordAxis(m_pShader.get());
 

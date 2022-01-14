@@ -146,7 +146,7 @@ namespace PotatoEngine
 
 			if (i > node->elementOffset && i < node->numElements + node->elementOffset)
 			{
-				child1NumElements = i;
+				child1NumElements = i - node->elementOffset;
 				break;
 			}
 		}
