@@ -32,7 +32,7 @@ namespace PotatoEngine
 
 	void MeshModelBVH::PostSetup()
 	{
-		MeshModelBVH::PostSetup();
+		MeshModel::PostSetup();
 		BVH::Build(MeshModel::GetMesh().NumTriangles());
 	}
 } // namespace PotatoEngine

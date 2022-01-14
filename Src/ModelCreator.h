@@ -22,7 +22,9 @@ namespace PotatoEngine
 			SINGLE_POINT_MODEL,
 			COUNT
 		};
-		static std::shared_ptr<Model> CreateModel(const Type t, const std::string& objModelPath = "");
+		std::shared_ptr<Model> CreateModel(const Type t, const std::string& objModelPath = "");
+	protected:
+		virtual std::shared_ptr<Model> DoCreateModel(const Type t);
 	}; // namespace ModelCreator
 } // namespace PotatoEngine
 

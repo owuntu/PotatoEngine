@@ -30,9 +30,11 @@ namespace PotatoEngine
 
 		const Mesh& GetMesh() const { return m_mesh; }
 
+	protected:
+		virtual void PostSetup();
+
 	private:
 		void ProcessMesh(aiMesh* pMesh);
-		virtual void PostSetup();
 
 		void DoDraw() const;
 		void DoDrawVertices() const;

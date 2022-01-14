@@ -30,6 +30,9 @@
     <Filter Include="CollisionDetection">
       <UniqueIdentifier>{1e06df6c-7733-4ff3-93ff-c655e4642d0f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Model\ModelFactory">
+      <UniqueIdentifier>{d3c3cfee-fb56-4c3f-b343-48c9e1108f6c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShaderObject\ShaderObject.cpp">
@@ -62,9 +65,6 @@
     <ClCompile Include="Src\Model.cpp">
       <Filter>Model</Filter>
     </ClCompile>
-    <ClCompile Include="Src\ModelCreator.cpp">
-      <Filter>Model</Filter>
-    </ClCompile>
     <ClCompile Include="Src\PointCloudModel.cpp">
       <Filter>Model</Filter>
     </ClCompile>
@@ -79,6 +79,12 @@
     </ClCompile>
     <ClCompile Include="Src\MeshModelBVH.cpp">
       <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ModelCreator.cpp">
+      <Filter>Model\ModelFactory</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\BVHModelCreator.cpp">
+      <Filter>Model\ModelFactory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -106,9 +112,6 @@
     <ClInclude Include="Src\Model.h">
       <Filter>Model</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ModelCreator.h">
-      <Filter>Model</Filter>
-    </ClInclude>
     <ClInclude Include="Src\PointCloudModel.h">
       <Filter>Model</Filter>
     </ClInclude>
@@ -132,6 +135,12 @@
     </ClInclude>
     <ClInclude Include="Src\MeshModelBVH.h">
       <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ModelCreator.h">
+      <Filter>Model\ModelFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\BVHModelCreator.h">
+      <Filter>Model\ModelFactory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -23,6 +23,7 @@
     <ClCompile Include="ShaderObject\ShaderObject.cpp" />
     <ClCompile Include="ShaderObject\ShaderProgram.cpp" />
     <ClCompile Include="Src\BVH.cpp" />
+    <ClCompile Include="Src\BVHModelCreator.cpp" />
     <ClCompile Include="Src\Camera.cpp" />
     <ClCompile Include="Src\ClosestPointTest.cpp" />
     <ClCompile Include="Src\Game.cpp" />
@@ -41,6 +42,7 @@
     <ClInclude Include="ShaderObject\ShaderProgram.h" />
     <ClInclude Include="Src\BBox.h" />
     <ClInclude Include="Src\BVH.h" />
+    <ClInclude Include="Src\BVHModelCreator.h" />
     <ClInclude Include="Src\Camera.h" />
     <ClInclude Include="Src\ClosestPointTest.h" />
     <ClInclude Include="Src\Game.h" />

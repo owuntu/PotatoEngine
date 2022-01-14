@@ -15,8 +15,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "ClosestPointQuery.h"
-#include "MeshModel.h"
-#include "ModelCreator.h"
+#include "MeshModelBVH.h"
+#include "BVHModelCreator.h"
 #include "Camera.h"
 #include "ShaderObject/ShaderProgram.h"
 #include "HelperDraw.h"
@@ -96,7 +96,8 @@ bool ClosestPointQuery::Init(const std::string& modelPath)
 	m_pShader->Create("GLSLSHaders/modelVertexShader.vs.glsl", "GLSLShaders/modelFragmentShader.fs.glsl");
 	m_pShader->Use();
 
-	m_pMeshModel = std::dynamic_pointer_cast<MeshModel>(ModelCreator::CreateModel(ModelCreator::Type::MESH_MODEL, modelPath));
+	BVHModelCreator bvhModelCreator;
+	m_pMeshModel = std::dynamic_pointer_cast<MeshModelBVH>(bvhModelCreator.CreateModel(ModelCreator::Type::MESH_MODEL, modelPath));
 	m_pMeshModel->SetColor(glm::vec3(0.8f));
 
 #if 0
@@ -114,10 +115,11 @@ bool ClosestPointQuery::Init(const std::string& modelPath)
 
 #endif
 
-	m_pQueryPointModel = std::dynamic_pointer_cast<SinglePointModel>(ModelCreator::CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
+	ModelCreator modelCreator;
+	m_pQueryPointModel = std::dynamic_pointer_cast<SinglePointModel>(modelCreator.CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
 	m_pQueryPointModel->SetColor(glm::vec4(1, 0, 0, 1)); // set query point red
 
-	m_pClosestPointModel = std::dynamic_pointer_cast<SinglePointModel>(ModelCreator::CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
+	m_pClosestPointModel = std::dynamic_pointer_cast<SinglePointModel>(modelCreator.CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
 	m_pClosestPointModel->SetColor(glm::vec4(0, 1, 0, 1)); // set result point green
 
 	return true;
