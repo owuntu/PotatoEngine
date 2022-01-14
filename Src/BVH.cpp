@@ -53,30 +53,27 @@ namespace PotatoEngine
 
 	void BVH::SplitNode(Node* node)
 	{
-		unsigned int child1EleCount = MeanSplit(node);
-		if (child1EleCount == 0)
+		if (node->numElements <= ms_maxLeafElements)
 		{
-			if (node->numElements > ms_maxLeafElements)
-			{
-				// we must split
-				// todo:
-				child1EleCount = node->numElements / 2;
-			}
-			else
-			{
-				// we reach the leaf node
-				return;
-			}
+			// we reach the leaf node
+			return;
+		}
+
+		unsigned int child1NumElements = MeanSplit(node);
+		if (child1NumElements == 0 || child1NumElements >= node->numElements)
+		{
+			// we must split
+			child1NumElements = node->numElements / 2;
 		}
 
 		Node* child1 = new Node();
 
 		child1->elementOffset = node->elementOffset;
-		child1->numElements = child1EleCount;
+		child1->numElements = child1NumElements;
 
-		for (unsigned int i = child1->elementOffset; i < child1EleCount; ++i)	
+		for (unsigned int i = 0; i < child1NumElements; ++i)	
 		{
-			auto index = m_elements[i];
+			unsigned int index = m_elements[i + (child1->elementOffset)];
 			BBox tbox;
 			GetElementBound(index, tbox);
 			child1->box += tbox;
@@ -84,11 +81,11 @@ namespace PotatoEngine
 
 		Node* child2 = new Node();
 
-		child2->elementOffset = child1EleCount;
-		child2->numElements = node->numElements - child1EleCount;
-		for (unsigned int i = child2->elementOffset; i < child2->numElements; ++i)
+		child2->elementOffset = node->elementOffset + child1NumElements;
+		child2->numElements = node->numElements - child1NumElements;
+		for (unsigned int i = 0; i < child2->numElements; ++i)
 		{
-			auto index = m_elements[i];
+			unsigned int index = m_elements[i + (child2->elementOffset)];
 			BBox tbox;
 			GetElementBound(index, tbox);
 			child2->box += tbox;
@@ -108,23 +105,32 @@ namespace PotatoEngine
 		glm::vec3 d = box.vmax - box.vmin;
 
 		// Find the maximum dimension of the box and try to split from it
-		unsigned int splitAxis = (d[0] > d[1] && d[0] > d[2]) ? 0 : (d[1] > d[2] ? 1 : 2);
+		unsigned int splitAxis[3];
+		splitAxis[0] = (d[0] > d[1] && d[0] > d[2]) ? 0 : (d[1] > d[2] ? 1 : 2);
+		splitAxis[1] = (splitAxis[0] + 1) % 3;
+		splitAxis[2] = (splitAxis[0] + 2) % 3;
 
-		int i = node->elementOffset;
-		int j = node->numElements;
+		if (d[splitAxis[1]] < d[splitAxis[2]])
+		{
+			auto t = splitAxis[1];
+			splitAxis[1] = splitAxis[2];
+			splitAxis[2] = t;
+		}
 
-		unsigned int child1EleCount = 0;
+		unsigned int child1NumElements = 0;
 
 		// Iterate throgh each dimension in case we can't find a valid split
 		for (unsigned int dim = 0; dim < 3; ++dim)
 		{
-			splitAxis = (splitAxis + 1) % 3;
-			float splitPos = (box.vmax + box.vmin)[splitAxis] * 0.5f;
+			unsigned int axis = splitAxis[dim];
+			float splitPos = (box.vmax[axis] + box.vmin[axis]) * 0.5f;
 
+			int i = node->elementOffset;
+			int j = node->numElements + node->elementOffset;
 			while (i < j)
 			{
-				glm::vec3 center = GetElementCenter(i);
-				if (center[splitAxis] < splitPos)
+				glm::vec3 center = GetElementCenter(m_elements[i]);
+				if (center[axis] <= splitPos)
 				{
 					i++;
 				}
@@ -138,15 +144,14 @@ namespace PotatoEngine
 				}
 			}
 
-			if (i > 0 && i < node->numElements)
+			if (i > node->elementOffset && i < node->numElements + node->elementOffset)
 			{
-				child1EleCount = i;
+				child1NumElements = i;
 				break;
 			}
-
 		}
 
-		return child1EleCount;
+		return child1NumElements;
 	}
 
 } // namespace PotatoEngine
