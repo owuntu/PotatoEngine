@@ -152,6 +152,7 @@ namespace PotatoEngine
 		return ClosestPointOnTriangle2nd(p, a, b, c);
 	}
 
+	// Return the closest point on AABB or p itself if p is inside the AABB
 	glm::vec3 ClosestPointOnAABB(const glm::vec3& p, const glm::vec3& bmin, const glm::vec3& bmax)
 	{
 		glm::vec3 res = p;

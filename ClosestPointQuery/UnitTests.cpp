@@ -265,6 +265,8 @@ bool ClosestPointUnitTest::Verify(const std::vector<glm::vec3>& results)
 			std::cout << "Incorrect result at " << i << std::endl;
 			std::cout << "Result: (" << res.x << ", " << res.y << ", " << res.z << ")\n";
 			std::cout << "Expected: (" << exp.x << ", " << exp.y << ", " << exp.z << ")\n";
+			auto testPoint = m_testPoints[i];
+			std::cout << "TestPoint: (" << testPoint.x << ", " << testPoint.y << ", " << testPoint.z << ")\n";
 			//break;
 		}
 	}
