@@ -39,7 +39,7 @@ namespace PotatoEngine
 			}
 		}
 
-		bool IsInside(const glm::vec3& p)
+		bool IsInside(const glm::vec3& p) const
 		{
 			bool res = true;
 			for (int i = 0; i < 3; ++i)

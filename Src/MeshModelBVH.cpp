@@ -50,14 +50,17 @@ namespace PotatoEngine
 	glm::vec3 MeshModelBVH::QueryClosestPoint(const Node* pNode, const glm::vec3& queryPoint, const float searchDist2, float& currentMin2) const
 	{
 		const auto& box = pNode->box;
-		glm::vec3 boxClosest = ClosestPointOnAABB(queryPoint, box.vmin, box.vmax);
-
-		float dist2 = glm::distance2(queryPoint, boxClosest);
-		if (dist2 > searchDist2 || dist2 > currentMin2)
+		if (!box.IsInside(queryPoint))
 		{
-			// Early exit if distance from the closest point on AABB is
-			// further than the search distance and currentMin
-			return glm::vec3(NAN);
+			glm::vec3 boxClosest = ClosestPointOnAABB(queryPoint, box.vmin, box.vmax);
+
+			float dist2 = glm::distance2(queryPoint, boxClosest);
+			if (dist2 > searchDist2 || dist2 > currentMin2)
+			{
+				// Early exit if distance from the closest point on AABB is
+				// further than the search distance and currentMin
+				return glm::vec3(NAN);
+			}
 		}
 
 		if (pNode->child1 == nullptr)
@@ -76,7 +79,7 @@ namespace PotatoEngine
 				auto& v2 = vertices[indices[tri.v[2]]].Position;
 				
 				glm::vec3 tres = ClosestPointOnTriangle(queryPoint, v0, v1, v2);
-				dist2 = glm::distance2(queryPoint, tres);
+				float dist2 = glm::distance2(queryPoint, tres);
 				if (dist2 <= searchDist2 && dist2 < currentMin2)
 				{
 					currentMin2 = dist2;
