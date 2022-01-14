@@ -13,7 +13,6 @@ namespace PotatoEngine
 	public:
 		static const unsigned int ms_maxLeafElements = 8;
 
-	//private:
 		struct Node
 		{
 			BBox box;
@@ -34,14 +33,14 @@ namespace PotatoEngine
 		virtual void GetElementBound(int index, BBox& box) = 0;
 		virtual glm::vec3 GetElementCenter(int index) = 0;
 
-	private:
-		void SplitNode(Node* node);
-		unsigned int MeanSplit(Node* node);
-
 		Node* m_root = nullptr;
 
 		// Element indices
 		std::vector<unsigned int> m_elements;
+
+	private:
+		void SplitNode(Node* node);
+		unsigned int MeanSplit(Node* node);
 	};
 } // namespace PotatoEngine
 

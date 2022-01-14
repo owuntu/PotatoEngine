@@ -151,4 +151,24 @@ namespace PotatoEngine
 		//return ClosestPointOnTriangle1st(p, a, b, c);
 		return ClosestPointOnTriangle2nd(p, a, b, c);
 	}
+
+	glm::vec3 ClosestPointOnAABB(const glm::vec3& p, const glm::vec3& bmin, const glm::vec3& bmax)
+	{
+		glm::vec3 res = p;
+
+		for (int i = 0; i < 3; ++i)
+		{
+			if (p[i] < bmin[i])
+			{
+				res[i] = bmin[i];
+			}
+
+			if (p[i] > bmax[i])
+			{
+				res[i] = bmax[i];
+			}
+		}
+
+		return res;
+	}
 } // namespace PotatoEngine

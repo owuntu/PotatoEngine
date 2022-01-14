@@ -39,6 +39,16 @@ namespace PotatoEngine
 			}
 		}
 
+		bool IsInside(const glm::vec3& p)
+		{
+			bool res = true;
+			for (int i = 0; i < 3; ++i)
+			{
+				res &= (p[i] < vmax[i] && p[i] > vmin[i]);
+			}
+			return res;
+		}
+
 		const BBox& operator+=(const BBox& rhs)
 		{
 			this->Add(rhs);

@@ -28,6 +28,7 @@ public:
 	glm::vec3 DoQueryClosestPoint(const glm::vec3& queryPoint, float maxSearchDistance);
 
 	glm::vec3 QueryBruteForce(const glm::vec3& queryPoint, float maxSearchDistance);
+	glm::vec3 QueryBVH(const glm::vec3& queryPoint, float maxSearchDistance);
 
 	const std::shared_ptr<PotatoEngine::MeshModelBVH> GetModel() const { return m_pMeshModel; }
 

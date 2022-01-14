@@ -6,6 +6,8 @@
 namespace PotatoEngine
 {
 	glm::vec3 ClosestPointOnTriangle(const glm::vec3& p, const glm::vec3& a, const glm::vec3& b, const glm::vec3& c);
+
+	glm::vec3 ClosestPointOnAABB(const glm::vec3& p, const glm::vec3& bmin, const glm::vec3& bmax);
 } // namespace PotatoEngine
 
 #endif

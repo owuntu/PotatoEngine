@@ -202,7 +202,8 @@ int ClosestPointQuery::Run()
 
 glm::vec3 ClosestPointQuery::DoQueryClosestPoint(const glm::vec3& queryPoint, float maxSearchDistance)
 {
-	return QueryBruteForce(queryPoint, maxSearchDistance);
+	//return QueryBruteForce(queryPoint, maxSearchDistance);
+	return QueryBVH(queryPoint, maxSearchDistance);
 }
 
 // Brute force method
@@ -234,4 +235,9 @@ glm::vec3 ClosestPointQuery::QueryBruteForce(const glm::vec3& queryPoint, float 
 	}
 
 	return glm::vec3(NAN);
+}
+
+glm::vec3 ClosestPointQuery::QueryBVH(const glm::vec3& queryPoint, float maxSearchDistance)
+{
+	return m_pMeshModel->QueryClosestPoint(queryPoint, maxSearchDistance);
 }
