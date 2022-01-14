@@ -22,6 +22,7 @@
     <ClCompile Include="glad\glad.c" />
     <ClCompile Include="ShaderObject\ShaderObject.cpp" />
     <ClCompile Include="ShaderObject\ShaderProgram.cpp" />
+    <ClCompile Include="Src\BVH.cpp" />
     <ClCompile Include="Src\Camera.cpp" />
     <ClCompile Include="Src\ClosestPointTest.cpp" />
     <ClCompile Include="Src\Game.cpp" />
@@ -29,6 +30,7 @@
     <ClCompile Include="Src\KdTree.cpp" />
     <ClCompile Include="Src\Mesh.cpp" />
     <ClCompile Include="Src\MeshModel.cpp" />
+    <ClCompile Include="Src\MeshModelBVH.cpp" />
     <ClCompile Include="Src\Model.cpp" />
     <ClCompile Include="Src\ModelCreator.cpp" />
     <ClCompile Include="Src\PointCloudModel.cpp" />
@@ -38,6 +40,7 @@
     <ClInclude Include="ShaderObject\ShaderObject.h" />
     <ClInclude Include="ShaderObject\ShaderProgram.h" />
     <ClInclude Include="Src\BBox.h" />
+    <ClInclude Include="Src\BVH.h" />
     <ClInclude Include="Src\Camera.h" />
     <ClInclude Include="Src\ClosestPointTest.h" />
     <ClInclude Include="Src\Game.h" />
@@ -45,6 +48,7 @@
     <ClInclude Include="Src\KdTree.h" />
     <ClInclude Include="Src\Mesh.h" />
     <ClInclude Include="Src\MeshModel.h" />
+    <ClInclude Include="Src\MeshModelBVH.h" />
     <ClInclude Include="Src\Model.h" />
     <ClInclude Include="Src\ModelCreator.h" />
     <ClInclude Include="Src\PointCloudModel.h" />

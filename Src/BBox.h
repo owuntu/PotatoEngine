@@ -38,6 +38,18 @@ namespace PotatoEngine
 				vmax[i] = fmaxf(rhs.vmax[i], vmax[i]);
 			}
 		}
+
+		const BBox& operator+=(const BBox& rhs)
+		{
+			this->Add(rhs);
+			return *this;
+		}
+
+		const BBox& operator+=(const glm::vec3& rhs)
+		{
+			this->Add(rhs);
+			return *this;
+		}
 	};
 }
 

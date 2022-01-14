@@ -23,7 +23,7 @@ namespace PotatoEngine
 		MeshModel()
 		{}
 		
-		~MeshModel()
+		virtual ~MeshModel()
 		{
 			m_mesh.Release();
 		}

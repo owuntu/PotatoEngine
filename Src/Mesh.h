@@ -16,8 +16,15 @@ namespace PotatoEngine
 	class Mesh
 	{
 	public:
+		struct Triangle
+		{
+			// vertex indices
+			unsigned int v[3];
+		};
+
 		std::vector<Vertex> m_vertices;
 		std::vector<unsigned int> m_indices;
+		std::vector<Triangle> m_triangles;
 		unsigned int m_glVAO;
 
 		Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices):
@@ -27,6 +34,16 @@ namespace PotatoEngine
 		{
 			m_vertices = vertices;
 			m_indices = indices;
+
+			for (std::size_t i = 0; i < m_indices.size(); i += 3)
+			{
+				Triangle t;
+				t.v[0] = m_indices[i];
+				t.v[1] = m_indices[i + 1];
+				t.v[2] = m_indices[i + 2];
+
+				m_triangles.push_back(t);
+			}
 
 			SetupGL();
 		}
@@ -42,6 +59,15 @@ namespace PotatoEngine
 		void Draw() const;
 		void DrawVertices() const;
 		void Release();
+
+		std::size_t NumTriangles() const { return m_triangles.size(); }
+		const Triangle& GetTriangle(std::size_t i) const { return m_triangles[i]; }
+
+		std::size_t NumVertices() const { return m_vertices.size(); }
+		const Vertex& GetVertex(std::size_t i) const { return m_vertices[i]; }
+
+		std::size_t NumIndices() const { return m_indices.size(); }
+		const unsigned int GetIndex(std::size_t i) const { return m_indices[i]; }
 
 	private:
 		unsigned int m_glVBO;
