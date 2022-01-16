@@ -113,9 +113,8 @@ bool ClosestPointQuery::Init(const std::string& modelPath)
 	m_pMeshModel = std::dynamic_pointer_cast<MeshModelBVH>(bvhModelCreator.CreateModel(ModelCreator::Type::MESH_MODEL, modelPath));
 	m_pMeshModel->SetColor(glm::vec3(0.8f));
 
-#
 	// Adapth camera movement speed to the model size
-	const auto& box = m_pMeshModel->GetRoot().GetBoundingBox();
+	const auto& box = m_pMeshModel->GetBoundingBox();
 	auto diff = box.vmax - box.vmin;
 	float maxDim = fmaxf(diff.x, fmaxf(diff.y, diff.z));
 	m_pMainCamera->SetMoveSpeed(maxDim / 2.f);

@@ -29,23 +29,27 @@ namespace PotatoEngine
 		static const uint32_t ms_CHILD_INDEX_BITS = ms_NODE_DATA_BITS - ms_LEAF_NODE_BIT;
 		static const uint32_t ms_CHILD_INDEX_MASK = (static_cast<uint32_t>(1) << ms_CHILD_INDEX_BITS) - 1;
 
+		virtual ~BVH();
+		void DebugDrawBVH(ShaderProgram* pShader, int depthToDraw);
+
+	protected:
 		class Node
 		{
 		public:
-			void SetLeafNode(const BBox& iBox, uint32_t elementCount, uint32_t elementOffset);
-			void SetInternalNode(const BBox& iBox, uint32_t child1Index);
+			inline void SetLeafNode(const BBox& iBox, uint32_t elementCount, uint32_t elementOffset);
+			inline void SetInternalNode(const BBox& iBox, uint32_t child1Index);
 
-			bool IsLeafNode() const;
+			inline bool IsLeafNode() const;
 
 			// Must be leaf node
 			uint32_t GetElementCount() const;
 			uint32_t GetElementOffset() const;
 
 			// Must be internal node
-			uint32_t GetChild1Index() const;
-			uint32_t GetChild2Index() const;
+			inline uint32_t GetChild1Index() const;
+			inline uint32_t GetChild2Index() const;
 
-			const BBox& GetBoundingBox() const { return m_box; }
+			inline const BBox& GetBoundingBox() const { return m_box; }
 
 		private:
 			BBox m_box; // 6 float, 6*4 = 24 bytes
@@ -60,13 +64,8 @@ namespace PotatoEngine
 			uint32_t m_data; // 4 bytes
 		};
 
-		const Node& GetRoot() const { return m_nodes[GetRootNodeID()]; }
-
-		void DebugDrawBVH(ShaderProgram* pShader, int depthToDraw);
-
-	protected:
-		virtual ~BVH();
 		void Build(uint32_t numElements);
+		const Node& GetRoot() const { return m_nodes[GetRootNodeID()]; }
 
 		virtual void GetElementBound(int index, BBox& box) = 0;
 		virtual float GetElementCenter(int index, int dim) = 0;
@@ -77,7 +76,7 @@ namespace PotatoEngine
 		// Nodes array for storing the BVH tree
 		std::vector<Node> m_nodes;
 
-		uint32_t GetRootNodeID() const { return 0; }
+		inline uint32_t GetRootNodeID() const { return 0; }
 
 	private:
 		struct TempNode

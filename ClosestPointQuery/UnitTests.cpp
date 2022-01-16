@@ -89,7 +89,7 @@ void ClosestPointUnitTest::GenerateTestPointsAndResults()
 
 	// todo: adapt the new test
 	const auto pModel = sampleGame->GetModel();
-	BBox box = pModel->GetRoot().GetBoundingBox();
+	BBox box = pModel->GetBoundingBox();
 
 	// scale up the bounding box for larger area test
 	box.vmax *= 2.0f;

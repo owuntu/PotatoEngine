@@ -13,6 +13,8 @@ namespace PotatoEngine
 
 		glm::vec3 QueryClosestPoint(const glm::vec3& queryPoint, const float maxSearchDist) const;
 
+		const BBox& GetBoundingBox() const { return GetRoot().GetBoundingBox(); }
+
 	protected:
 		virtual void GetElementBound(int index, BBox& box);
 		virtual float GetElementCenter(int index, int dim);
