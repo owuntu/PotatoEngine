@@ -81,27 +81,6 @@ void ReadFileToPoints(std::vector<glm::vec3>& points, const std::string& fileNam
 	file.close();
 }
 
-// Basic method: brute force search
-glm::vec3 QueryClosestPointBruteForce(const std::vector<glm::vec3>& points, const glm::vec3& queryPoint, float maxSearchDistance)
-{
-	glm::vec3 res(nanf(""));
-
-	float minDist2 = FLT_MAX;
-	float md2 = maxSearchDistance * maxSearchDistance;
-	for (auto point : points)
-	{
-		float d2 = glm::length2(point - queryPoint);
-
-		if (d2 < md2 && d2 < minDist2)
-		{
-			minDist2 = d2;
-			res = point;
-		}
-	}
-
-	return res;
-}
-
 void ClosestPointUnitTest::GenerateTestPointsAndResults()
 {
 	std::cout << "Generating test data and result files\n";
@@ -161,7 +140,6 @@ void ClosestPointUnitTest::GenerateTestPointsAndResults()
 	//WritePointsToFile(m_testPoints, m_testDataFileName);
 	WritePointsToFile(m_expResults, m_resultDataFileName);
 }
-
 
 void ClosestPointUnitTest::LoadTestData()
 {
