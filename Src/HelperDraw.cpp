@@ -137,27 +137,3 @@ void DrawBox(const BBox& box)
 	glEnd();
 }
 
-void DrawBVH(PotatoEngine::ShaderProgram* pShader, const PotatoEngine::BVH::TempNode* pNode, int depth, int depthToDraw)
-{
-	static glm::vec4 colors[3] = {
-		{0.8f, 0, 0, 1.f},
-		{0, 0.8f, 0, 1.f},
-		{0, 0.8f, 0.8f, 1.f}
-	};
-
-	if (pNode == nullptr || depth > depthToDraw)
-	{
-		return;
-	}
-
-	if (depth == depthToDraw)
-	{
-		pShader->SetMat4("modelMat", IDENTITY);
-		pShader->SetVec4("ModelColor", colors[depth % 3]);
-		DrawBox(pNode->box);
-	}
-
-	DrawBVH(pShader, pNode->child1, depth + 1, depthToDraw);
-	DrawBVH(pShader, pNode->child2, depth + 1, depthToDraw);
-}
-

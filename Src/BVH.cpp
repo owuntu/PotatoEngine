@@ -6,7 +6,7 @@
 
 namespace PotatoEngine
 {
-	void BVH::ArrayNode::SetLeafNode(const BBox& iBox, uint32_t elementCount, uint32_t elementOffset)
+	void BVH::Node::SetLeafNode(const BBox& iBox, uint32_t elementCount, uint32_t elementOffset)
 	{
 		assert(elementCount != 0);
 		assert(elementCount <= ms_MAX_LEAF_ELEMENT_COUNT);
@@ -14,41 +14,41 @@ namespace PotatoEngine
 		m_data = ((static_cast<uint32_t>(elementCount - 1) << ms_ELEMENT_OFFSET_BITS) | (elementOffset & ms_ELEMENT_OFFSET_MASK) | ms_LEAF_NODE_MASK);
 	}
 
-	void BVH::ArrayNode::SetInternalNode(const BBox& iBox, uint32_t child1Index)
+	void BVH::Node::SetInternalNode(const BBox& iBox, uint32_t child1Index)
 	{
 		assert(child1Index <= ms_CHILD_INDEX_MASK);
 		m_box = iBox;
 		m_data = (child1Index & ms_CHILD_INDEX_MASK);
 	}
 
-	bool BVH::ArrayNode::IsLeafNode() const
+	bool BVH::Node::IsLeafNode() const
 	{
 		return (m_data & ms_LEAF_NODE_MASK) != 0;
 	}
 
 	// Must be leaf node
-	uint32_t BVH::ArrayNode::GetElementCount() const
+	uint32_t BVH::Node::GetElementCount() const
 	{
 		assert(IsLeafNode());
 		return ((m_data >> ms_ELEMENT_OFFSET_BITS) & ms_ELEMENT_COUNT_MASK );
 	}
 
 	// Must be leaf node
-	uint32_t BVH::ArrayNode::GetElementOffset() const
+	uint32_t BVH::Node::GetElementOffset() const
 	{
 		assert(IsLeafNode());
 		return (m_data & ms_ELEMENT_OFFSET_MASK);
 	}
 
 	// Must be internal node
-	uint32_t BVH::ArrayNode::GetChild1Index() const
+	uint32_t BVH::Node::GetChild1Index() const
 	{
 		assert(!IsLeafNode());
 		return (m_data & ms_CHILD_INDEX_MASK);
 	}
 
 	// Must be internal node
-	uint32_t BVH::ArrayNode::GetChild2Index() const
+	uint32_t BVH::Node::GetChild2Index() const
 	{
 		assert(!IsLeafNode());
 		return ((m_data & ms_CHILD_INDEX_MASK) + 1);

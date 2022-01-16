@@ -29,18 +29,7 @@ namespace PotatoEngine
 		static const uint32_t ms_CHILD_INDEX_BITS = ms_NODE_DATA_BITS - ms_LEAF_NODE_BIT;
 		static const uint32_t ms_CHILD_INDEX_MASK = (static_cast<uint32_t>(1) << ms_CHILD_INDEX_BITS) - 1;
 
-		struct TempNode
-		{
-			BBox box; // 6 float, 6*4 = 24 bytes
-
-			TempNode* child1 = nullptr; // 64 bit system, 8 bytes
-			TempNode* child2 = nullptr; // 8 bytes
-
-			unsigned int numElements = 0; // 4 bytes
-			unsigned int elementOffset = 0; // 4 bytes
-		};
-
-		class ArrayNode
+		class Node
 		{
 		public:
 			void SetLeafNode(const BBox& iBox, uint32_t elementCount, uint32_t elementOffset);
@@ -71,7 +60,7 @@ namespace PotatoEngine
 			uint32_t m_data; // 4 bytes
 		};
 
-		const ArrayNode& GetRoot() const { return m_nodes[GetRootNodeID()]; }
+		const Node& GetRoot() const { return m_nodes[GetRootNodeID()]; }
 
 		void DebugDrawBVH(ShaderProgram* pShader, int depthToDraw);
 
@@ -86,11 +75,22 @@ namespace PotatoEngine
 		std::vector<unsigned int> m_elements;
 
 		// Nodes array for storing the BVH tree
-		std::vector<ArrayNode> m_nodes;
+		std::vector<Node> m_nodes;
 
 		std::size_t GetRootNodeID() const { return 0; }
 
 	private:
+		struct TempNode
+		{
+			BBox box; // 6 float, 6*4 = 24 bytes
+
+			TempNode* child1 = nullptr; // 64 bit system, 8 bytes
+			TempNode* child2 = nullptr; // 8 bytes
+
+			unsigned int numElements = 0; // 4 bytes
+			unsigned int elementOffset = 0; // 4 bytes
+		};
+
 		// Return total nodes count start from node
 		uint32_t SplitTempNode(TempNode* pNode);
 
