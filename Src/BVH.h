@@ -66,7 +66,7 @@ namespace PotatoEngine
 
 	protected:
 		virtual ~BVH();
-		void Build(int numElements);
+		void Build(uint32_t numElements);
 
 		virtual void GetElementBound(int index, BBox& box) = 0;
 		virtual float GetElementCenter(int index, int dim) = 0;
@@ -77,7 +77,7 @@ namespace PotatoEngine
 		// Nodes array for storing the BVH tree
 		std::vector<Node> m_nodes;
 
-		std::size_t GetRootNodeID() const { return 0; }
+		uint32_t GetRootNodeID() const { return 0; }
 
 	private:
 		struct TempNode
@@ -97,7 +97,7 @@ namespace PotatoEngine
 		unsigned int MeanSplit(TempNode* pNode);
 
 		// return a unused child1Index for other internal nodes if pNode is a leaf node
-		std::size_t ConvertTreeNodesIntoArray(TempNode* pNode, std::size_t nodeID, std::size_t child1Index);
+		std::size_t ConvertTreeNodesIntoArray(TempNode* pNode, uint32_t nodeID, uint32_t child1Index);
 
 		void ClearTempNodes(TempNode* pRoot);
 

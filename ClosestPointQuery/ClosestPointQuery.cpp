@@ -213,11 +213,11 @@ glm::vec3 ClosestPointQuery::DoQueryClosestPoint(const glm::vec3& queryPoint, fl
 glm::vec3 ClosestPointQuery::QueryBruteForce(const glm::vec3& queryPoint, float maxSearchDistance)
 {
 	auto& mesh = m_pMeshModel->GetMesh();
-	const auto& triangles = mesh.m_triangles;
+	const auto numTriangles = mesh.NumTriangles();
 
 	float minDist2 = FLT_MAX;
 	glm::vec3 res(NAN);
-	for (std::size_t i = 0; i < triangles.size(); ++i)
+	for (std::size_t i = 0; i < numTriangles; ++i)
 	{
 		glm::vec3 tres = mesh.ClosestPointOnTriangle(queryPoint, i);
 		float d2 = glm::distance2(queryPoint, tres);

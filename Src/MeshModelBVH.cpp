@@ -68,7 +68,7 @@ namespace PotatoEngine
 			auto& mesh = GetMesh();
 			auto elementCount = node.GetElementCount();
 			auto elementOffset = node.GetElementOffset();
-			for (unsigned int i = 0; i < elementCount; ++i)
+			for (uint32_t i = 0; i < elementCount; ++i)
 			{
 				auto index = m_elements[i + elementOffset];
 

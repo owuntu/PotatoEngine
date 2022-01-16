@@ -1,4 +1,5 @@
 #include <cassert>
+#include <iostream>
 #include <stack>
 
 #include "HelperDraw.h"
@@ -60,16 +61,15 @@ namespace PotatoEngine
 		m_nodes.clear();
 	}
 
-	void BVH::Build(int numElements)
+	void BVH::Build(uint32_t numElements)
 	{
+		std::cout << "Building BVH ...\n";
 		BBox box;
-		box.Init();
 		m_elements.resize(numElements);
 
 		for (int i = 0; i < numElements; ++i)
 		{
 			BBox ebox;
-			ebox.Init();
 			GetElementBound(i, ebox);
 			box += ebox;
 
@@ -161,11 +161,11 @@ namespace PotatoEngine
 		// Iterate throgh each dimension in case we can't find a valid split
 		for (unsigned int dim = 0; dim < 3; ++dim)
 		{
-			unsigned int axis = splitAxis[dim];
+			auto axis = splitAxis[dim];
 			float splitPos = (box.vmax[axis] + box.vmin[axis]) * 0.5f;
 
-			int i = node->elementOffset;
-			int j = node->numElements + node->elementOffset;
+			auto i = node->elementOffset;
+			auto j = node->numElements + node->elementOffset;
 			while (i < j)
 			{
 				float center = GetElementCenter(m_elements[i], axis);
@@ -193,7 +193,7 @@ namespace PotatoEngine
 		return child1NumElements;
 	}
 
-	std::size_t BVH::ConvertTreeNodesIntoArray(TempNode* pNode, std::size_t nodeID, std::size_t child1Index)
+	std::size_t BVH::ConvertTreeNodesIntoArray(TempNode* pNode, uint32_t nodeID, uint32_t child1Index)
 	{
 		if (pNode->child1 == nullptr)
 		{

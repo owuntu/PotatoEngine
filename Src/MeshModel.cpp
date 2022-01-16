@@ -44,23 +44,35 @@ namespace PotatoEngine
 		// Merging all meshes into one.
 		// todo: provide option to whether to merge
 		using namespace std;
-		vector<Vertex> vertices;
-		vector<unsigned int> indices;
-		std::size_t offset = vertices.size();
+
+		std::size_t numVertices = 0;
+		std::size_t numIndices = 0;
 
 		for (std::size_t i = 0; i < m_tmpMeshes.size(); ++i)
 		{
 			auto& mesh = m_tmpMeshes[i];
-			for (std::size_t vi = 0; vi < mesh.m_vertices.size(); ++vi)
-			{
-				vertices.push_back(mesh.m_vertices[vi]);
-			}
+			numVertices += mesh.m_vertices.size();
+			numIndices += mesh.m_indices.size();
+		}
 
-			for (std::size_t ii = 0; ii < mesh.m_indices.size(); ++ii)
+		vector<Vertex> vertices(numVertices);
+		vector<unsigned int> indices(numIndices);
+
+		std::size_t vertexOffset = 0;
+		std::size_t indexOffset = 0;
+		for (std::size_t i = 0; i < m_tmpMeshes.size(); ++i)
+		{
+			auto& mesh = m_tmpMeshes[i];
+			memcpy(&vertices[vertexOffset], &mesh.m_vertices[0], mesh.m_vertices.size() * sizeof(Vertex));
+
+			for (std::size_t ii = 0; ii < mesh.m_indices.size(); ii += 3)
 			{
-				indices.push_back(mesh.m_indices[ii] + offset);
+				indices[indexOffset + ii] = mesh.m_indices[ii] + vertexOffset;
+				indices[indexOffset + ii + 1] = mesh.m_indices[ii + 1] + vertexOffset;
+				indices[indexOffset + ii + 2] = mesh.m_indices[ii + 2] + vertexOffset;
 			}
-			offset += mesh.m_vertices.size();
+			vertexOffset += mesh.m_vertices.size();
+			indexOffset += mesh.m_indices.size();
 			mesh.Release();
 		}
 

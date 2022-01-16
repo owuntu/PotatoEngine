@@ -8,7 +8,7 @@
 void DrawKdTree(PotatoEngine::ShaderProgram* pShader, const PotatoEngine::KdTree::Node* pNode, int depth, const int maxDrawDepth);
 void DrawCoordAxis(PotatoEngine::ShaderProgram* pShader);
 
-class PotatoEngine::BBox;
+struct PotatoEngine::BBox;
 
 void DrawBox(const PotatoEngine::BBox& box);
 
