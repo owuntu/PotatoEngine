@@ -9,7 +9,7 @@ namespace PotatoEngine
 {
 	void MeshModel::ProcessMesh(aiMesh* pMesh)
 	{
-		std::vector<Vertex> vertices;
+		std::vector<Vertex> vertices(pMesh->mNumVertices);
 		for (unsigned int i = 0; i < pMesh->mNumVertices; ++i)
 		{
 			Vertex v;
@@ -23,7 +23,7 @@ namespace PotatoEngine
 				v.Normal.y = pMesh->mNormals[i].y;
 				v.Normal.z = pMesh->mNormals[i].z;
 			}
-			vertices.push_back(v);
+			vertices[i] = v;
 		}
 
 		std::vector<unsigned int> indices;
