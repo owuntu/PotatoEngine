@@ -8,6 +8,9 @@
 void DrawKdTree(PotatoEngine::ShaderProgram* pShader, const PotatoEngine::KdTree::Node* pNode, int depth, const int maxDrawDepth);
 void DrawCoordAxis(PotatoEngine::ShaderProgram* pShader);
 
+class PotatoEngine::BBox;
+
+void DrawBox(const PotatoEngine::BBox& box);
 void DrawBVH(PotatoEngine::ShaderProgram* pShader, const PotatoEngine::BVH::Node* pNode, int depth, int depthToDraw);
 
 #endif // HELPER_DRAW_H_

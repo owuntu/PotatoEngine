@@ -23,6 +23,8 @@ namespace PotatoEngine
 
 		glm::vec3 QueryClosestPoint(const Node* pNode, const glm::vec3& queryPoint, const float searchDist2, float& currentMin2) const;
 
+		glm::vec3 QueryClosestPoint(std::size_t nodeID, const glm::vec3& queryPoint, const float searchDist2, float& currentMin2) const;
+
 	}; // class MeshModelBVH
 
 } // namespace PotatoEngine

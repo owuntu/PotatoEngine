@@ -294,13 +294,11 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="HelperDraw.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ClosestPointQuery.cpp" />
     <ClCompile Include="UnitTests.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HelperDraw.h" />
     <ClInclude Include="ClosestPointQuery.h" />
     <ClInclude Include="UnitTests.h" />
   </ItemGroup>

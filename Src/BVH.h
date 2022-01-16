@@ -9,6 +9,8 @@
 
 namespace PotatoEngine
 {
+	class ShaderProgram;
+
 	class BVH
 	{
 	public:
@@ -29,13 +31,13 @@ namespace PotatoEngine
 
 		struct Node
 		{
-			BBox box;
+			BBox box; // 6 float, 6*4 = 24 bytes
 
-			Node* child1 = nullptr;
-			Node* child2 = nullptr;
+			Node* child1 = nullptr; // 64 bit system, 8 bytes
+			Node* child2 = nullptr; // 8 bytes
 
-			unsigned int numElements = 0;
-			unsigned int elementOffset = 0;
+			unsigned int numElements = 0; // 4 bytes
+			unsigned int elementOffset = 0; // 4 bytes
 		};
 
 		class ArrayNode
@@ -71,6 +73,8 @@ namespace PotatoEngine
 
 		const Node* GetRoot() const { return m_root; }
 
+		void DebugDrawBVH(ShaderProgram* pShader, int depthToDraw);
+
 	protected:
 		virtual ~BVH();
 		void Build(int numElements);
@@ -86,12 +90,16 @@ namespace PotatoEngine
 		// Nodes array for storing the BVH tree
 		std::vector<ArrayNode> m_nodes;
 
+		std::size_t GetRootNodeID() const { return 0; }
+
 	private:
 		uint32_t SplitNode(Node* node);
 		unsigned int MeanSplit(Node* node);
 
 		// return a unused child1Index for other internal nodes if it is a leaf node
 		std::size_t ConvertTreeNodesIntoArray(Node* node, std::size_t nodeID, std::size_t child1Index);
+
+		void DebugDraw(ShaderProgram* pShader, std::size_t nodeID, int depth, int depthToDraw);
 	};
 } // namespace PotatoEngine
 

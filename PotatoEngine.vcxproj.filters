@@ -33,6 +33,9 @@
     <Filter Include="Model\ModelFactory">
       <UniqueIdentifier>{d3c3cfee-fb56-4c3f-b343-48c9e1108f6c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utilities">
+      <UniqueIdentifier>{e8d37a6f-06e2-481e-9d67-6b5c5791bdb5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShaderObject\ShaderObject.cpp">
@@ -86,6 +89,9 @@
     <ClCompile Include="Src\Mesh.cpp">
       <Filter>Model</Filter>
     </ClCompile>
+    <ClCompile Include="Src\HelperDraw.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ShaderObject\ShaderObject.h">
@@ -124,9 +130,6 @@
     <ClInclude Include="Src\Game.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Utilities.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Src\ClosestPointTest.h">
       <Filter>CollisionDetection</Filter>
     </ClInclude>
@@ -141,6 +144,12 @@
     </ClInclude>
     <ClInclude Include="Src\BVHModelCreator.h">
       <Filter>Model\ModelFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Utilities.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\HelperDraw.h">
+      <Filter>Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

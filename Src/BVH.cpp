@@ -1,5 +1,8 @@
 #include <cassert>
+#include <iostream>
 #include <stack>
+
+#include "HelperDraw.h"
 #include "BVH.h"
 
 namespace PotatoEngine
@@ -98,8 +101,8 @@ namespace PotatoEngine
 		m_root->numElements = numElements;
 
 		auto nodesCount = SplitNode(m_root);
-		m_nodes.resize(nodesCount);
-		ConvertTreeNodesIntoArray(m_root, 0, 1);
+		m_nodes.resize(nodesCount + GetRootNodeID());
+		ConvertTreeNodesIntoArray(m_root, GetRootNodeID(), GetRootNodeID() + 1);
 	}
 
 	uint32_t BVH::SplitNode(Node* node)
@@ -221,6 +224,41 @@ namespace PotatoEngine
 		auto newChildIndex = ConvertTreeNodesIntoArray(pNode->child1, child1Index, child1Index + 2);
 		// Use the unused newChildIndex for child2->child1 nodeID
 		return ConvertTreeNodesIntoArray(pNode->child2, child1Index + 1, newChildIndex);
+	}
+
+	void BVH::DebugDrawBVH(PotatoEngine::ShaderProgram* pShader, int depthToDraw)
+	{
+		DebugDraw(pShader, 0, 0, depthToDraw);
+	}
+
+	void BVH::DebugDraw(ShaderProgram* pShader, std::size_t nodeID, int depth, int depthToDraw)
+	{
+		static glm::vec4 colors[3] = {
+			{0.8f, 0, 0, 1.f},
+			{0, 0.8f, 0, 1.f},
+			{0, 0.8f, 0.8f, 1.f}
+		};
+
+		if (depth > depthToDraw)
+		{
+			return;
+		}
+
+		const auto& node = m_nodes[nodeID];
+		if (depth == depthToDraw)
+		{
+			pShader->SetMat4("modelMat", glm::mat4(1.0f));
+			pShader->SetVec4("ModelColor", colors[depth % 3]);
+			DrawBox(node.GetBoundingBox());
+		}
+
+		if (node.IsLeafNode())
+		{
+			return;
+		}
+
+		DebugDraw(pShader, node.GetChild1Index(), depth + 1, depthToDraw);
+		DebugDraw(pShader, node.GetChild2Index(), depth + 1, depthToDraw);
 	}
 
 } // namespace PotatoEngine

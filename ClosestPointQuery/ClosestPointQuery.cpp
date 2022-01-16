@@ -80,11 +80,13 @@ void ClosestPointQuery::KeyCallback(GLFWwindow* window, int key, int scancode, i
 	if (key == GLFW_KEY_I)
 	{
 		gs_depthToDraw++;
+		std::cout << "\nDraw depth " << gs_depthToDraw << "\n";
 	}
 
 	if (key == GLFW_KEY_K)
 	{
 		gs_depthToDraw--;
+		std::cout << "\nDraw depth " << gs_depthToDraw << "\n";
 	}
 
 }
@@ -174,7 +176,8 @@ void ClosestPointQuery::Render()
 	m_pMeshModel->Draw(m_pShader.get());
 
 	m_pShader->SetInt("bUseLighting", 0);
-	DrawBVH(m_pShader.get(), m_pMeshModel->GetRoot(), 0, gs_depthToDraw);
+	//DrawBVH(m_pShader.get(), m_pMeshModel->GetRoot(), 0, gs_depthToDraw);
+	m_pMeshModel->DebugDrawBVH(m_pShader.get(), gs_depthToDraw);
 
 	DrawCoordAxis(m_pShader.get());
 
