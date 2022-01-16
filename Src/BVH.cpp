@@ -31,7 +31,7 @@ namespace PotatoEngine
 	uint32_t BVH::Node::GetElementCount() const
 	{
 		assert(IsLeafNode());
-		return ((m_data >> ms_ELEMENT_OFFSET_BITS) & ms_ELEMENT_COUNT_MASK );
+		return ((m_data >> ms_ELEMENT_OFFSET_BITS) & ms_ELEMENT_COUNT_MASK) + 1;
 	}
 
 	// Must be leaf node
@@ -52,7 +52,7 @@ namespace PotatoEngine
 	uint32_t BVH::Node::GetChild2Index() const
 	{
 		assert(!IsLeafNode());
-		return ((m_data & ms_CHILD_INDEX_MASK) + 1);
+		return (GetChild1Index() + 1);
 	}
 
 	BVH::~BVH()
