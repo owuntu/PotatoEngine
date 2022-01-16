@@ -1,8 +1,57 @@
+#include <cassert>
 #include <stack>
 #include "BVH.h"
 
 namespace PotatoEngine
 {
+	void BVH::ArrayNode::SetLeafNode(const BBox& iBox, uint32_t elementCount, uint32_t elementOffset)
+	{
+		assert(elementCount != 0);
+		assert(elementCount <= ms_MAX_LEAF_ELEMENT_COUNT);
+		m_box = iBox;
+		m_data = ((static_cast<uint32_t>(elementCount - 1) << ms_ELEMENT_OFFSET_BITS) | (elementOffset & ms_ELEMENT_OFFSET_MASK) | ms_LEAF_NODE_MASK);
+	}
+
+	void BVH::ArrayNode::SetInternalNode(const BBox& iBox, uint32_t child1Index)
+	{
+		assert(child1Index <= ms_CHILD_INDEX_MASK);
+		m_box = iBox;
+		m_data = (child1Index & ms_CHILD_INDEX_MASK);
+	}
+
+	bool BVH::ArrayNode::IsLeafNode() const
+	{
+		return (m_data & ms_LEAF_NODE_MASK) != 0;
+	}
+
+	// Must be leaf node
+	uint32_t BVH::ArrayNode::GetElementCount() const
+	{
+		assert(IsLeafNode());
+		return ((m_data >> ms_ELEMENT_OFFSET_BITS) & ms_ELEMENT_COUNT_MASK );
+	}
+
+	// Must be leaf node
+	uint32_t BVH::ArrayNode::GetElementOffset() const
+	{
+		assert(IsLeafNode());
+		return (m_data & ms_ELEMENT_OFFSET_MASK);
+	}
+
+	// Must be internal node
+	uint32_t BVH::ArrayNode::GetChild1Index() const
+	{
+		assert(!IsLeafNode());
+		return (m_data & ms_CHILD_INDEX_MASK);
+	}
+
+	// Must be internal node
+	uint32_t BVH::ArrayNode::GetChild2Index() const
+	{
+		assert(!IsLeafNode());
+		return ((m_data & ms_CHILD_INDEX_MASK) + 1);
+	}
+
 	BVH::~BVH()
 	{
 		if (m_root != nullptr)
@@ -48,15 +97,18 @@ namespace PotatoEngine
 		m_root->elementOffset = 0;
 		m_root->numElements = numElements;
 
-		SplitNode(m_root);
+		auto nodesCount = SplitNode(m_root);
+		m_nodes.resize(nodesCount);
+		ConvertTreeNodesIntoArray(m_root, 0, 1);
 	}
 
-	void BVH::SplitNode(Node* node)
+	uint32_t BVH::SplitNode(Node* node)
 	{
-		if (node->numElements <= ms_maxLeafElements)
+		uint32_t nodesCount = 1;
+		if (node->numElements <= ms_MAX_LEAF_ELEMENT_COUNT)
 		{
 			// we reach the leaf node
-			return;
+			return nodesCount;
 		}
 
 		unsigned int child1NumElements = MeanSplit(node);
@@ -91,11 +143,13 @@ namespace PotatoEngine
 			child2->box += tbox;
 		}
 
-		SplitNode(child1);
-		SplitNode(child2);
+		nodesCount += SplitNode(child1);
+		nodesCount += SplitNode(child2);
 
 		node->child1 = child1;
 		node->child2 = child2;
+
+		return nodesCount;
 	}
 
 
@@ -152,6 +206,21 @@ namespace PotatoEngine
 		}
 
 		return child1NumElements;
+	}
+
+	std::size_t BVH::ConvertTreeNodesIntoArray(Node* pNode, std::size_t nodeID, std::size_t child1Index)
+	{
+		if (pNode->child1 == nullptr)
+		{
+			m_nodes[nodeID].SetLeafNode(pNode->box, pNode->numElements, pNode->elementOffset);
+			// Return the unused child1Index for other internal nodes
+			return child1Index;
+		}
+
+		m_nodes[nodeID].SetInternalNode(pNode->box, child1Index);
+		auto newChildIndex = ConvertTreeNodesIntoArray(pNode->child1, child1Index, child1Index + 2);
+		// Use the unused newChildIndex for child2->child1 nodeID
+		return ConvertTreeNodesIntoArray(pNode->child2, child1Index + 1, newChildIndex);
 	}
 
 } // namespace PotatoEngine

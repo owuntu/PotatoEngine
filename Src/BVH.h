@@ -1,6 +1,7 @@
 #ifndef POTATOENGINE_BVH_H_
 #define POTATOENGINE_BVH_H_
 
+#include <cstdint>
 #include <vector>
 #include <glm/glm.hpp>
 
@@ -11,7 +12,20 @@ namespace PotatoEngine
 	class BVH
 	{
 	public:
-		static const unsigned int ms_maxLeafElements = 8;
+		static const uint32_t ms_ELEMENT_COUNT_BITS = 3;
+		static const uint32_t ms_MAX_LEAF_ELEMENT_COUNT = (1 << ms_ELEMENT_COUNT_BITS);
+		// Element count should not be 0
+		static const uint32_t ms_ELEMENT_COUNT_MASK = (1 << ms_ELEMENT_COUNT_BITS) - 1;
+
+		static const uint32_t ms_NODE_DATA_BITS = sizeof(uint32_t) * 8;
+		static const uint32_t ms_LEAF_NODE_BIT = 1;
+		static const uint32_t ms_LEAF_NODE_MASK = (static_cast<uint32_t>(1) << (ms_NODE_DATA_BITS - 1));
+
+		static const uint32_t ms_ELEMENT_OFFSET_BITS = ms_NODE_DATA_BITS - ms_ELEMENT_COUNT_BITS - ms_LEAF_NODE_BIT;
+		static const uint32_t ms_ELEMENT_OFFSET_MASK = (static_cast<uint32_t>(1) << ms_ELEMENT_OFFSET_BITS) - 1;
+
+		static const uint32_t ms_CHILD_INDEX_BITS = ms_NODE_DATA_BITS - ms_LEAF_NODE_BIT;
+		static const uint32_t ms_CHILD_INDEX_MASK = (static_cast<uint32_t>(1) << ms_CHILD_INDEX_BITS) - 1;
 
 		struct Node
 		{
@@ -22,6 +36,37 @@ namespace PotatoEngine
 
 			unsigned int numElements = 0;
 			unsigned int elementOffset = 0;
+		};
+
+		class ArrayNode
+		{
+		public:
+			void SetLeafNode(const BBox& iBox, uint32_t elementCount, uint32_t elementOffset);
+			void SetInternalNode(const BBox& iBox, uint32_t child1Index);
+
+			bool IsLeafNode() const;
+
+			// Must be leaf node
+			uint32_t GetElementCount() const;
+			uint32_t GetElementOffset() const;
+
+			// Must be internal node
+			uint32_t GetChild1Index() const;
+			uint32_t GetChild2Index() const;
+
+			const BBox& GetBoundingBox() const { return m_box; }
+
+		private:
+			BBox m_box; // 6 float, 6*4 = 24 bytes
+
+			// 1) For leaf node
+			// 31,            30, 29, 28,     27, 26, ... 2, 1, 0
+			// leaf bit = 1 | element count | element offset
+			// 
+			// 2) For internal node
+			// 31,            30, 29, ... 2, 1, 0
+			// leaf bit = 0 | child index
+			uint32_t m_data; // 4 bytes
 		};
 
 		const Node* GetRoot() const { return m_root; }
@@ -38,9 +83,15 @@ namespace PotatoEngine
 		// Element indices
 		std::vector<unsigned int> m_elements;
 
+		// Nodes array for storing the BVH tree
+		std::vector<ArrayNode> m_nodes;
+
 	private:
-		void SplitNode(Node* node);
+		uint32_t SplitNode(Node* node);
 		unsigned int MeanSplit(Node* node);
+
+		// return a unused child1Index for other internal nodes if it is a leaf node
+		std::size_t ConvertTreeNodesIntoArray(Node* node, std::size_t nodeID, std::size_t child1Index);
 	};
 } // namespace PotatoEngine
 
