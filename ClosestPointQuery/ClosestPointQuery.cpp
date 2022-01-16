@@ -115,7 +115,7 @@ bool ClosestPointQuery::Init(const std::string& modelPath)
 
 #
 	// Adapth camera movement speed to the model size
-	const auto& box = m_pMeshModel->GetRoot()->box;
+	const auto& box = m_pMeshModel->GetRoot().GetBoundingBox();
 	auto diff = box.vmax - box.vmin;
 	float maxDim = fmaxf(diff.x, fmaxf(diff.y, diff.z));
 	m_pMainCamera->SetMoveSpeed(maxDim / 2.f);
