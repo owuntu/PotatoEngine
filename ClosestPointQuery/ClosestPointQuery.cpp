@@ -176,7 +176,6 @@ void ClosestPointQuery::Render()
 	m_pMeshModel->Draw(m_pShader.get());
 
 	m_pShader->SetInt("bUseLighting", 0);
-	//DrawBVH(m_pShader.get(), m_pMeshModel->GetRoot(), 0, gs_depthToDraw);
 	m_pMeshModel->DebugDrawBVH(m_pShader.get(), gs_depthToDraw);
 
 	DrawCoordAxis(m_pShader.get());
@@ -200,6 +199,7 @@ void ClosestPointQuery::Reset()
 int ClosestPointQuery::Run()
 {
 	std::cout << "Press TAB key to enter query point and search distance (you need to manually switch focus window to console).\n";
+	std::cout << "Pres I/K key to increase/decrease the desire BVH depth to be drawn.\n";
 	return Game::Run();
 }
 
