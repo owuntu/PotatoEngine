@@ -17,16 +17,16 @@ namespace PotatoEngine
 		}
 	}
 
-	glm::vec3 MeshModelBVH::GetElementCenter(int index)
+	float MeshModelBVH::GetElementCenter(int index, int dim)
 	{
 		auto& mesh = MeshModel::GetMesh();
 		auto triangle = mesh.GetTriangle(index);
 
-		glm::vec3 center(0.f);
+		float center = 0.f;
 		for (int i = 0; i < 3; i++)
 		{
 			auto& vertex = mesh.GetVertex(triangle.v[i]);
-			center += vertex.Position;
+			center += vertex.Position[dim];
 		}
 
 		center /= 3.f;

@@ -80,7 +80,7 @@ namespace PotatoEngine
 		void Build(int numElements);
 
 		virtual void GetElementBound(int index, BBox& box) = 0;
-		virtual glm::vec3 GetElementCenter(int index) = 0;
+		virtual float GetElementCenter(int index, int dim) = 0;
 
 		Node* m_root = nullptr;
 

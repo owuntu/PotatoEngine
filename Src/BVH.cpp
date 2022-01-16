@@ -186,8 +186,8 @@ namespace PotatoEngine
 			int j = node->numElements + node->elementOffset;
 			while (i < j)
 			{
-				glm::vec3 center = GetElementCenter(m_elements[i]);
-				if (center[axis] <= splitPos)
+				float center = GetElementCenter(m_elements[i], axis);
+				if (center <= splitPos)
 				{
 					i++;
 				}

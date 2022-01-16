@@ -16,7 +16,7 @@ namespace PotatoEngine
 	protected:
 
 		virtual void GetElementBound(int index, BBox& box);
-		virtual glm::vec3 GetElementCenter(int index);
+		virtual float GetElementCenter(int index, int dim);
 
 	private:
 		virtual void PostSetup();
