@@ -137,7 +137,7 @@ void DrawBox(const BBox& box)
 	glEnd();
 }
 
-void DrawBVH(PotatoEngine::ShaderProgram* pShader, const PotatoEngine::BVH::Node* pNode, int depth, int depthToDraw)
+void DrawBVH(PotatoEngine::ShaderProgram* pShader, const PotatoEngine::BVH::TempNode* pNode, int depth, int depthToDraw)
 {
 	static glm::vec4 colors[3] = {
 		{0.8f, 0, 0, 1.f},

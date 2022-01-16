@@ -29,12 +29,12 @@ namespace PotatoEngine
 		static const uint32_t ms_CHILD_INDEX_BITS = ms_NODE_DATA_BITS - ms_LEAF_NODE_BIT;
 		static const uint32_t ms_CHILD_INDEX_MASK = (static_cast<uint32_t>(1) << ms_CHILD_INDEX_BITS) - 1;
 
-		struct Node
+		struct TempNode
 		{
 			BBox box; // 6 float, 6*4 = 24 bytes
 
-			Node* child1 = nullptr; // 64 bit system, 8 bytes
-			Node* child2 = nullptr; // 8 bytes
+			TempNode* child1 = nullptr; // 64 bit system, 8 bytes
+			TempNode* child2 = nullptr; // 8 bytes
 
 			unsigned int numElements = 0; // 4 bytes
 			unsigned int elementOffset = 0; // 4 bytes
@@ -91,17 +91,17 @@ namespace PotatoEngine
 		std::size_t GetRootNodeID() const { return 0; }
 
 	private:
-		uint32_t SplitNode(Node* node);
-		unsigned int MeanSplit(Node* node);
+		// Return total nodes count start from node
+		uint32_t SplitTempNode(TempNode* pNode);
+
+		unsigned int MeanSplit(TempNode* pNode);
 
 		// return a unused child1Index for other internal nodes if pNode is a leaf node
-		std::size_t ConvertTreeNodesIntoArray(Node* pNode, std::size_t nodeID, std::size_t child1Index);
+		std::size_t ConvertTreeNodesIntoArray(TempNode* pNode, std::size_t nodeID, std::size_t child1Index);
 
-		void ClearTempNodes();
+		void ClearTempNodes(TempNode* pRoot);
 
 		void DebugDraw(ShaderProgram* pShader, std::size_t nodeID, int depth, int depthToDraw);
-
-		Node* m_root = nullptr;
 	};
 } // namespace PotatoEngine
 

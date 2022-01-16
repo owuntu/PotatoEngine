@@ -1,5 +1,4 @@
 #include <cassert>
-#include <iostream>
 #include <stack>
 
 #include "HelperDraw.h"
@@ -57,7 +56,6 @@ namespace PotatoEngine
 
 	BVH::~BVH()
 	{
-		ClearTempNodes();
 		m_elements.clear();
 		m_nodes.clear();
 	}
@@ -78,35 +76,36 @@ namespace PotatoEngine
 			m_elements[i] = i;
 		}
 
-		m_root = new Node();
-		m_root->box = box;
-		m_root->elementOffset = 0;
-		m_root->numElements = numElements;
+		auto* pRoot = new TempNode();
+		pRoot->box = box;
+		pRoot->elementOffset = 0;
+		pRoot->numElements = numElements;
 
-		auto nodesCount = SplitNode(m_root);
+		auto nodesCount = SplitTempNode(pRoot);
 		m_nodes.resize(nodesCount + GetRootNodeID());
-		ConvertTreeNodesIntoArray(m_root, GetRootNodeID(), GetRootNodeID() + 1);
+		ConvertTreeNodesIntoArray(pRoot, GetRootNodeID(), GetRootNodeID() + 1);
+		ClearTempNodes(pRoot);
 	}
 
-	uint32_t BVH::SplitNode(Node* node)
+	uint32_t BVH::SplitTempNode(TempNode* pNode)
 	{
 		uint32_t nodesCount = 1;
-		if (node->numElements <= ms_MAX_LEAF_ELEMENT_COUNT)
+		if (pNode->numElements <= ms_MAX_LEAF_ELEMENT_COUNT)
 		{
 			// we reach the leaf node
 			return nodesCount;
 		}
 
-		unsigned int child1NumElements = MeanSplit(node);
-		if (child1NumElements == 0 || child1NumElements >= node->numElements)
+		unsigned int child1NumElements = MeanSplit(pNode);
+		if (child1NumElements == 0 || child1NumElements >= pNode->numElements)
 		{
 			// Force split
-			child1NumElements = node->numElements / 2;
+			child1NumElements = pNode->numElements / 2;
 		}
 
-		Node* child1 = new Node();
+		TempNode* child1 = new TempNode();
 
-		child1->elementOffset = node->elementOffset;
+		child1->elementOffset = pNode->elementOffset;
 		child1->numElements = child1NumElements;
 
 		for (unsigned int i = 0; i < child1NumElements; ++i)	
@@ -117,10 +116,10 @@ namespace PotatoEngine
 			child1->box += tbox;
 		}
 
-		Node* child2 = new Node();
+		TempNode* child2 = new TempNode();
 
-		child2->elementOffset = node->elementOffset + child1NumElements;
-		child2->numElements = node->numElements - child1NumElements;
+		child2->elementOffset = pNode->elementOffset + child1NumElements;
+		child2->numElements = pNode->numElements - child1NumElements;
 		for (unsigned int i = 0; i < child2->numElements; ++i)
 		{
 			unsigned int index = m_elements[i + (child2->elementOffset)];
@@ -129,17 +128,17 @@ namespace PotatoEngine
 			child2->box += tbox;
 		}
 
-		nodesCount += SplitNode(child1);
-		nodesCount += SplitNode(child2);
+		nodesCount += SplitTempNode(child1);
+		nodesCount += SplitTempNode(child2);
 
-		node->child1 = child1;
-		node->child2 = child2;
+		pNode->child1 = child1;
+		pNode->child2 = child2;
 
 		return nodesCount;
 	}
 
 
-	unsigned int BVH::MeanSplit(Node* node)
+	unsigned int BVH::MeanSplit(TempNode* node)
 	{
 		const auto& box = node->box;
 		glm::vec3 d = box.vmax - box.vmin;
@@ -194,7 +193,7 @@ namespace PotatoEngine
 		return child1NumElements;
 	}
 
-	std::size_t BVH::ConvertTreeNodesIntoArray(Node* pNode, std::size_t nodeID, std::size_t child1Index)
+	std::size_t BVH::ConvertTreeNodesIntoArray(TempNode* pNode, std::size_t nodeID, std::size_t child1Index)
 	{
 		if (pNode->child1 == nullptr)
 		{
@@ -209,27 +208,25 @@ namespace PotatoEngine
 		return ConvertTreeNodesIntoArray(pNode->child2, child1Index + 1, newChildIndex);
 	}
 
-	void BVH::ClearTempNodes()
+	void BVH::ClearTempNodes(TempNode* pRoot)
 	{
-		if (m_root != nullptr)
+		if (pRoot != nullptr)
 		{
-			std::stack<Node*> nodeStack;
-			nodeStack.push(m_root);
+			std::stack<TempNode*> nodeStack;
+			nodeStack.push(pRoot);
 
 			while (!nodeStack.empty())
 			{
-				auto* node = nodeStack.top();
+				auto* pNode = nodeStack.top();
 				nodeStack.pop();
 
-				if (node->child1 != nullptr)
-					nodeStack.push(node->child1);
-				if (node->child2 != nullptr)
-					nodeStack.push(node->child2);
-				delete node;
+				if (pNode->child1 != nullptr)
+					nodeStack.push(pNode->child1);
+				if (pNode->child2 != nullptr)
+					nodeStack.push(pNode->child2);
+				delete pNode;
 			}
 		}
-
-		m_root = nullptr;
 	}
 
 	void BVH::DebugDrawBVH(PotatoEngine::ShaderProgram* pShader, int depthToDraw)

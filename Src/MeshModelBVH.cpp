@@ -44,57 +44,7 @@ namespace PotatoEngine
 	{
 		// todo: what if maxSearchDist > sqrt(FLT_MAX)?
 		float currentMin2 = FLT_MAX;
-		//return QueryClosestPoint(GetRoot(), queryPoint, maxSearchDist * maxSearchDist, currentMin2);
 		return QueryClosestPoint(GetRootNodeID(), queryPoint, maxSearchDist * maxSearchDist, currentMin2);
-	}
-
-	glm::vec3 MeshModelBVH::QueryClosestPoint(const Node* pNode, const glm::vec3& queryPoint, const float searchDist2, float& currentMin2) const
-	{
-		if (pNode == nullptr)
-		{
-			return glm::vec3(NAN);
-		}
-
-		const auto& box = pNode->box;
-		glm::vec3 boxClosest = ClosestPointOnAABB(queryPoint, box.vmin, box.vmax);
-
-		float dist2 = glm::distance2(queryPoint, boxClosest);
-		if (dist2 >= currentMin2 || dist2 > searchDist2)
-		{
-			// Early exit if distance from the closest point on AABB is
-			// further than the search distance or currentMin
-			return glm::vec3(NAN);
-		}
-
-		if (pNode->child1 == nullptr)
-		{
-			// on leaf node, find closest point on triangle
-			glm::vec3 res(NAN);
-			auto& mesh = GetMesh();
-			for (unsigned int i = 0; i < pNode->numElements; ++i)
-			{
-				auto index = m_elements[i + pNode->elementOffset];
-				
-				glm::vec3 tres = mesh.ClosestPointOnTriangle(queryPoint, index);
-				dist2 = glm::distance2(queryPoint, tres);
-				if (dist2 <= searchDist2 && dist2 < currentMin2)
-				{
-					currentMin2 = dist2;
-					res = tres;
-				}
-			}
-			return res;
-		}
-
-		auto res1 = QueryClosestPoint(pNode->child1, queryPoint, searchDist2, currentMin2);
-		auto res2 = QueryClosestPoint(pNode->child2, queryPoint, searchDist2, currentMin2);
-
-		if (isnan(res2.x))
-		{
-			return res1;
-		}
-
-		return res2;
 	}
 	
 	glm::vec3 MeshModelBVH::QueryClosestPoint(std::size_t nodeID, const glm::vec3& queryPoint, const float searchDist2, float& currentMin2) const

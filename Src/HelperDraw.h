@@ -11,6 +11,6 @@ void DrawCoordAxis(PotatoEngine::ShaderProgram* pShader);
 class PotatoEngine::BBox;
 
 void DrawBox(const PotatoEngine::BBox& box);
-void DrawBVH(PotatoEngine::ShaderProgram* pShader, const PotatoEngine::BVH::Node* pNode, int depth, int depthToDraw);
+void DrawBVH(PotatoEngine::ShaderProgram* pShader, const PotatoEngine::BVH::TempNode* pNode, int depth, int depthToDraw);
 
 #endif // HELPER_DRAW_H_
