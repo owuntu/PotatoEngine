@@ -11,7 +11,7 @@ namespace PotatoEngine
 	public:
 		virtual ~MeshModelBVH() {}
 
-		glm::vec3 QueryClosestPoint(const glm::vec3& queryPoint, const float maxSearchDist = FLT_MAX) const;
+		glm::vec3 QueryClosestPoint(const glm::vec3& queryPoint, const float maxSearchDist) const;
 
 	protected:
 		virtual void GetElementBound(int index, BBox& box);

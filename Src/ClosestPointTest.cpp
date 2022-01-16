@@ -157,6 +157,7 @@ namespace PotatoEngine
 	{
 		glm::vec3 res = p;
 
+#pragma unroll(3)
 		for (int i = 0; i < 3; ++i)
 		{
 			if (p[i] < bmin[i])
@@ -172,4 +173,5 @@ namespace PotatoEngine
 
 		return res;
 	}
+
 } // namespace PotatoEngine
