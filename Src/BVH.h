@@ -71,7 +71,7 @@ namespace PotatoEngine
 			uint32_t m_data; // 4 bytes
 		};
 
-		const Node* GetRoot() const { return m_root; }
+		const ArrayNode& GetRoot() const { return m_nodes[GetRootNodeID()]; }
 
 		void DebugDrawBVH(ShaderProgram* pShader, int depthToDraw);
 
@@ -81,8 +81,6 @@ namespace PotatoEngine
 
 		virtual void GetElementBound(int index, BBox& box) = 0;
 		virtual float GetElementCenter(int index, int dim) = 0;
-
-		Node* m_root = nullptr;
 
 		// Element indices
 		std::vector<unsigned int> m_elements;
@@ -96,10 +94,14 @@ namespace PotatoEngine
 		uint32_t SplitNode(Node* node);
 		unsigned int MeanSplit(Node* node);
 
-		// return a unused child1Index for other internal nodes if it is a leaf node
-		std::size_t ConvertTreeNodesIntoArray(Node* node, std::size_t nodeID, std::size_t child1Index);
+		// return a unused child1Index for other internal nodes if pNode is a leaf node
+		std::size_t ConvertTreeNodesIntoArray(Node* pNode, std::size_t nodeID, std::size_t child1Index);
+
+		void ClearTempNodes();
 
 		void DebugDraw(ShaderProgram* pShader, std::size_t nodeID, int depth, int depthToDraw);
+
+		Node* m_root = nullptr;
 	};
 } // namespace PotatoEngine
 

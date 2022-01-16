@@ -57,26 +57,9 @@ namespace PotatoEngine
 
 	BVH::~BVH()
 	{
-		if (m_root != nullptr)
-		{
-			std::stack<Node*> nodeStack;
-			nodeStack.push(m_root);
-
-			while (!nodeStack.empty())
-			{
-				auto* node = nodeStack.top();
-				nodeStack.pop();
-
-				if (node->child1 != nullptr)
-					nodeStack.push(node->child1);
-				if (node->child2 != nullptr)
-					nodeStack.push(node->child2);
-				delete node;
-			}
-		}
-
-		m_root = nullptr;
-		
+		ClearTempNodes();
+		m_elements.clear();
+		m_nodes.clear();
 	}
 
 	void BVH::Build(int numElements)
@@ -224,6 +207,29 @@ namespace PotatoEngine
 		auto newChildIndex = ConvertTreeNodesIntoArray(pNode->child1, child1Index, child1Index + 2);
 		// Use the unused newChildIndex for child2->child1 nodeID
 		return ConvertTreeNodesIntoArray(pNode->child2, child1Index + 1, newChildIndex);
+	}
+
+	void BVH::ClearTempNodes()
+	{
+		if (m_root != nullptr)
+		{
+			std::stack<Node*> nodeStack;
+			nodeStack.push(m_root);
+
+			while (!nodeStack.empty())
+			{
+				auto* node = nodeStack.top();
+				nodeStack.pop();
+
+				if (node->child1 != nullptr)
+					nodeStack.push(node->child1);
+				if (node->child2 != nullptr)
+					nodeStack.push(node->child2);
+				delete node;
+			}
+		}
+
+		m_root = nullptr;
 	}
 
 	void BVH::DebugDrawBVH(PotatoEngine::ShaderProgram* pShader, int depthToDraw)
