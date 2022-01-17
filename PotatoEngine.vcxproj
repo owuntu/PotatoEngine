@@ -22,7 +22,6 @@
     <ClCompile Include="Engine\Src\BVH.cpp" />
     <ClCompile Include="Engine\Src\BVHModelCreator.cpp" />
     <ClCompile Include="Engine\Src\ClosestPointTest.cpp" />
-    <ClCompile Include="Engine\Src\Game.cpp" />
     <ClCompile Include="Engine\Src\KdTree.cpp" />
     <ClCompile Include="Engine\Src\Mesh.cpp" />
     <ClCompile Include="Engine\Src\MeshModel.cpp" />
@@ -35,14 +34,12 @@
     <ClInclude Include="Engine\Src\BVH.h" />
     <ClInclude Include="Engine\Src\BVHModelCreator.h" />
     <ClInclude Include="Engine\Src\ClosestPointTest.h" />
-    <ClInclude Include="Engine\Src\Game.h" />
     <ClInclude Include="Engine\Src\KdTree.h" />
     <ClInclude Include="Engine\Src\Mesh.h" />
     <ClInclude Include="Engine\Src\MeshModel.h" />
     <ClInclude Include="Engine\Src\MeshModelBVH.h" />
     <ClInclude Include="Engine\Src\Model.h" />
     <ClInclude Include="Engine\Src\ModelCreator.h" />
-    <ClInclude Include="Engine\Src\SinglePointModel.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

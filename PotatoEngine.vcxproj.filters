@@ -21,14 +21,8 @@
     <Filter Include="Model\ModelFactory">
       <UniqueIdentifier>{d3c3cfee-fb56-4c3f-b343-48c9e1108f6c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utilities">
-      <UniqueIdentifier>{e8d37a6f-06e2-481e-9d67-6b5c5791bdb5}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Engine\Src\Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Src\BVHModelCreator.cpp">
       <Filter>Model\ModelFactory</Filter>
     </ClCompile>
@@ -70,9 +64,6 @@
     <ClInclude Include="Engine\Src\KdTree.h">
       <Filter>SpacePartition</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Src\SinglePointModel.h">
-      <Filter>Model</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Src\Model.h">
       <Filter>Model</Filter>
     </ClInclude>
@@ -90,9 +81,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Src\ClosestPointTest.h">
       <Filter>CollisionDetection</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Src\Game.h">
-      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

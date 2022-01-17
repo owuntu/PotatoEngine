@@ -6,8 +6,6 @@
 #include <string>
 
 #include "Model.h"
-#include "MeshModel.h"
-#include "SinglePointModel.h"
 
 namespace PotatoEngine
 {

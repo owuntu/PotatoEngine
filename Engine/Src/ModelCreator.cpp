@@ -1,3 +1,4 @@
+#include "MeshModel.h"
 #include "ModelCreator.h"
 
 namespace PotatoEngine
@@ -26,7 +27,6 @@ namespace PotatoEngine
 		case Type::POINT_CLOUD_MODEL:
 			break;
 		case Type::SINGLE_POINT_MODEL:
-			pModel = std::make_shared<SinglePointModel>();
 			break;
 		default:
 			break;

@@ -14,7 +14,6 @@
 
 #include "ClosestPointQuery.h"
 #include "MeshModelBVH.h"
-#include "SinglePointModel.h"
 #include "BVHModelCreator.h"
 #include "ClosestPointTest.h"
 
@@ -40,34 +39,22 @@ std::shared_ptr<ClosestPointQuery> ClosestPointQuery::Create(const std::string& 
 
 ClosestPointQuery::~ClosestPointQuery()
 {
-	this->Reset();
 }
 
 bool ClosestPointQuery::Init(const std::string& modelPath)
 {
-	// Base class Init() must be call before doing other initialization
-	if (!Game::Init())
-	{
-		return false;
-	}
-
 	BVHModelCreator bvhModelCreator;
 	m_pMeshModel = std::dynamic_pointer_cast<MeshModelBVH>(bvhModelCreator.CreateModel(ModelCreator::Type::MESH_MODEL, modelPath));
-
-	ModelCreator modelCreator;
-	m_pQueryPointModel = std::dynamic_pointer_cast<SinglePointModel>(modelCreator.CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
-
-	m_pClosestPointModel = std::dynamic_pointer_cast<SinglePointModel>(modelCreator.CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
 
 	return true;
 }
 
 void ClosestPointQuery::Update()
 {
-	Game::Update();
-
 	std::cout << "\nPlease input the queary point and max search distance: x y z distance\n";
 	std::cin >> m_queryPoint.x >> m_queryPoint.y >> m_queryPoint.z >> m_maxSearchDistance;
+
+
 	std::cout << "Input point and max distance: ("
 		<< m_queryPoint.x << ", "
 		<< m_queryPoint.y << ", "
@@ -79,21 +66,17 @@ void ClosestPointQuery::Update()
 	if (!glm::isnan(closestPoint.x))
 	{
 		std::cout << "Closest point is: (" << closestPoint.x << ", " << closestPoint.y << ", " << closestPoint.z << ")" << std::endl;
-		m_pClosestPointModel->SetPosition(closestPoint);
-	}
-
-	m_pQueryPointModel->SetPosition(m_queryPoint);
-	
-}
-
-void ClosestPointQuery::Reset()
-{
-	Game::Reset();
+	}	
 }
 
 int ClosestPointQuery::Run()
 {
-	return Game::Run();
+	while (true)
+	{
+		Update();
+	}
+
+	return 0;
 }
 
 glm::vec3 ClosestPointQuery::DoQueryClosestPoint(const glm::vec3& queryPoint, float maxSearchDistance)

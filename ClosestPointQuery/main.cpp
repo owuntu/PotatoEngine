@@ -5,7 +5,6 @@
 
 int main(int argc, const char** argv)
 {
-	using namespace PotatoEngine;
 	if (argc < 2)
 	{
 		std::cout << "Usage: ClosestPointQuery [model path]\n";
@@ -19,16 +18,16 @@ int main(int argc, const char** argv)
 	// Uncomment bellow line to regenerate test files.
 	//test.GenerateTestPointsAndResults();
 	test.RunAllTests();
+	return 0;
 #else
+	using namespace PotatoEngine;
 	auto sampleGame = ClosestPointQuery::Create(modelPath);
 
 	if (sampleGame == nullptr)
 	{
 		return 1;
 	}
-
-	sampleGame->Run();
+	return sampleGame->Run();
 #endif
 
-	return 0;
 }

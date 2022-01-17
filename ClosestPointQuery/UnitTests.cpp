@@ -87,7 +87,6 @@ void ClosestPointUnitTest::GenerateTestPointsAndResults()
 	using namespace PotatoEngine;
 	auto sampleGame = ClosestPointQuery::Create(m_testModelPath);
 
-	// todo: adapt the new test
 	const auto pModel = sampleGame->GetModel();
 	BBox box = pModel->GetBoundingBox();
 

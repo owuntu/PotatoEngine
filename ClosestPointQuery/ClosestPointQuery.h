@@ -3,24 +3,20 @@
 #include <memory>
 #include <string>
 #include <glm/glm.hpp>
-#include "Game.h"
 
 namespace PotatoEngine
 {
 	class Model;
-	class SinglePointModel;
-	class PointCloudModel;
 	class MeshModelBVH;
 	class ShaderProgram;
 } // namespace PotatoEngine
 
-class ClosestPointQuery : public PotatoEngine::Game
+class ClosestPointQuery
 {
 public:
 	virtual ~ClosestPointQuery();
 	bool Init(const std::string& modelPath);
-	virtual int Run();
-	virtual void Reset();
+	int Run();
 
 	// Method to query the closest point in m_pModel given a query point and max search distance.
 	// Return NAN vec3 if such closest point cannot be found within the search distance.
@@ -40,12 +36,8 @@ protected:
 	std::shared_ptr<PotatoEngine::MeshModelBVH> m_pMeshModel;
 
 private:
-
 	glm::vec3 m_queryPoint;
 	float m_maxSearchDistance;
-
-	std::shared_ptr<PotatoEngine::SinglePointModel> m_pQueryPointModel; // only for rendering for now
-	std::shared_ptr<PotatoEngine::SinglePointModel> m_pClosestPointModel;
 };
 
 #endif // QUERY_CLOSEST_POINT_H_
