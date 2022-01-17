@@ -7,7 +7,6 @@
 
 #include "Model.h"
 #include "MeshModel.h"
-#include "PointCloudModel.h"
 #include "SinglePointModel.h"
 
 namespace PotatoEngine

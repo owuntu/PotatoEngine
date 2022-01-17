@@ -8,24 +8,19 @@
 #include <unistd.h>
 #endif
 
-#include <glad/glad.h>
-#include <glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtx/norm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "ClosestPointQuery.h"
 #include "MeshModelBVH.h"
+#include "SinglePointModel.h"
 #include "BVHModelCreator.h"
-#include "Camera.h"
-#include "ShaderObject/ShaderProgram.h"
-#include "HelperDraw.h"
 #include "ClosestPointTest.h"
 
 using namespace PotatoEngine;
 
 static const glm::mat4 IDENTITY = glm::mat4(1.0f);
-static int gs_depthToDraw = 0;
 
 std::shared_ptr<ClosestPointQuery> ClosestPointQuery::Create(const std::string& modelPath)
 {
@@ -48,49 +43,6 @@ ClosestPointQuery::~ClosestPointQuery()
 	this->Reset();
 }
 
-void ClosestPointQuery::ProcessInput()
-{
-	Game::ProcessInput();
-
-	
-}
-
-void ClosestPointQuery::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-	if (action != GLFW_PRESS)
-	{
-		return;
-	}
-
-	// Press TAB to switch to console input
-	// todo: somehow need to refactor a keyboard input module
-	if (key == GLFW_KEY_TAB)
-	{
-		std::cout << "\nPlease input the queary point and max search distance: x y z distance\n";
-		std::cin >> m_queryPoint.x >> m_queryPoint.y >> m_queryPoint.z >> m_maxSearchDistance;
-		std::cout << "Input point and max distance: ("
-			<< m_queryPoint.x << ", "
-			<< m_queryPoint.y << ", "
-			<< m_queryPoint.z << "), "
-			<< m_maxSearchDistance << "\n";
-
-		m_bToQuery = true;
-	}
-
-	if (key == GLFW_KEY_I)
-	{
-		gs_depthToDraw++;
-		std::cout << "\nDraw depth " << gs_depthToDraw << "\n";
-	}
-
-	if (key == GLFW_KEY_K)
-	{
-		gs_depthToDraw--;
-		std::cout << "\nDraw depth " << gs_depthToDraw << "\n";
-	}
-
-}
-
 bool ClosestPointQuery::Init(const std::string& modelPath)
 {
 	// Base class Init() must be call before doing other initialization
@@ -99,38 +51,13 @@ bool ClosestPointQuery::Init(const std::string& modelPath)
 		return false;
 	}
 
-	auto keyCallback = [](GLFWwindow* w, int key, int scancode, int action, int mods)
-	{
-		static_cast<ClosestPointQuery*>(glfwGetWindowUserPointer(w))->KeyCallback(w, key, scancode, action, mods);
-	};
-	glfwSetKeyCallback(m_window, keyCallback);
-
-	m_pShader = std::make_shared<ShaderProgram>();
-	m_pShader->Create("Engine/GLSLShaders/modelVertexShader.vs.glsl", "Engine/GLSLShaders/modelFragmentShader.fs.glsl");
-	m_pShader->Use();
-
 	BVHModelCreator bvhModelCreator;
 	m_pMeshModel = std::dynamic_pointer_cast<MeshModelBVH>(bvhModelCreator.CreateModel(ModelCreator::Type::MESH_MODEL, modelPath));
-	m_pMeshModel->SetColor(glm::vec3(0.8f));
-
-	// Adapth camera movement speed to the model size
-	const auto& box = m_pMeshModel->GetBoundingBox();
-	auto diff = box.vmax - box.vmin;
-	float maxDim = fmaxf(diff.x, fmaxf(diff.y, diff.z));
-	m_pMainCamera->SetMoveSpeed(maxDim / 2.f);
-
-	// Camera default look at direction (0, 0, -1), adapt camera position to the front of 
-	// the bounding box front face
-	auto midPoint = (box.vmax + box.vmin) / 2.f;
-	m_pMainCamera->SetPosition(glm::vec3(midPoint.x, midPoint.y, box.vmax.z * 2.f));
-
 
 	ModelCreator modelCreator;
 	m_pQueryPointModel = std::dynamic_pointer_cast<SinglePointModel>(modelCreator.CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
-	m_pQueryPointModel->SetColor(glm::vec4(1, 0, 0, 1)); // set query point red
 
 	m_pClosestPointModel = std::dynamic_pointer_cast<SinglePointModel>(modelCreator.CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
-	m_pClosestPointModel->SetColor(glm::vec4(0, 1, 0, 1)); // set result point green
 
 	return true;
 }
@@ -139,66 +66,33 @@ void ClosestPointQuery::Update()
 {
 	Game::Update();
 
-	if (m_bToQuery)
+	std::cout << "\nPlease input the queary point and max search distance: x y z distance\n";
+	std::cin >> m_queryPoint.x >> m_queryPoint.y >> m_queryPoint.z >> m_maxSearchDistance;
+	std::cout << "Input point and max distance: ("
+		<< m_queryPoint.x << ", "
+		<< m_queryPoint.y << ", "
+		<< m_queryPoint.z << "), "
+		<< m_maxSearchDistance << "\n";
+
+	glm::vec3 closestPoint = DoQueryClosestPoint(m_queryPoint, m_maxSearchDistance);
+
+	if (!glm::isnan(closestPoint.x))
 	{
-		m_bFoundResult = false;
-		m_bToQuery = false;
-		glm::vec3 closestPoint = DoQueryClosestPoint(m_queryPoint, m_maxSearchDistance);
-
-		if (!glm::isnan(closestPoint.x))
-		{
-			std::cout << "Closest point is: (" << closestPoint.x << ", " << closestPoint.y << ", " << closestPoint.z << ")" << std::endl;
-			m_pClosestPointModel->SetPosition(closestPoint);
-
-			m_bFoundResult = true;
-		}
-
-		m_pQueryPointModel->SetPosition(m_queryPoint);
-	}
-}
-
-
-void ClosestPointQuery::Render()
-{
-	static const float aspect = (float)ScreenWidth() / (float)ScreenHeight();
-
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	glm::mat4 view = m_pMainCamera->GetViewingMatrix();
-	glm::mat4 persp = m_pMainCamera->GetPerpectiveProjectionMatrix(aspect);
-
-	m_pShader->Use();
-	m_pShader->SetMat4("view", view);
-	m_pShader->SetMat4("projection", persp);
-
-	m_pShader->SetInt("bUseLighting", 1);
-	m_pMeshModel->Draw(m_pShader.get());
-
-	m_pShader->SetInt("bUseLighting", 0);
-	m_pMeshModel->DebugDrawBVH(m_pShader.get(), gs_depthToDraw);
-
-	DrawCoordAxis(m_pShader.get());
-
-	m_pShader->SetInt("bUseLighting", 0);
-	m_pQueryPointModel->Draw(m_pShader.get());
-	if (m_bFoundResult)
-	{
-		m_pClosestPointModel->Draw(m_pShader.get());
+		std::cout << "Closest point is: (" << closestPoint.x << ", " << closestPoint.y << ", " << closestPoint.z << ")" << std::endl;
+		m_pClosestPointModel->SetPosition(closestPoint);
 	}
 
+	m_pQueryPointModel->SetPosition(m_queryPoint);
+	
 }
 
 void ClosestPointQuery::Reset()
 {
-	m_pShader->Release();
-
 	Game::Reset();
 }
 
 int ClosestPointQuery::Run()
 {
-	std::cout << "Press TAB key to enter query point and search distance (you need to manually switch focus window to console).\n";
-	std::cout << "Pres I/K key to increase/decrease the desire BVH depth to be drawn.\n";
 	return Game::Run();
 }
 

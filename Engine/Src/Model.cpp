@@ -4,8 +4,6 @@
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
 
-#include "ShaderObject/ShaderProgram.h"
-
 #include "Model.h"
 
 namespace PotatoEngine
@@ -41,19 +39,6 @@ namespace PotatoEngine
 		{
 			ProcessNode(pNode->mChildren[i], pScene);
 		}
-	}
-
-	void Model::Draw(ShaderProgram* pShader) const
-	{
-		// Pre draw
-		if (pShader != nullptr)
-		{
-			pShader->SetMat4("modelMat", m_transformation);
-			pShader->SetVec4("ModelColor", m_color);
-		}
-
-		// do draw
-		DoDraw();
 	}
 
 } // namespace PotatoEngine

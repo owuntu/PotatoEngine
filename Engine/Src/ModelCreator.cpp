@@ -24,7 +24,6 @@ namespace PotatoEngine
 			pModel = std::make_shared<MeshModel>();
 			break;
 		case Type::POINT_CLOUD_MODEL:
-			pModel = std::make_shared<PointCloudModel>();
 			break;
 		case Type::SINGLE_POINT_MODEL:
 			pModel = std::make_shared<SinglePointModel>();

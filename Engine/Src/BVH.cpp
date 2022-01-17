@@ -1,7 +1,6 @@
 #include <iostream>
 #include <stack>
 
-#include "HelperDraw.h"
 #include "BVH.h"
 
 namespace PotatoEngine
@@ -178,41 +177,6 @@ namespace PotatoEngine
 				delete pNode;
 			}
 		}
-	}
-
-	void BVH::DebugDrawBVH(PotatoEngine::ShaderProgram* pShader, int depthToDraw)
-	{
-		DebugDraw(pShader, 0, 0, depthToDraw);
-	}
-
-	void BVH::DebugDraw(ShaderProgram* pShader, std::size_t nodeID, int depth, int depthToDraw)
-	{
-		static glm::vec4 colors[3] = {
-			{0.8f, 0, 0, 1.f},
-			{0, 0.8f, 0, 1.f},
-			{0, 0.8f, 0.8f, 1.f}
-		};
-
-		if (depth > depthToDraw)
-		{
-			return;
-		}
-
-		const auto& node = m_nodes[nodeID];
-		if (depth == depthToDraw)
-		{
-			pShader->SetMat4("modelMat", glm::mat4(1.0f));
-			pShader->SetVec4("ModelColor", colors[depth % 3]);
-			DrawBox(node.GetBoundingBox());
-		}
-
-		if (node.IsLeafNode())
-		{
-			return;
-		}
-
-		DebugDraw(pShader, node.GetChild1Index(), depth + 1, depthToDraw);
-		DebugDraw(pShader, node.GetChild2Index(), depth + 1, depthToDraw);
 	}
 
 } // namespace PotatoEngine

@@ -16,13 +16,6 @@ namespace PotatoEngine
 			v.Position.x = pMesh->mVertices[i].x;
 			v.Position.y = pMesh->mVertices[i].y;
 			v.Position.z = pMesh->mVertices[i].z;
-
-			if (pMesh->HasNormals())
-			{
-				v.Normal.x = pMesh->mNormals[i].x;
-				v.Normal.y = pMesh->mNormals[i].y;
-				v.Normal.z = pMesh->mNormals[i].z;
-			}
 			vertices[i] = v;
 		}
 
@@ -73,16 +66,10 @@ namespace PotatoEngine
 			}
 			vertexOffset += mesh.m_vertices.size();
 			indexOffset += mesh.m_indices.size();
-			mesh.Release();
 		}
 
 		m_tmpMeshes.clear();
 		m_mesh = Mesh(vertices, indices);
-	}
-
-	void MeshModel::DoDraw() const
-	{
-		m_mesh.Draw();
 	}
 
 } // PotatoEngine

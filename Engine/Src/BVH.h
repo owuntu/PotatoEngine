@@ -131,8 +131,6 @@ namespace PotatoEngine
 		std::size_t ConvertTreeNodesIntoArray(TempNode* pNode, uint32_t nodeID, uint32_t child1Index);
 
 		void ClearTempNodes(TempNode* pRoot);
-
-		void DebugDraw(ShaderProgram* pShader, std::size_t nodeID, int depth, int depthToDraw);
 	};
 } // namespace PotatoEngine
 

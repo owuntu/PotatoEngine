@@ -25,7 +25,6 @@ namespace PotatoEngine
 		
 		virtual ~MeshModel()
 		{
-			m_mesh.Release();
 		}
 
 		const Mesh& GetMesh() const { return m_mesh; }
@@ -35,8 +34,6 @@ namespace PotatoEngine
 
 	private:
 		void ProcessMesh(aiMesh* pMesh);
-
-		void DoDraw() const;
 
 		std::vector<Mesh> m_tmpMeshes;
 

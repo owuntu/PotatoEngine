@@ -25,8 +25,6 @@ namespace PotatoEngine
 
 		virtual ~Model() {}
 
-		void Draw(ShaderProgram* pShader = nullptr) const;
-
 		void LoadModel(const std::string& objModelPath);
 
 		void SetColor(const glm::vec4& c) { m_color = c; }
@@ -42,8 +40,6 @@ namespace PotatoEngine
 	private:
 		virtual void ProcessMesh(aiMesh* pMesh) = 0;
 		virtual void PostSetup() {}
-
-		virtual void DoDraw() const = 0;
 
 		friend class ModelCreator;
 	};

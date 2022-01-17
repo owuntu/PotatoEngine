@@ -36,16 +36,8 @@ public:
 
 protected:
 	virtual void Update();
-	virtual void Render();
-
-	virtual void ProcessInput();
-	// todo: may want to refactor into another input class
-	void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 	std::shared_ptr<PotatoEngine::MeshModelBVH> m_pMeshModel;
-
-	// todo: refactor shader into a renderer
-	std::shared_ptr<PotatoEngine::ShaderProgram> m_pShader;
 
 private:
 
@@ -54,9 +46,6 @@ private:
 
 	std::shared_ptr<PotatoEngine::SinglePointModel> m_pQueryPointModel; // only for rendering for now
 	std::shared_ptr<PotatoEngine::SinglePointModel> m_pClosestPointModel;
-
-	bool m_bFoundResult = false;
-	bool m_bToQuery = false;
 };
 
 #endif // QUERY_CLOSEST_POINT_H_

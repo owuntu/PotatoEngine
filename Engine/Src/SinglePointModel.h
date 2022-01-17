@@ -13,9 +13,7 @@ namespace PotatoEngine
 	class SinglePointModel : public Model
 	{
 	public:
-		SinglePointModel() :
-			m_glVAO(0),
-			m_glVBO(0)
+		SinglePointModel()
 		{}
 
 		~SinglePointModel() {}
@@ -39,14 +37,6 @@ namespace PotatoEngine
 
 	private:
 		void ProcessMesh(aiMesh* pMesh) {}
-
-		void PostSetup();
-
-		void DoDraw() const;
-
-		// todo: refactor GL object into another class
-		unsigned int m_glVAO;
-		unsigned int m_glVBO;
 	};
 } // namespace PotatoEngine
 

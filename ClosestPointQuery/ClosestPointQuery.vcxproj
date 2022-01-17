@@ -211,7 +211,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)Engine\Src;$(SolutionDir)Engine\Extern;$(SolutionDir)Engine\Extern\glfw\include\GLFW;$(SolutionDir)Engine\Extern\glm;$(SolutionDir)Engine\Extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)Engine\Src;$(SolutionDir)Engine\Extern;$(SolutionDir)Engine\Extern\glm;$(SolutionDir)Engine\Extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -231,7 +231,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;UNIT_TESTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)Engine\Src;$(SolutionDir)Engine\Extern\;$(SolutionDir)Engine\Extern\glfw\include\GLFW;$(SolutionDir)Engine\Extern\glm;$(SolutionDir)Engine\Extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)Engine\Src;$(SolutionDir)Engine\Extern\;$(SolutionDir)Engine\Extern\glm;$(SolutionDir)Engine\Extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -253,7 +253,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)Engine\Src;$(SolutionDir)Engine\Extern\;$(SolutionDir)Engine\Extern\glfw\include\GLFW;$(SolutionDir)Engine\Extern\glm;$(SolutionDir)Engine\Extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)Engine\Src;$(SolutionDir)Engine\Extern\;$(SolutionDir)Engine\Extern\glm;$(SolutionDir)Engine\Extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -277,7 +277,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;UNIT_TESTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)Engine\Src;$(SolutionDir)Engine\Extern\;$(SolutionDir)Engine\Extern\glfw\include\GLFW;$(SolutionDir)Engine\Extern\glm;$(SolutionDir)Engine\Extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)Engine\Src;$(SolutionDir)Engine\Extern\;$(SolutionDir)Engine\Extern\glm;$(SolutionDir)Engine\Extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
