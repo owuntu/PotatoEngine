@@ -1,6 +1,6 @@
 #ifndef POTATOENGINE_BVH_H_
 #define POTATOENGINE_BVH_H_
-
+#include <cassert>
 #include <cstdint>
 #include <vector>
 #include <glm/glm.hpp>
@@ -36,18 +36,50 @@ namespace PotatoEngine
 		class Node
 		{
 		public:
-			inline void SetLeafNode(const BBox& iBox, uint32_t elementCount, uint32_t elementOffset);
-			inline void SetInternalNode(const BBox& iBox, uint32_t child1Index);
+			inline void SetLeafNode(const BBox& iBox, uint32_t elementCount, uint32_t elementOffset)
+			{
+				assert(elementCount != 0);
+				assert(elementCount <= ms_MAX_LEAF_ELEMENT_COUNT);
+				m_box = iBox;
+				m_data = ((static_cast<uint32_t>(elementCount - 1) << ms_ELEMENT_OFFSET_BITS) | (elementOffset & ms_ELEMENT_OFFSET_MASK) | ms_LEAF_NODE_MASK);
+			}
 
-			inline bool IsLeafNode() const;
+			inline void SetInternalNode(const BBox& iBox, uint32_t child1Index)
+			{
+				assert(child1Index <= ms_CHILD_INDEX_MASK);
+				m_box = iBox;
+				m_data = (child1Index & ms_CHILD_INDEX_MASK);
+			}
+
+			inline bool IsLeafNode() const { return (m_data & ms_LEAF_NODE_MASK) != 0; }
 
 			// Must be leaf node
-			uint32_t GetElementCount() const;
-			uint32_t GetElementOffset() const;
+			inline uint32_t GetElementCount() const
+			{
+				assert(IsLeafNode());
+				return ((m_data >> ms_ELEMENT_OFFSET_BITS) & ms_ELEMENT_COUNT_MASK) + 1;
+			}
+
+			// Must be leaf node
+			inline uint32_t GetElementOffset() const
+			{
+				assert(IsLeafNode());
+				return (m_data & ms_ELEMENT_OFFSET_MASK);
+			}
 
 			// Must be internal node
-			inline uint32_t GetChild1Index() const;
-			inline uint32_t GetChild2Index() const;
+			inline uint32_t GetChild1Index() const
+			{
+				assert(!IsLeafNode());
+				return (m_data & ms_CHILD_INDEX_MASK);
+			}
+
+			// Must be internal node
+			inline uint32_t GetChild2Index() const
+			{
+				assert(!IsLeafNode());
+				return (GetChild1Index() + 1);
+			}
 
 			inline const BBox& GetBoundingBox() const { return m_box; }
 
