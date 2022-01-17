@@ -92,6 +92,9 @@
     <ClCompile Include="Engine\Src\ShaderObject\ShaderProgram.cpp">
       <Filter>ShaderObject</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Src\PointCloudModelKdTree.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Src\BBox.h">
@@ -150,6 +153,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Src\ShaderObject\ShaderProgram.h">
       <Filter>ShaderObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Src\PointCoudModelKdTree.h">
+      <Filter>Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

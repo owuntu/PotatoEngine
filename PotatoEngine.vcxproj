@@ -34,6 +34,7 @@
     <ClCompile Include="Engine\Src\Model.cpp" />
     <ClCompile Include="Engine\Src\ModelCreator.cpp" />
     <ClCompile Include="Engine\Src\PointCloudModel.cpp" />
+    <ClCompile Include="Engine\Src\PointCloudModelKdTree.cpp" />
     <ClCompile Include="Engine\Src\ShaderObject\ShaderObject.cpp" />
     <ClCompile Include="Engine\Src\ShaderObject\ShaderProgram.cpp" />
     <ClCompile Include="Engine\Src\SinglePointModel.cpp" />
@@ -54,6 +55,7 @@
     <ClInclude Include="Engine\Src\Model.h" />
     <ClInclude Include="Engine\Src\ModelCreator.h" />
     <ClInclude Include="Engine\Src\PointCloudModel.h" />
+    <ClInclude Include="Engine\Src\PointCoudModelKdTree.h" />
     <ClInclude Include="Engine\Src\ShaderObject\ShaderObject.h" />
     <ClInclude Include="Engine\Src\ShaderObject\ShaderProgram.h" />
     <ClInclude Include="Engine\Src\SinglePointModel.h" />
