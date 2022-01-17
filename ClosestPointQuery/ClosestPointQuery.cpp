@@ -145,7 +145,7 @@ void ClosestPointQuery::Update()
 		m_bToQuery = false;
 		glm::vec3 closestPoint = DoQueryClosestPoint(m_queryPoint, m_maxSearchDistance);
 
-		if (!isnan(closestPoint.x))
+		if (!glm::isnan(closestPoint.x))
 		{
 			std::cout << "Closest point is: (" << closestPoint.x << ", " << closestPoint.y << ", " << closestPoint.z << ")" << std::endl;
 			m_pClosestPointModel->SetPosition(closestPoint);

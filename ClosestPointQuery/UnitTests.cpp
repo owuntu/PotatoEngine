@@ -32,7 +32,7 @@ void WritePointsToFile(const std::vector<glm::vec3>& points, const std::string& 
 	if (!testFile.is_open())
 	{
 		std::string msg = "Cannot open file " + fileName;
-		throw std::exception(msg.c_str());
+		throw std::runtime_error(msg);
 	}
 
 	WritePointsToFile(points, testFile);
@@ -73,7 +73,7 @@ void ReadFileToPoints(std::vector<glm::vec3>& points, const std::string& fileNam
 	if (!file.is_open())
 	{
 		string msg = "Cannot open file " + fileName;
-		throw std::exception(msg.c_str());
+		throw std::runtime_error(msg);
 	}
 
 	ReadFileToPoints(points, file);
@@ -126,7 +126,7 @@ void ClosestPointUnitTest::GenerateTestPointsAndResults()
 		if (!testFile.is_open())
 		{
 			std::string msg = "Cannot open file " + m_testDataFileName;
-			throw std::exception(msg.c_str());
+			throw std::runtime_error(msg);
 		}
 
 		testFile << m_maxSearchDistance << "\n";
@@ -152,7 +152,7 @@ void ClosestPointUnitTest::LoadTestData()
 		if (!testFile.is_open())
 		{
 			std::string msg = "Cannot open file " + m_testDataFileName;
-			throw std::exception(msg.c_str());
+			throw std::runtime_error(msg);
 		}
 
 		// The first line is the max search distance
@@ -236,7 +236,7 @@ bool ClosestPointUnitTest::Verify(const std::vector<glm::vec3>& results)
 		auto exp = m_expResults[i];
 		auto res = results[i];
 		float epsilon = 0.01f;
-		if ((isnan(exp.x) ^ isnan(res.x))
+		if ((glm::isnan(exp.x) ^ glm::isnan(res.x))
 			|| glm::any(glm::epsilonNotEqual(exp, res, epsilon)))
 		{
 			bSuccess = false;

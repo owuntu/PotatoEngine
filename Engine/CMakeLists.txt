@@ -4,7 +4,6 @@ project(PotatoEngine)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-#get_filename_component(PARENT_DIR ../ ABSOLUTE)
 include_directories(
     ./Extern/
     ./Extern/include
