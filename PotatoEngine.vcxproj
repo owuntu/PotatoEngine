@@ -19,49 +19,49 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="glad\glad.c" />
-    <ClCompile Include="ShaderObject\ShaderObject.cpp" />
-    <ClCompile Include="ShaderObject\ShaderProgram.cpp" />
-    <ClCompile Include="Src\BVH.cpp" />
-    <ClCompile Include="Src\BVHModelCreator.cpp" />
-    <ClCompile Include="Src\Camera.cpp" />
-    <ClCompile Include="Src\ClosestPointTest.cpp" />
-    <ClCompile Include="Src\Game.cpp" />
-    <ClCompile Include="Src\GLObject.cpp" />
-    <ClCompile Include="Src\HelperDraw.cpp" />
-    <ClCompile Include="Src\KdTree.cpp" />
-    <ClCompile Include="Src\Mesh.cpp" />
-    <ClCompile Include="Src\MeshModel.cpp" />
-    <ClCompile Include="Src\MeshModelBVH.cpp" />
-    <ClCompile Include="Src\Model.cpp" />
-    <ClCompile Include="Src\ModelCreator.cpp" />
-    <ClCompile Include="Src\PointCloudModel.cpp" />
-    <ClCompile Include="Src\SinglePointModel.cpp" />
+    <ClCompile Include="Engine\Extern\glad\glad.c" />
+    <ClCompile Include="Engine\Src\BVH.cpp" />
+    <ClCompile Include="Engine\Src\BVHModelCreator.cpp" />
+    <ClCompile Include="Engine\Src\Camera.cpp" />
+    <ClCompile Include="Engine\Src\ClosestPointTest.cpp" />
+    <ClCompile Include="Engine\Src\Game.cpp" />
+    <ClCompile Include="Engine\Src\GLObject.cpp" />
+    <ClCompile Include="Engine\Src\HelperDraw.cpp" />
+    <ClCompile Include="Engine\Src\KdTree.cpp" />
+    <ClCompile Include="Engine\Src\Mesh.cpp" />
+    <ClCompile Include="Engine\Src\MeshModel.cpp" />
+    <ClCompile Include="Engine\Src\MeshModelBVH.cpp" />
+    <ClCompile Include="Engine\Src\Model.cpp" />
+    <ClCompile Include="Engine\Src\ModelCreator.cpp" />
+    <ClCompile Include="Engine\Src\PointCloudModel.cpp" />
+    <ClCompile Include="Engine\Src\ShaderObject\ShaderObject.cpp" />
+    <ClCompile Include="Engine\Src\ShaderObject\ShaderProgram.cpp" />
+    <ClCompile Include="Engine\Src\SinglePointModel.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ShaderObject\ShaderObject.h" />
-    <ClInclude Include="ShaderObject\ShaderProgram.h" />
-    <ClInclude Include="Src\BBox.h" />
-    <ClInclude Include="Src\BVH.h" />
-    <ClInclude Include="Src\BVHModelCreator.h" />
-    <ClInclude Include="Src\Camera.h" />
-    <ClInclude Include="Src\ClosestPointTest.h" />
-    <ClInclude Include="Src\Game.h" />
-    <ClInclude Include="Src\GLObject.h" />
-    <ClInclude Include="Src\HelperDraw.h" />
-    <ClInclude Include="Src\KdTree.h" />
-    <ClInclude Include="Src\Mesh.h" />
-    <ClInclude Include="Src\MeshModel.h" />
-    <ClInclude Include="Src\MeshModelBVH.h" />
-    <ClInclude Include="Src\Model.h" />
-    <ClInclude Include="Src\ModelCreator.h" />
-    <ClInclude Include="Src\PointCloudModel.h" />
-    <ClInclude Include="Src\SinglePointModel.h" />
-    <ClInclude Include="Src\Utilities.h" />
+    <ClInclude Include="Engine\Src\BBox.h" />
+    <ClInclude Include="Engine\Src\BVH.h" />
+    <ClInclude Include="Engine\Src\BVHModelCreator.h" />
+    <ClInclude Include="Engine\Src\Camera.h" />
+    <ClInclude Include="Engine\Src\ClosestPointTest.h" />
+    <ClInclude Include="Engine\Src\Game.h" />
+    <ClInclude Include="Engine\Src\GLObject.h" />
+    <ClInclude Include="Engine\Src\HelperDraw.h" />
+    <ClInclude Include="Engine\Src\KdTree.h" />
+    <ClInclude Include="Engine\Src\Mesh.h" />
+    <ClInclude Include="Engine\Src\MeshModel.h" />
+    <ClInclude Include="Engine\Src\MeshModelBVH.h" />
+    <ClInclude Include="Engine\Src\Model.h" />
+    <ClInclude Include="Engine\Src\ModelCreator.h" />
+    <ClInclude Include="Engine\Src\PointCloudModel.h" />
+    <ClInclude Include="Engine\Src\ShaderObject\ShaderObject.h" />
+    <ClInclude Include="Engine\Src\ShaderObject\ShaderProgram.h" />
+    <ClInclude Include="Engine\Src\SinglePointModel.h" />
+    <ClInclude Include="Engine\Src\Utilities.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="GLSLShaders\modelFragmentShader.fs.glsl" />
-    <None Include="GLSLShaders\modelVertexShader.vs.glsl" />
+    <None Include="Engine\GLSLShaders\modelFragmentShader.fs.glsl" />
+    <None Include="Engine\GLSLShaders\modelVertexShader.vs.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -146,8 +146,9 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Extern\glm;$(SolutionDir)Extern\glfw\include\GLFW;$(SolutionDir)Extern\include\;$(SolutionDir)Extern\include\assimp\;$(SolutionDir)Src;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Engine\Extern\;$(SolutionDir)Engine\Extern\glm;$(SolutionDir)Engine\Extern\glfw\include\GLFW;$(SolutionDir)Engine\Extern\include\;$(SolutionDir)Engine\Extern\include\assimp\;$(SolutionDir)Engine\Src;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -156,7 +157,7 @@
       <AdditionalDependencies>glfw3.lib;opengl32.lib;assimp-vc142-mt.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)Extern\lib\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Engine\Extern\lib\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -189,8 +190,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Extern\glm;$(SolutionDir)Extern\glfw\include\GLFW;$(SolutionDir)Extern\include\;$(SolutionDir)Extern\include\assimp\;$(SolutionDir)Src;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Engine\Extern\;$(SolutionDir)Engine\Extern\glm;$(SolutionDir)Engine\Extern\glfw\include\GLFW;$(SolutionDir)Engine\Extern\include\;$(SolutionDir)Engine\Extern\include\assimp\;$(SolutionDir)Engine\Src;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -201,7 +203,7 @@
       <AdditionalDependencies>glfw3.lib;opengl32.lib;assimp-vc142-mt.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)Extern\lib\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Engine\Extern\lib\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

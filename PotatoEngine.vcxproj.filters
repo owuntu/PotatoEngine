@@ -38,125 +38,125 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ShaderObject\ShaderObject.cpp">
-      <Filter>ShaderObject</Filter>
+    <ClCompile Include="Engine\Src\Camera.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderObject\ShaderProgram.cpp">
-      <Filter>ShaderObject</Filter>
+    <ClCompile Include="Engine\Src\Game.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="glad\glad.c">
+    <ClCompile Include="Engine\Extern\glad\glad.c">
       <Filter>glad</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Camera.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Engine\Src\BVHModelCreator.cpp">
+      <Filter>Model\ModelFactory</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\GLObject.cpp">
-      <Filter>GLObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\KdTree.cpp">
+    <ClCompile Include="Engine\Src\BVH.cpp">
       <Filter>SpacePartition</Filter>
     </ClCompile>
-    <ClCompile Include="Src\MeshModel.cpp">
+    <ClCompile Include="Engine\Src\PointCloudModel.cpp">
       <Filter>Model</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Model.cpp">
+    <ClCompile Include="Engine\Src\SinglePointModel.cpp">
       <Filter>Model</Filter>
     </ClCompile>
-    <ClCompile Include="Src\PointCloudModel.cpp">
+    <ClCompile Include="Engine\Src\Model.cpp">
       <Filter>Model</Filter>
     </ClCompile>
-    <ClCompile Include="Src\SinglePointModel.cpp">
+    <ClCompile Include="Engine\Src\ModelCreator.cpp">
+      <Filter>Model\ModelFactory</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Src\Mesh.cpp">
       <Filter>Model</Filter>
     </ClCompile>
-    <ClCompile Include="Src\ClosestPointTest.cpp">
+    <ClCompile Include="Engine\Src\MeshModel.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Src\MeshModelBVH.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Src\KdTree.cpp">
+      <Filter>SpacePartition</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Src\HelperDraw.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Src\ClosestPointTest.cpp">
       <Filter>CollisionDetection</Filter>
     </ClCompile>
-    <ClCompile Include="Src\BVH.cpp">
-      <Filter>SpacePartition</Filter>
+    <ClCompile Include="Engine\Src\GLObject.cpp">
+      <Filter>ShaderObject</Filter>
     </ClCompile>
-    <ClCompile Include="Src\MeshModelBVH.cpp">
-      <Filter>Model</Filter>
+    <ClCompile Include="Engine\Src\ShaderObject\ShaderObject.cpp">
+      <Filter>ShaderObject</Filter>
     </ClCompile>
-    <ClCompile Include="Src\ModelCreator.cpp">
-      <Filter>Model\ModelFactory</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\BVHModelCreator.cpp">
-      <Filter>Model\ModelFactory</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Mesh.cpp">
-      <Filter>Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\HelperDraw.cpp">
-      <Filter>Utilities</Filter>
+    <ClCompile Include="Engine\Src\ShaderObject\ShaderProgram.cpp">
+      <Filter>ShaderObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ShaderObject\ShaderObject.h">
-      <Filter>ShaderObject</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderObject\ShaderProgram.h">
-      <Filter>ShaderObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\GLObject.h">
-      <Filter>GLObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\BBox.h">
+    <ClInclude Include="Engine\Src\BBox.h">
       <Filter>SpacePartition</Filter>
     </ClInclude>
-    <ClInclude Include="Src\KdTree.h">
+    <ClInclude Include="Engine\Src\BVH.h">
       <Filter>SpacePartition</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Mesh.h">
-      <Filter>Model</Filter>
+    <ClInclude Include="Engine\Src\BVHModelCreator.h">
+      <Filter>Model\ModelFactory</Filter>
     </ClInclude>
-    <ClInclude Include="Src\MeshModel.h">
-      <Filter>Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Model.h">
-      <Filter>Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\PointCloudModel.h">
-      <Filter>Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\SinglePointModel.h">
-      <Filter>Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Camera.h">
+    <ClInclude Include="Engine\Src\Camera.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Game.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="Engine\Src\KdTree.h">
+      <Filter>SpacePartition</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ClosestPointTest.h">
+    <ClInclude Include="Engine\Src\Utilities.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Src\SinglePointModel.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Src\PointCloudModel.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Src\Model.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Src\ModelCreator.h">
+      <Filter>Model\ModelFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Src\MeshModelBVH.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Src\MeshModel.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Src\Mesh.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Src\HelperDraw.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Src\ClosestPointTest.h">
       <Filter>CollisionDetection</Filter>
     </ClInclude>
-    <ClInclude Include="Src\BVH.h">
-      <Filter>SpacePartition</Filter>
+    <ClInclude Include="Engine\Src\GLObject.h">
+      <Filter>ShaderObject</Filter>
     </ClInclude>
-    <ClInclude Include="Src\MeshModelBVH.h">
-      <Filter>Model</Filter>
+    <ClInclude Include="Engine\Src\Game.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ModelCreator.h">
-      <Filter>Model\ModelFactory</Filter>
+    <ClInclude Include="Engine\Src\ShaderObject\ShaderObject.h">
+      <Filter>ShaderObject</Filter>
     </ClInclude>
-    <ClInclude Include="Src\BVHModelCreator.h">
-      <Filter>Model\ModelFactory</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Utilities.h">
-      <Filter>Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\HelperDraw.h">
-      <Filter>Utilities</Filter>
+    <ClInclude Include="Engine\Src\ShaderObject\ShaderProgram.h">
+      <Filter>ShaderObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="GLSLShaders\modelVertexShader.vs.glsl">
+    <None Include="Engine\GLSLShaders\modelFragmentShader.fs.glsl">
       <Filter>Resource Files\GLSLShaders</Filter>
     </None>
-    <None Include="GLSLShaders\modelFragmentShader.fs.glsl">
+    <None Include="Engine\GLSLShaders\modelVertexShader.vs.glsl">
       <Filter>Resource Files\GLSLShaders</Filter>
     </None>
   </ItemGroup>
