@@ -56,17 +56,4 @@ namespace PotatoEngine
 		DoDraw();
 	}
 
-	void Model::DrawVertices(ShaderProgram* pShader) const
-	{
-		// Pre draw
-		if (pShader != nullptr)
-		{
-			pShader->SetMat4("modelMat", m_transformation);
-			pShader->SetVec4("ModelColor", m_color);
-		}
-
-		// do draw
-		DoDrawVertices();
-	}
-
 } // namespace PotatoEngine

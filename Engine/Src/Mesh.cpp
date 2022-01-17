@@ -18,7 +18,7 @@ namespace PotatoEngine
 		glDeleteVertexArrays(1, &m_glVAO);
 	}
 
-	void Mesh::SetupGL()
+	void Mesh::SetupGL(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices)
 	{
 		// Create buffers/arrays
 		glGenVertexArrays(1, &m_glVAO);
@@ -29,10 +29,10 @@ namespace PotatoEngine
 		
 		// Load data into buffers
 		glBindBuffer(GL_ARRAY_BUFFER, m_glVBO);
-		glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(Vertex), &m_vertices[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
 		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_glEBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(unsigned int), &m_indices[0], GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 
 		// Vertex arribute pointer
 		// Positions
@@ -54,13 +54,6 @@ namespace PotatoEngine
 		glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0);
 
 		// Set everything back to default
-		glBindVertexArray(0);
-	}
-
-	void Mesh::DrawVertices() const
-	{
-		glBindVertexArray(m_glVAO);
-		glDrawArrays(GL_POINTS, 0, m_vertices.size());
 		glBindVertexArray(0);
 	}
 

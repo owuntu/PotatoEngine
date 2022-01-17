@@ -85,9 +85,4 @@ namespace PotatoEngine
 		m_mesh.Draw();
 	}
 
-	void MeshModel::DoDrawVertices() const
-	{
-		m_mesh.DrawVertices();
-	}
-
 } // PotatoEngine

@@ -37,7 +37,6 @@ namespace PotatoEngine
 		void ProcessMesh(aiMesh* pMesh);
 
 		void DoDraw() const;
-		void DoDrawVertices() const;
 
 		std::vector<Mesh> m_tmpMeshes;
 

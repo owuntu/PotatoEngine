@@ -26,7 +26,6 @@ namespace PotatoEngine
 		virtual ~Model() {}
 
 		void Draw(ShaderProgram* pShader = nullptr) const;
-		void DrawVertices(ShaderProgram* pShader = nullptr) const;
 
 		void LoadModel(const std::string& objModelPath);
 
@@ -45,7 +44,6 @@ namespace PotatoEngine
 		virtual void PostSetup() {}
 
 		virtual void DoDraw() const = 0;
-		virtual void DoDrawVertices() const = 0;
 
 		friend class ModelCreator;
 	};

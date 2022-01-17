@@ -33,7 +33,7 @@ namespace PotatoEngine
 			m_vertices = vertices;
 			m_indices = indices;
 
-			SetupGL();
+			SetupGL(vertices, indices);
 		}
 
 		Mesh() :
@@ -45,7 +45,6 @@ namespace PotatoEngine
 		~Mesh();
 
 		void Draw() const;
-		void DrawVertices() const;
 		void Release();
 
 		glm::vec3 ClosestPointOnTriangle(const glm::vec3& p, std::size_t triangleIndex) const;
@@ -73,7 +72,7 @@ namespace PotatoEngine
 		uint32_t m_glVBO;
 		uint32_t m_glEBO; // element buffer object
 
-		void SetupGL();
+		void SetupGL(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
 	};
 } // namespace PotatoEngine
 
