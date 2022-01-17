@@ -10,7 +10,6 @@ include_directories(
     ${ENGINE_DIR}/Src
     ${ENGINE_DIR}/Extern
     ${ENGINE_DIR}/Extern/include
-    ${ENGINE_DIR}/Extern/glfw/include/GLFW
     ${ENGINE_DIR}/Extern/glm
     )
 
