@@ -17,8 +17,10 @@ namespace PotatoEngine
 		// check for errors
 		if (scene == nullptr || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || scene->mRootNode == nullptr)
 		{
-			std::cerr << "Error loading model: " << importer.GetErrorString() << std::endl;
-			return;
+			std::string msg = "Error loading model: ";
+			msg += importer.GetErrorString();
+			std::cerr << msg << std::endl;
+			throw std::runtime_error(msg);
 		}
 
 		m_directory = objModelPath;
