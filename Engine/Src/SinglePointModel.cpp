@@ -27,11 +27,6 @@ namespace PotatoEngine
 
 	void SinglePointModel::DoDraw() const
 	{
-		this->DoDrawVertices();
-	}
-
-	void SinglePointModel::DoDrawVertices() const
-	{
 		glPointSize(10.0f);
 		glBindVertexArray(m_glVAO);
 		glDrawArrays(GL_POINTS, 0, 1);

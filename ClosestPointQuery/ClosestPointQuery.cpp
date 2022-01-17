@@ -15,17 +15,17 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "ClosestPointQuery.h"
-#include "MeshModel.h"
-#include "ModelCreator.h"
+#include "MeshModelBVH.h"
+#include "BVHModelCreator.h"
 #include "Camera.h"
 #include "ShaderObject/ShaderProgram.h"
 #include "HelperDraw.h"
+#include "ClosestPointTest.h"
 
 using namespace PotatoEngine;
 
 static const glm::mat4 IDENTITY = glm::mat4(1.0f);
-static int gs_maxKdTreeDrawDepth = 16;
-static bool gs_drawKdTree = false;
+static int gs_depthToDraw = 0;
 
 std::shared_ptr<ClosestPointQuery> ClosestPointQuery::Create(const std::string& modelPath)
 {
@@ -77,34 +77,16 @@ void ClosestPointQuery::KeyCallback(GLFWwindow* window, int key, int scancode, i
 		m_bToQuery = true;
 	}
 
-	// Handel kd tree draw
-	bool bChangeDraw = false;
-	if (key == GLFW_KEY_O)
+	if (key == GLFW_KEY_I)
 	{
-		gs_drawKdTree = !gs_drawKdTree;
-		bChangeDraw = true;
+		gs_depthToDraw++;
+		std::cout << "\nDraw depth " << gs_depthToDraw << "\n";
 	}
 
-	if (gs_drawKdTree)
+	if (key == GLFW_KEY_K)
 	{
-		if (key == GLFW_KEY_I)
-		{
-			gs_maxKdTreeDrawDepth++;
-			bChangeDraw = true;
-		}
-
-		if (key == GLFW_KEY_K)
-		{
-			gs_maxKdTreeDrawDepth--;
-			bChangeDraw = true;
-		}
-
-		if (bChangeDraw)
-		{
-			int maxDepth = m_pModel->GetMaxDepth();
-			gs_maxKdTreeDrawDepth = std::clamp(gs_maxKdTreeDrawDepth, -1, maxDepth);
-			std::cout << "\nDraw to Kd tree depth " << gs_maxKdTreeDrawDepth << std::endl;
-		}
+		gs_depthToDraw--;
+		std::cout << "\nDraw depth " << gs_depthToDraw << "\n";
 	}
 
 }
@@ -124,14 +106,15 @@ bool ClosestPointQuery::Init(const std::string& modelPath)
 	glfwSetKeyCallback(m_window, keyCallback);
 
 	m_pShader = std::make_shared<ShaderProgram>();
-	m_pShader->Create("GLSLSHaders/modelVertexShader.vs.glsl", "GLSLShaders/modelFragmentShader.fs.glsl");
+	m_pShader->Create("Engine/GLSLShaders/modelVertexShader.vs.glsl", "Engine/GLSLShaders/modelFragmentShader.fs.glsl");
 	m_pShader->Use();
 
-	m_pModel = std::dynamic_pointer_cast<PointCloudModel>(ModelCreator::CreateModel(ModelCreator::Type::POINT_CLOUD_MODEL, modelPath));
-	m_pModel->SetColor(glm::vec3(0.8f));
+	BVHModelCreator bvhModelCreator;
+	m_pMeshModel = std::dynamic_pointer_cast<MeshModelBVH>(bvhModelCreator.CreateModel(ModelCreator::Type::MESH_MODEL, modelPath));
+	m_pMeshModel->SetColor(glm::vec3(0.8f));
 
 	// Adapth camera movement speed to the model size
-	const auto& box = m_pModel->GetRoot()->box;
+	const auto& box = m_pMeshModel->GetBoundingBox();
 	auto diff = box.vmax - box.vmin;
 	float maxDim = fmaxf(diff.x, fmaxf(diff.y, diff.z));
 	m_pMainCamera->SetMoveSpeed(maxDim / 2.f);
@@ -141,12 +124,12 @@ bool ClosestPointQuery::Init(const std::string& modelPath)
 	auto midPoint = (box.vmax + box.vmin) / 2.f;
 	m_pMainCamera->SetPosition(glm::vec3(midPoint.x, midPoint.y, box.vmax.z * 2.f));
 
-	gs_maxKdTreeDrawDepth = m_pModel->GetMaxDepth();
 
-	m_pQueryPointModel = std::dynamic_pointer_cast<SinglePointModel>(ModelCreator::CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
+	ModelCreator modelCreator;
+	m_pQueryPointModel = std::dynamic_pointer_cast<SinglePointModel>(modelCreator.CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
 	m_pQueryPointModel->SetColor(glm::vec4(1, 0, 0, 1)); // set query point red
 
-	m_pClosestPointModel = std::dynamic_pointer_cast<SinglePointModel>(ModelCreator::CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
+	m_pClosestPointModel = std::dynamic_pointer_cast<SinglePointModel>(modelCreator.CreateModel(ModelCreator::Type::SINGLE_POINT_MODEL));
 	m_pClosestPointModel->SetColor(glm::vec4(0, 1, 0, 1)); // set result point green
 
 	return true;
@@ -162,7 +145,7 @@ void ClosestPointQuery::Update()
 		m_bToQuery = false;
 		glm::vec3 closestPoint = DoQueryClosestPoint(m_queryPoint, m_maxSearchDistance);
 
-		if (!isnan(closestPoint.x))
+		if (!glm::isnan(closestPoint.x))
 		{
 			std::cout << "Closest point is: (" << closestPoint.x << ", " << closestPoint.y << ", " << closestPoint.z << ")" << std::endl;
 			m_pClosestPointModel->SetPosition(closestPoint);
@@ -188,13 +171,15 @@ void ClosestPointQuery::Render()
 	m_pShader->SetMat4("view", view);
 	m_pShader->SetMat4("projection", persp);
 
-	m_pModel->Draw(m_pShader.get());
-	if (gs_drawKdTree)
-	{
-		DrawKdTree(m_pShader.get(), m_pModel->GetRoot(), 0, gs_maxKdTreeDrawDepth);
-	}
+	m_pShader->SetInt("bUseLighting", 1);
+	m_pMeshModel->Draw(m_pShader.get());
+
+	m_pShader->SetInt("bUseLighting", 0);
+	m_pMeshModel->DebugDrawBVH(m_pShader.get(), gs_depthToDraw);
+
 	DrawCoordAxis(m_pShader.get());
 
+	m_pShader->SetInt("bUseLighting", 0);
 	m_pQueryPointModel->Draw(m_pShader.get());
 	if (m_bFoundResult)
 	{
@@ -213,27 +198,44 @@ void ClosestPointQuery::Reset()
 int ClosestPointQuery::Run()
 {
 	std::cout << "Press TAB key to enter query point and search distance (you need to manually switch focus window to console).\n";
-	std::cout << "Press I/K key to increase/decrease kd tree draw depth.\n";
-	std::cout << "Press O key to toggle kd tree draw.\n";
+	std::cout << "Pres I/K key to increase/decrease the desire BVH depth to be drawn.\n";
 	return Game::Run();
 }
 
 glm::vec3 ClosestPointQuery::DoQueryClosestPoint(const glm::vec3& queryPoint, float maxSearchDistance)
 {
-	return QueryClosestPointKDTree(queryPoint, maxSearchDistance);
+	//return QueryBruteForce(queryPoint, maxSearchDistance);
+	return QueryBVH(queryPoint, maxSearchDistance);
 }
 
-// KdTree search
-glm::vec3 ClosestPointQuery::QueryClosestPointKDTree(const glm::vec3& queryPoint, float maxSearchDistance)
+// Brute force method
+glm::vec3 ClosestPointQuery::QueryBruteForce(const glm::vec3& queryPoint, float maxSearchDistance)
 {
-	using namespace PotatoEngine;
+	auto& mesh = m_pMeshModel->GetMesh();
+	const auto numTriangles = mesh.NumTriangles();
 
-	glm::vec3 res = m_pModel->SearchNearest(queryPoint);
-	if (glm::distance2(res, queryPoint) > maxSearchDistance* maxSearchDistance)
+	float minDist2 = FLT_MAX;
+	glm::vec3 res(NAN);
+	for (std::size_t i = 0; i < numTriangles; ++i)
 	{
-		return glm::vec3(NAN);
+		glm::vec3 tres = mesh.ClosestPointOnTriangle(queryPoint, i);
+		float d2 = glm::distance2(queryPoint, tres);
+		if (d2 < minDist2)
+		{
+			minDist2 = d2;
+			res = tres;
+		}
 	}
-	return res;
+
+	if (minDist2 < maxSearchDistance * maxSearchDistance)
+	{
+		return res;
+	}
+
+	return glm::vec3(NAN);
 }
 
-
+glm::vec3 ClosestPointQuery::QueryBVH(const glm::vec3& queryPoint, float maxSearchDistance)
+{
+	return m_pMeshModel->QueryClosestPoint(queryPoint, maxSearchDistance);
+}

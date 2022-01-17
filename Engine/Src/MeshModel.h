@@ -23,14 +23,25 @@ namespace PotatoEngine
 		MeshModel()
 		{}
 		
-		~MeshModel() {}
+		virtual ~MeshModel()
+		{
+			m_mesh.Release();
+		}
+
+		const Mesh& GetMesh() const { return m_mesh; }
+
+	protected:
+		virtual void PostSetup();
 
 	private:
 		void ProcessMesh(aiMesh* pMesh);
-		void DoDraw() const;
-		void DoDrawVertices() const;
 
-		std::vector<Mesh> m_meshes;
+		void DoDraw() const;
+
+		std::vector<Mesh> m_tmpMeshes;
+
+		// merge into single mesh
+		Mesh m_mesh;
 	}; // class MeshModel
 } // namespace PotatoEngine
 

@@ -1,7 +1,7 @@
 #ifndef POTATOENGINE_BBOX_H_
 #define POTATOENGINE_BBOX_H_
 
-#include <glm\glm.hpp>
+#include <glm/glm.hpp>
 
 namespace PotatoEngine
 {
@@ -37,6 +37,30 @@ namespace PotatoEngine
 				vmin[i] = fminf(rhs.vmin[i], vmin[i]);
 				vmax[i] = fmaxf(rhs.vmax[i], vmax[i]);
 			}
+		}
+
+		bool IsInside(const glm::vec3& p) const
+		{
+			for (int i = 0; i < 3; ++i)
+			{
+				if (p[i] > vmax[i] || p[i] < vmin[i])
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		const BBox& operator+=(const BBox& rhs)
+		{
+			this->Add(rhs);
+			return *this;
+		}
+
+		const BBox& operator+=(const glm::vec3& rhs)
+		{
+			this->Add(rhs);
+			return *this;
 		}
 	};
 }

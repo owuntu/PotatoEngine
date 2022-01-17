@@ -29,7 +29,7 @@ public:
 	void RunAllTests();
 
 private:
-	bool TestKDTreeSearch();
+	bool TestBVHSearch();
 	bool TestBruteForceSearch();
 	bool Verify(const std::vector<glm::vec3>& results);
 

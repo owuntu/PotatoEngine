@@ -43,7 +43,6 @@ namespace PotatoEngine
 		void PostSetup();
 
 		void DoDraw() const;
-		void DoDrawVertices() const;
 
 		// todo: refactor GL object into another class
 		unsigned int m_glVAO;

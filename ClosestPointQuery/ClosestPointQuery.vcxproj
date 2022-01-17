@@ -211,7 +211,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\Src;$(SolutionDir)Extern\;$(SolutionDir)Extern\glfw\include\GLFW;$(SolutionDir)Extern\glm;$(SolutionDir)Extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)Engine\Src;$(SolutionDir)Engine\Extern;$(SolutionDir)Engine\Extern\glfw\include\GLFW;$(SolutionDir)Engine\Extern\glm;$(SolutionDir)Engine\Extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -219,10 +219,10 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>PotatoEngine.lib;glfw3.lib;glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)Extern\lib\$(Platform);$(SolutionDir)Extern\lib\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)Engine\Extern\lib\$(Platform);$(SolutionDir)Engine\Extern\lib\</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(SolutionDir)Extern\dll\*.dll" "$(TargetDir)"</Command>
+      <Command>xcopy /y /d "$(SolutionDir)Engine\Extern\dll\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugTest|x64'">
@@ -231,7 +231,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;UNIT_TESTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\Src;$(SolutionDir)Extern\;$(SolutionDir)Extern\glfw\include\GLFW;$(SolutionDir)Extern\glm;$(SolutionDir)Extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)Engine\Src;$(SolutionDir)Engine\Extern\;$(SolutionDir)Engine\Extern\glfw\include\GLFW;$(SolutionDir)Engine\Extern\glm;$(SolutionDir)Engine\Extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -239,10 +239,10 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>PotatoEngine.lib;glfw3.lib;glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\Debug\;$(SolutionDir)Extern\lib\$(Platform);$(SolutionDir)Extern\lib\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\Debug\;$(SolutionDir)Engine\Extern\lib\$(Platform);$(SolutionDir)Engine\Extern\lib\</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(SolutionDir)Extern\dll\*.dll" "$(TargetDir)"</Command>
+      <Command>xcopy /y /d "$(SolutionDir)Engine\Extern\dll\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -253,7 +253,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\Src;$(SolutionDir)Extern\;$(SolutionDir)Extern\glfw\include\GLFW;$(SolutionDir)Extern\glm;$(SolutionDir)Extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)Engine\Src;$(SolutionDir)Engine\Extern\;$(SolutionDir)Engine\Extern\glfw\include\GLFW;$(SolutionDir)Engine\Extern\glm;$(SolutionDir)Engine\Extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -263,10 +263,10 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>PotatoEngine.lib;glfw3.lib;glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)Extern\lib\$(Platform);$(SolutionDir)Extern\lib\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)Engine\Extern\lib\$(Platform);$(SolutionDir)Engine\Extern\lib\</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(SolutionDir)Extern\dll\*.dll" "$(TargetDir)"</Command>
+      <Command>xcopy /y /d "$(SolutionDir)Engine\Extern\dll\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseTest|x64'">
@@ -277,7 +277,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;UNIT_TESTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\Src;$(SolutionDir)Extern\;$(SolutionDir)Extern\glfw\include\GLFW;$(SolutionDir)Extern\glm;$(SolutionDir)Extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)Engine\Src;$(SolutionDir)Engine\Extern\;$(SolutionDir)Engine\Extern\glfw\include\GLFW;$(SolutionDir)Engine\Extern\glm;$(SolutionDir)Engine\Extern\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -287,20 +287,18 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>PotatoEngine.lib;glfw3.lib;glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\Release\;$(SolutionDir)Extern\lib\$(Platform);$(SolutionDir)Extern\lib\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\Release\;$(SolutionDir)Engine\Extern\lib\$(Platform);$(SolutionDir)Engine\Extern\lib\</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(SolutionDir)Extern\dll\*.dll" "$(TargetDir)"</Command>
+      <Command>xcopy /y /d "$(SolutionDir)Engine\Extern\dll\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="HelperDraw.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ClosestPointQuery.cpp" />
     <ClCompile Include="UnitTests.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HelperDraw.h" />
     <ClInclude Include="ClosestPointQuery.h" />
     <ClInclude Include="UnitTests.h" />
   </ItemGroup>

@@ -8,7 +8,7 @@
 #include <glm/gtx/norm.hpp>
 
 #include "BBox.h"
-#include "PointCloudModel.h"
+#include "MeshModelBVH.h"
 #include "ClosestPointQuery.h"
 #include "UnitTests.h"
 
@@ -32,7 +32,7 @@ void WritePointsToFile(const std::vector<glm::vec3>& points, const std::string& 
 	if (!testFile.is_open())
 	{
 		std::string msg = "Cannot open file " + fileName;
-		throw std::exception(msg.c_str());
+		throw std::runtime_error(msg);
 	}
 
 	WritePointsToFile(points, testFile);
@@ -73,33 +73,12 @@ void ReadFileToPoints(std::vector<glm::vec3>& points, const std::string& fileNam
 	if (!file.is_open())
 	{
 		string msg = "Cannot open file " + fileName;
-		throw std::exception(msg.c_str());
+		throw std::runtime_error(msg);
 	}
 
 	ReadFileToPoints(points, file);
 
 	file.close();
-}
-
-// Basic method: brute force search
-glm::vec3 QueryClosestPointBruteForce(const std::vector<glm::vec3>& points, const glm::vec3& queryPoint, float maxSearchDistance)
-{
-	glm::vec3 res(nanf(""));
-
-	float minDist2 = FLT_MAX;
-	float md2 = maxSearchDistance * maxSearchDistance;
-	for (auto point : points)
-	{
-		float d2 = glm::length2(point - queryPoint);
-
-		if (d2 < md2 && d2 < minDist2)
-		{
-			minDist2 = d2;
-			res = point;
-		}
-	}
-
-	return res;
 }
 
 void ClosestPointUnitTest::GenerateTestPointsAndResults()
@@ -108,8 +87,9 @@ void ClosestPointUnitTest::GenerateTestPointsAndResults()
 	using namespace PotatoEngine;
 	auto sampleGame = ClosestPointQuery::Create(m_testModelPath);
 
-	const std::shared_ptr<PointCloudModel> pModel = sampleGame->GetModel();
-	BBox box = pModel->GetRoot()->box;
+	// todo: adapt the new test
+	const auto pModel = sampleGame->GetModel();
+	BBox box = pModel->GetBoundingBox();
 
 	// scale up the bounding box for larger area test
 	box.vmax *= 2.0f;
@@ -135,10 +115,9 @@ void ClosestPointUnitTest::GenerateTestPointsAndResults()
 		}
 	}
 
-	const auto& points = pModel->GetPoints();
 	for (auto point : m_testPoints)
 	{
-		auto res = QueryClosestPointBruteForce(points, point, m_maxSearchDistance);
+		auto res = sampleGame->QueryBruteForce(point, m_maxSearchDistance);
 		m_expResults.push_back(res);
 	}
 
@@ -147,7 +126,7 @@ void ClosestPointUnitTest::GenerateTestPointsAndResults()
 		if (!testFile.is_open())
 		{
 			std::string msg = "Cannot open file " + m_testDataFileName;
-			throw std::exception(msg.c_str());
+			throw std::runtime_error(msg);
 		}
 
 		testFile << m_maxSearchDistance << "\n";
@@ -162,7 +141,6 @@ void ClosestPointUnitTest::GenerateTestPointsAndResults()
 	WritePointsToFile(m_expResults, m_resultDataFileName);
 }
 
-
 void ClosestPointUnitTest::LoadTestData()
 {
 	m_testPoints.clear();
@@ -174,7 +152,7 @@ void ClosestPointUnitTest::LoadTestData()
 		if (!testFile.is_open())
 		{
 			std::string msg = "Cannot open file " + m_testDataFileName;
-			throw std::exception(msg.c_str());
+			throw std::runtime_error(msg);
 		}
 
 		// The first line is the max search distance
@@ -192,11 +170,11 @@ void ClosestPointUnitTest::RunAllTests()
 	std::cout << "Running all tests\n";
 	LoadTestData();
 	// todo: may use test framework such as Google Test
-	ASSERT(TestKDTreeSearch());
+	ASSERT(TestBVHSearch());
 	ASSERT(TestBruteForceSearch());
 }
 
-bool ClosestPointUnitTest::TestKDTreeSearch()
+bool ClosestPointUnitTest::TestBVHSearch()
 {
 	auto sampleGame = ClosestPointQuery::Create(m_testModelPath);
 
@@ -210,17 +188,18 @@ bool ClosestPointUnitTest::TestKDTreeSearch()
 		results.push_back(res);
 	}
 	auto finish = std::chrono::high_resolution_clock::now();
-	std::cout << "All KD Tree search took "
+	std::cout << "All BVH search took "
 		<< std::chrono::duration_cast<milli>(finish - start).count()
 		<< " milliseconds\n";
 
 	bool bPassed = Verify(results);
-
 	return bPassed;
 }
 
 bool ClosestPointUnitTest::TestBruteForceSearch()
 {
+	// todo: adapt the new test
+
 	auto sampleGame = ClosestPointQuery::Create(m_testModelPath);
 
 	std::vector<glm::vec3> results;
@@ -228,10 +207,9 @@ bool ClosestPointUnitTest::TestBruteForceSearch()
 	using milli = std::chrono::milliseconds;
 	auto start = std::chrono::high_resolution_clock::now();
 	auto pModel = sampleGame->GetModel();
-	const auto& points = pModel->GetPoints();
 	for (auto point : m_testPoints)
 	{
-		auto res = QueryClosestPointBruteForce(points, point, m_maxSearchDistance);
+		auto res = sampleGame->QueryBruteForce(point, m_maxSearchDistance);
 		results.push_back(res);
 	}
 	auto finish = std::chrono::high_resolution_clock::now();
@@ -240,6 +218,7 @@ bool ClosestPointUnitTest::TestBruteForceSearch()
 		<< " milliseconds\n";
 
 	bool bPassed = Verify(results);
+
 	return bPassed;
 }
 
@@ -257,14 +236,16 @@ bool ClosestPointUnitTest::Verify(const std::vector<glm::vec3>& results)
 		auto exp = m_expResults[i];
 		auto res = results[i];
 		float epsilon = 0.01f;
-		if ((isnan(exp.x) ^ isnan(res.x))
+		if ((glm::isnan(exp.x) ^ glm::isnan(res.x))
 			|| glm::any(glm::epsilonNotEqual(exp, res, epsilon)))
 		{
 			bSuccess = false;
 			std::cout << "Incorrect result at " << i << std::endl;
 			std::cout << "Result: (" << res.x << ", " << res.y << ", " << res.z << ")\n";
 			std::cout << "Expected: (" << exp.x << ", " << exp.y << ", " << exp.z << ")\n";
-			break;
+			auto testPoint = m_testPoints[i];
+			std::cout << "TestPoint: (" << testPoint.x << ", " << testPoint.y << ", " << testPoint.z << ")\n";
+			//break;
 		}
 	}
 

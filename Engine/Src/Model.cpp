@@ -14,15 +14,15 @@ namespace PotatoEngine
 	{
 		Assimp::Importer importer;
 		// todo: provide option for whether to join identical vertices.
-		// For now it is for query closest point solution, we don't really need the duplicated
-		// vertices which aim to improve rendering performance.
 		const aiScene* scene = importer.ReadFile(objModelPath, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
 
 		// check for errors
 		if (scene == nullptr || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || scene->mRootNode == nullptr)
 		{
-			std::cerr << "Error loading model: " << importer.GetErrorString() << std::endl;
-			return;
+			std::string msg = "Error loading model: ";
+			msg += importer.GetErrorString();
+			std::cerr << msg << std::endl;
+			throw std::runtime_error(msg);
 		}
 
 		m_directory = objModelPath;
@@ -56,19 +56,6 @@ namespace PotatoEngine
 
 		// do draw
 		DoDraw();
-	}
-
-	void Model::DrawVertices(ShaderProgram* pShader) const
-	{
-		// Pre draw
-		if (pShader != nullptr)
-		{
-			pShader->SetMat4("modelMat", m_transformation);
-			pShader->SetVec4("ModelColor", m_color);
-		}
-
-		// do draw
-		DoDrawVertices();
 	}
 
 } // namespace PotatoEngine

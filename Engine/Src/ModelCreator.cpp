@@ -4,6 +4,19 @@ namespace PotatoEngine
 {
 	std::shared_ptr<Model> ModelCreator::CreateModel(const Type t, const std::string& objModelPath)
 	{
+		std::shared_ptr<Model> pModel = DoCreateModel(t);
+		if (pModel != nullptr && objModelPath != "")
+		{
+			pModel->LoadModel(objModelPath);
+		}
+
+		pModel->PostSetup();
+
+		return pModel;
+	}
+
+	std::shared_ptr<Model> ModelCreator::DoCreateModel(const Type t)
+	{
 		std::shared_ptr<Model> pModel = nullptr;
 		switch (t)
 		{
@@ -20,13 +33,7 @@ namespace PotatoEngine
 			break;
 		}
 
-		if (pModel != nullptr && objModelPath != "")
-		{
-			pModel->LoadModel(objModelPath);
-		}
-
-		pModel->PostSetup();
-
 		return pModel;
 	}
+
 } // namespace PotatoEngine
