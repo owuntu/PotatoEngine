@@ -20,5 +20,8 @@ set(SOURCES ClosestPointQuery.cpp
 
 add_executable(ClosestPointQuery ${SOURCES})
 
-target_link_directories(ClosestPointQuery PUBLIC ${ENGINE_DIR})
-target_link_libraries(ClosestPointQuery libPotatoEngine.a)
+target_link_directories(ClosestPointQuery PUBLIC ${ENGINE_DIR}
+                                                 ${ENGINE_DIR}/Extern/dll
+                                                )
+target_link_libraries(ClosestPointQuery libPotatoEngine.a
+                                        libassimp.so)
