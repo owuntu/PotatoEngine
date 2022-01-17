@@ -27,5 +27,6 @@ set(SOURCES ${SOURCE_DIR}BVH.cpp
             ${SOURCE_DIR}ModelCreator.cpp
             ${SOURCE_DIR}PointCloudModel.cpp
             ${SOURCE_DIR}SinglePointModel.cpp
+            ./Extern/glad/glad.c
             )
 add_library(PotatoEngine ${SOURCES})

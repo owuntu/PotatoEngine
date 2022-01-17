@@ -20,3 +20,6 @@ set(SOURCES ClosestPointQuery.cpp
             )
 
 add_executable(ClosestPointQuery ${SOURCES})
+
+target_link_directories(ClosestPointQuery PUBLIC ${ENGINE_DIR})
+target_link_libraries(ClosestPointQuery libPotatoEngine.a)
