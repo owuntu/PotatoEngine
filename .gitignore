@@ -260,3 +260,12 @@ paket-files/
 __pycache__/
 *.pyc
 Build/
+
+#CMake caches
+*.cmake
+CMakeFiles/
+CMakeCache.txt
+Makefile
+Engine/Src/CMakeCache.txt
+Engine/Src/Makefile
+Engine/Src/CMakeFiles/

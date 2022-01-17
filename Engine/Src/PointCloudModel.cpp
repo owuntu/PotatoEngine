@@ -195,7 +195,7 @@ namespace PotatoEngine
 		if (d2 < currentMin2)
 		{
 			auto tmp = SearchNearest(queryPoint, right, currentMin2);
-			if (!isnan(tmp.x))
+			if (!glm::isnan(tmp.x))
 			{
 				res = tmp;
 			}

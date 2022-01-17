@@ -1,7 +1,7 @@
 #ifndef POTATOENGINE_BBOX_H_
 #define POTATOENGINE_BBOX_H_
 
-#include <glm\glm.hpp>
+#include <glm/glm.hpp>
 
 namespace PotatoEngine
 {
