@@ -18,10 +18,10 @@ set(SOURCES ClosestPointQuery.cpp
             UnitTests.cpp
             )
 
-add_executable(ClosestPointQuery ${SOURCES})
+add_executable(${PROJECT_NAME} ${SOURCES})
 
-target_link_directories(ClosestPointQuery PUBLIC ${ENGINE_DIR}
+target_link_directories(${PROJECT_NAME} PUBLIC ${ENGINE_DIR}
                                                  ${ENGINE_DIR}/Extern/dll
                                                 )
-target_link_libraries(ClosestPointQuery libPotatoEngine.a
+target_link_libraries(${PROJECT_NAME} PotatoEngine
                                         libassimp.so)
