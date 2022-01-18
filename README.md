@@ -52,4 +52,8 @@ All BVH search took 326 milliseconds
 Building BVH ...
 All brute force search took 29168 milliseconds
 ```
-
+ The test will load relevant test data base on which model you load. If the test data doesn't exist yet, you need to generate it first. To do so, uncomment line 20 in `main.cpp` then run the test:
+```cpp
+test.GenerateTestPointsAndResults();
+```
+If you change the parameter in `ClosestPiontUnitTest` constructor, you will have to regenerate the test data too.
