@@ -18,10 +18,9 @@ For now the graphics support is only available in Visual Studio 2019 build. For 
    ```
 2. Open `PotatoEngine.sln`.
 3. Right click project `ClosestPointQuery`, select "Set as Start Up Project".
-4. In `ClosestPointQuery` project properties, Configuration Properties->Debugging, change "Working Directory" to `$(SolutionDir)`.
-5. Desire obj model path need to be fill in "Command Arguments". In resources/objects, there are some obj you can try. For example, you can enter `resources/objects/dragon/dragon.obj`.
-6. Select desire build. Build platform need to be x64.
-7. Press F5 to build and run the application.
+4. Desire obj model path need to be fill in "Command Arguments". In resources/objects, there are some obj you can try. For example, you can enter `../resources/objects/dragon/dragon.obj`.
+5. Select desire build. Build platform need to be x64.
+6. Press F5 to build and run the application.
 
 ## Build test
 DebugTest/ReleaseTest mode will run the simple unit test.
