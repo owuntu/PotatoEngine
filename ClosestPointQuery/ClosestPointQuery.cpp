@@ -106,7 +106,7 @@ bool ClosestPointQuery::Init(const std::string& modelPath)
 	glfwSetKeyCallback(m_window, keyCallback);
 
 	m_pShader = std::make_shared<ShaderProgram>();
-	m_pShader->Create("Engine/GLSLShaders/modelVertexShader.vs.glsl", "Engine/GLSLShaders/modelFragmentShader.fs.glsl");
+	m_pShader->Create("../Engine/GLSLShaders/modelVertexShader.vs.glsl", "../Engine/GLSLShaders/modelFragmentShader.fs.glsl");
 	m_pShader->Use();
 
 	BVHModelCreator bvhModelCreator;
@@ -151,6 +151,10 @@ void ClosestPointQuery::Update()
 			m_pClosestPointModel->SetPosition(closestPoint);
 
 			m_bFoundResult = true;
+		}
+		else
+		{
+			std::cout << "No valid point found.\n";
 		}
 
 		m_pQueryPointModel->SetPosition(m_queryPoint);
