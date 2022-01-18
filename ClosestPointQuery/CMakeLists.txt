@@ -18,6 +18,10 @@ set(SOURCES ClosestPointQuery.cpp
             UnitTests.cpp
             )
 
+if(BUILD_TEST)
+    add_compile_definitions(UNIT_TESTS)
+endif()
+
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_link_directories(${PROJECT_NAME} PUBLIC ${ENGINE_DIR}
