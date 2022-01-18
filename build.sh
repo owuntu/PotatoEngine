@@ -28,7 +28,7 @@ then
     fi
 else
     unzip_so
-    cmake .
+    cmake . -DBUILD_TEST=0
     cmake --build . -j 16
 fi
 

@@ -9,35 +9,47 @@ For fast query closest point on mesh, first I have to solve how to query the clo
 
 But there is still a lot of triangles to query, so I use BVH to do the acceleartion. Compare to Kd-tree, I think BVH doesn't have to worry about if a triangle is lie on the split plane. I can simply wrap it to a child box because BVH allow children to be overlapped. The key acceleration is that, if the bounding box distance is further than the temporory result has been found, it can skip the every triangles inside the bounding box.
 
-# Build:
-For now the graphics support is only available in Visual Studio 2019 build. For Linux build, please switch to branch `CloestPointQueryNoGraphics`.
+# Build & Run:
+This branch doesn't support model visualization. To enable it, switch to branch `ClosetPointQuery` and use Visual Studio 2019 to build.
 1. Init and update submodule
    ```
-   git submodule init
-   git submodule update
+   $ git submodule init
+   $ git submodule update
    ```
-2. Open `PotatoEngine.sln`.
-3. Right click project `ClosestPointQuery`, select "Set as Start Up Project".
-4. In `ClosestPointQuery` project properties, Configuration Properties->Debugging, change "Working Directory" to `$(SolutionDir)`.
-5. Desire obj model path need to be fill in "Command Arguments". In resources/objects, there are some obj you can try. For example, you can enter `resources/objects/dragon/dragon.obj`.
-6. Select desire build. Build platform need to be x64.
-7. Press F5 to build and run the application.
+2. To build the application, run the script:
+   ```
+   $ build.sh
+   ```
+3. The application now is located in `ClosestPointQuery/ClosestPointQuery`. To run, jump into the directory and load an obj model file:
+   ```
+   $ cd ClosestPointQuery
+   $ ./ClosestPointQuery ../resources/objects/dragon/dragon.obj
+   ```
+4. Type in the desire query point and max search distance into command line:
+   ```
+   Building BVH ...
+
+   Please input the queary point and max search distance: x y z distance
+   1 1 1 5
+   ```
+   and hit enter to see the result:
+   ```
+   Input point and max distance: (1, 1, 1), 5
+   Closest point is: (0.093636, 0.148634, -0.004483)
+   ```
 
 ## Build test
-DebugTest/ReleaseTest mode will run the simple unit test.
-The test will load relevant test data base on which model you load. If the test data doesn't exist yet, you need to generate it first. To do so, uncomment line 20 in `main.cpp` then run the test:
+Run the `build.sh` script with `test` argutment
 ```
-test.GenerateTestPointsAndResults();
+$ build.sh test
 ```
-If you change the parameter in `ClosestPiontUnitTest` constructor, you will have to regenerate the test data too.
+Then the `ClosestPointQuery` application is a test now. When run it, it will load the pre-generate test data and run to compare it with the BVH query result and brute force method's.
+```
+$ cd ClosestPointQuery
+$ ./ClosestPointQuery ../resources/objects/dragon/dragon.objRunning all tests
+Building BVH ...
+All BVH search took 326 milliseconds
+Building BVH ...
+All brute force search took 29168 milliseconds
+```
 
-# Usage: 
-```
-ClosestPointQuery [modelPath]
-```
-The query point is red and the result closest point is green.
-
-# Operations:
-* Press TAB key to switch to console for query point and max search distance input. You need to manually switch the focus window to console
-* Right click mouse to enable camera movement (W A S D)
-* Press I/K to increase/decrease the desired depth to be drew
