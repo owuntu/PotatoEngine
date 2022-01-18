@@ -54,7 +54,6 @@ void ClosestPointQuery::Update()
 	std::cout << "\nPlease input the queary point and max search distance: x y z distance\n";
 	std::cin >> m_queryPoint.x >> m_queryPoint.y >> m_queryPoint.z >> m_maxSearchDistance;
 
-
 	std::cout << "Input point and max distance: ("
 		<< m_queryPoint.x << ", "
 		<< m_queryPoint.y << ", "
@@ -66,7 +65,11 @@ void ClosestPointQuery::Update()
 	if (!glm::isnan(closestPoint.x))
 	{
 		std::cout << "Closest point is: (" << closestPoint.x << ", " << closestPoint.y << ", " << closestPoint.z << ")" << std::endl;
-	}	
+	}
+	else
+	{
+		std::cout << "No valid point found.\n";
+	}
 }
 
 int ClosestPointQuery::Run()
