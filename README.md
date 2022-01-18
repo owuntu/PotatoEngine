@@ -10,6 +10,7 @@ For fast query closest point on mesh, first I have to solve how to query the clo
 But there is still a lot of triangles to query, so I use BVH to do the acceleartion. Compare to Kd-tree, I think BVH doesn't have to worry about if a triangle is lie on the split plane. I can simply wrap it to a child box because BVH allow children to be overlapped. The key acceleration is that, if the bounding box distance is further than the temporory result has been found, it can skip the every triangles inside the bounding box.
 
 # Build & Run:
+## Linux
 This branch doesn't support model visualization. To enable it, switch to branch `ClosetPointQuery` and use Visual Studio 2019 to build.
 1. Init and update submodule
    ```
@@ -38,7 +39,7 @@ This branch doesn't support model visualization. To enable it, switch to branch 
    Closest point is: (0.093636, 0.148634, -0.004483)
    ```
 
-## Build test
+### Build test
 Run the `build.sh` script with `test` argutment
 ```
 $ build.sh test
@@ -57,3 +58,8 @@ All brute force search took 29168 milliseconds
 test.GenerateTestPointsAndResults();
 ```
 If you change the parameter in `ClosestPiontUnitTest` constructor, you will have to regenerate the test data too.
+
+Doesn't have an exit command yet so just do `ctrl+c` to exit.
+
+## Windows
+The same as the `ClosestPointQuery` branch, use the Visual Studio 2019 solution file to build it.
