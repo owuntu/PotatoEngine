@@ -51,8 +51,6 @@ ClosestPointQuery::~ClosestPointQuery()
 void ClosestPointQuery::ProcessInput()
 {
 	Game::ProcessInput();
-
-	
 }
 
 void ClosestPointQuery::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -199,8 +197,6 @@ void ClosestPointQuery::Render()
 void ClosestPointQuery::Reset()
 {
 	m_pShader->Release();
-
-	Game::Reset();
 }
 
 int ClosestPointQuery::Run()

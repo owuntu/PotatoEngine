@@ -97,7 +97,6 @@ int Game::Run()
 		glfwPollEvents();
 	}
 
-	glfwTerminate();
 
 	return 0;
 }
@@ -108,6 +107,8 @@ void Game::Reset()
 	m_window = nullptr;
 
 	m_pMainCamera.reset();
+
+	glfwTerminate();
 }
 
 int Game::ScreenWidth()
