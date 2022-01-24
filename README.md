@@ -10,22 +10,31 @@ For fast query closest point on mesh, first I have to solve how to query the clo
 But there is still a lot of triangles to query, so I use BVH to do the acceleartion. Compare to Kd-tree, I think BVH doesn't have to worry about if a triangle is lie on the split plane. I can simply wrap it to a child box because BVH allow children to be overlapped. The key acceleration is that, if the bounding box distance is further than the temporory result has been found, it can skip the every triangles inside the bounding box.
 
 # Build:
-For now the graphics support is only available in Visual Studio 2019 build. For Linux build, please switch to branch `CloestPointQueryNoGraphics`.
-1. Init and update submodule
+Init and update submodule
    ```
-   git submodule init
-   git submodule update
+   $ git submodule init
+   $ git submodule update
    ```
-2. Open `PotatoEngine.sln`.
-3. Right click project `ClosestPointQuery`, select "Set as Start Up Project".
-4. Desire obj model path need to be fill in "Command Arguments". In resources/objects, there are some obj you can try. For example, you can enter `../resources/objects/dragon/dragon.obj`.
-5. Select desire build. Build platform need to be x64.
-6. Press F5 to build and run the application.
+## Windows
+For now the Windows build only tested on Visual Studio 2019.
+1. Open `PotatoEngine.sln`.
+2. Right click project `ClosestPointQuery`, select "Set as Start Up Project".
+3. Desire obj model path need to be fill in "Command Arguments". In resources/objects, there are some obj you can try. For example, you can enter `../resources/objects/dragon/dragon.obj`.
+4. Select desire build. Build platform need to be x64.
+5. Press F5 to build and run the application.
+
+## Linux
+The Linux build depend on CMake. Just run `build.sh` in the project root directory. The executable is in `ClosestPointQuery/ClosestPointQuery`.
 
 ## Build test
+### Windows
 DebugTest/ReleaseTest mode will run the simple unit test.
+### Linux
+Run `build.sh test`. Then `CloesetPointQuery/ClosestPointQuery` will run test only. For now only release build of test is available.
+
+
 The test will load relevant test data base on which model you load. If the test data doesn't exist yet, you need to generate it first. To do so, uncomment line 20 in `main.cpp` then run the test:
-```
+```c++
 test.GenerateTestPointsAndResults();
 ```
 If you change the parameter in `ClosestPiontUnitTest` constructor, you will have to regenerate the test data too.
