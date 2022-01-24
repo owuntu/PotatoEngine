@@ -17,7 +17,7 @@ public:
 		m_maxSearchDistance(maxSearchDistance),
 		m_numPointsPerDim(numPointsPerDim)
 	{
-		std::string testFileDir = "ClosestPointQuery/";
+		std::string testFileDir = "./";
 		std::string modelFileName = modelPath.substr(modelPath.find_last_of("/\\") + 1);
 		m_testDataFileName = testFileDir + modelFileName + "__test_data.txt";
 		m_resultDataFileName = testFileDir + modelFileName + "__result_data.txt";
