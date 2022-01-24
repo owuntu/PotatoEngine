@@ -25,22 +25,16 @@ then
     else
         if [ $1 = 'test' ]
         then
-            mkdir Test
-            cd Test
-            cmake .. -DBUILD_TEST=1 -DCMAKE_BUILD_TYPE=Release
-            cmake --build .. -j 16
+            cmake . -DBUILD_TEST=1 -DCMAKE_BUILD_TYPE=Release
+            cmake --build . -j 16
         elif [ $1 = 'debug' ]
         then
-            mkdir Debug
-            cd Debug
-            cmake .. -DBUILD_TEST=0 -DCMAKE_BUILD_TYPE=Debug
-            cmake --build .. -j 16
+            cmake . -DBUILD_TEST=0 -DCMAKE_BUILD_TYPE=Debug
+            cmake --build . -j 16
         fi
     fi
 else
-    mkdir Release
-    cd Release
-    cmake .. -DBUILD_TEST=0 -DCMAKE_BUILD_TYPE=Release
-    cmake --build .. -j 16
+    cmake . -DBUILD_TEST=0 -DCMAKE_BUILD_TYPE=Release
+    cmake --build . -j 16
 fi
 
