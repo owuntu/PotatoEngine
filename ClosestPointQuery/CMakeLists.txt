@@ -25,8 +25,9 @@ endif()
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-target_link_directories(ClosestPointQuery PUBLIC ${ENGINE_DIR}
-                                                 ${ENGINE_DIR}/Extern/dll
-                                                 )
-target_link_libraries(ClosestPointQuery PotatoEngine
-                                        libassimp.so)
+target_link_directories(${PROJECT_NAME} PUBLIC ${ENGINE_DIR}
+                                               ${ENGINE_DIR}/Extern/dll
+                                               )
+
+target_link_libraries(${PROJECT_NAME} PotatoEngine
+                                      libassimp.so)

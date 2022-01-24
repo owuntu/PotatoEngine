@@ -28,6 +28,17 @@ set(SOURCES ${SOURCE_DIR}BVH.cpp
             ${SOURCE_DIR}PointCloudModel.cpp
             ${SOURCE_DIR}PointCloudModelKdTree.cpp
             ${SOURCE_DIR}SinglePointModel.cpp
+            ${SOURCE_DIR}ShaderObject/ShaderObject.cpp
+            ${SOURCE_DIR}ShaderObject/ShaderProgram.cpp
             ./Extern/glad/glad.c
             )
-add_library(PotatoEngine ${SOURCES})
+
+add_library(${PROJECT_NAME} ${SOURCES})
+
+target_link_directories(${PROJECT_NAME} PUBLIC ./Extern/lib/Linux
+                                               ./Extern/dll)
+target_link_libraries(${PROJECT_NAME} dl
+                                      pthread
+                                      glfw3
+                                      libassimp.so)
+
