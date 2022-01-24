@@ -51,8 +51,6 @@ ClosestPointQuery::~ClosestPointQuery()
 void ClosestPointQuery::ProcessInput()
 {
 	Game::ProcessInput();
-
-	
 }
 
 void ClosestPointQuery::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -106,7 +104,11 @@ bool ClosestPointQuery::Init(const std::string& modelPath)
 	glfwSetKeyCallback(m_window, keyCallback);
 
 	m_pShader = std::make_shared<ShaderProgram>();
+#ifdef _WIN32
 	m_pShader->Create("../Engine/GLSLShaders/modelVertexShader.vs.glsl", "../Engine/GLSLShaders/modelFragmentShader.fs.glsl");
+#else
+	m_pShader->Create("../Engine/GLSLShaders/modelVertexShaderES.vs.glsl", "../Engine/GLSLShaders/modelFragmentShaderES.fs.glsl");
+#endif
 	m_pShader->Use();
 
 	BVHModelCreator bvhModelCreator;
@@ -195,8 +197,6 @@ void ClosestPointQuery::Render()
 void ClosestPointQuery::Reset()
 {
 	m_pShader->Release();
-
-	Game::Reset();
 }
 
 int ClosestPointQuery::Run()
