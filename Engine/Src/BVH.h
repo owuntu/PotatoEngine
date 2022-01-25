@@ -103,7 +103,7 @@ namespace PotatoEngine
 		virtual float GetElementCenter(int index, int dim) = 0;
 
 		// Element indices
-		std::vector<unsigned int> m_elements;
+		std::vector<uint32_t> m_elements;
 
 		// Nodes array for storing the BVH tree
 		std::vector<Node> m_nodes;
@@ -118,8 +118,8 @@ namespace PotatoEngine
 			TempNode* child1 = nullptr; // 64 bit system, 8 bytes
 			TempNode* child2 = nullptr; // 8 bytes
 
-			unsigned int numElements = 0; // 4 bytes
-			unsigned int elementOffset = 0; // 4 bytes
+			uint32_t numElements = 0; // 4 bytes
+			uint32_t elementOffset = 0; // 4 bytes
 		};
 
 		// Return total nodes count start from node
@@ -128,7 +128,7 @@ namespace PotatoEngine
 		unsigned int MeanSplit(TempNode* pNode);
 
 		// return a unused child1Index for other internal nodes if pNode is a leaf node
-		std::size_t ConvertTreeNodesIntoArray(TempNode* pNode, uint32_t nodeID, uint32_t child1Index);
+		uint32_t ConvertTreeNodesIntoArray(TempNode* pNode, uint32_t nodeID, uint32_t child1Index);
 
 		void ClearTempNodes(TempNode* pRoot);
 

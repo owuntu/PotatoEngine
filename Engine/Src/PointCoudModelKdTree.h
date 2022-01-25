@@ -15,7 +15,7 @@ namespace PotatoEngine
 	private:
 		// KdTree method
 		void Sort(int start, int end, int axis, Node* node);
-		int GetTotalNumOfElements() const;
+		std::size_t GetTotalNumOfElements() const;
 		BBox GetBoundingBox(const std::vector<int>& elements) const;
 		int GetSplitAxis(int start, int end, int depth);
 

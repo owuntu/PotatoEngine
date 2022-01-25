@@ -34,7 +34,7 @@ namespace PotatoEngine
 		pNode->splitPos = splitPoint[axis];
 	}
 
-	int PointCloudModelKdTree::GetTotalNumOfElements() const
+	std::size_t PointCloudModelKdTree::GetTotalNumOfElements() const
 	{
 		return m_points.size();
 	}

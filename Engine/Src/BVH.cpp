@@ -18,7 +18,7 @@ namespace PotatoEngine
 		BBox box;
 		m_elements.resize(numElements);
 
-		for (int i = 0; i < numElements; ++i)
+		for (uint32_t i = 0; i < numElements; ++i)
 		{
 			BBox ebox;
 			GetElementBound(i, ebox);
@@ -144,7 +144,7 @@ namespace PotatoEngine
 		return child1NumElements;
 	}
 
-	std::size_t BVH::ConvertTreeNodesIntoArray(TempNode* pNode, uint32_t nodeID, uint32_t child1Index)
+	uint32_t BVH::ConvertTreeNodesIntoArray(TempNode* pNode, uint32_t nodeID, uint32_t child1Index)
 	{
 		if (pNode->child1 == nullptr)
 		{

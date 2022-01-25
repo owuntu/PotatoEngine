@@ -35,7 +35,7 @@ namespace PotatoEngine
 		const Node* GetRoot() const { return m_root; }
 		const int GetMaxDepth() const { return m_maxDepth; }
 	protected:
-		virtual int GetTotalNumOfElements() const = 0;
+		virtual std::size_t GetTotalNumOfElements() const = 0;
 		virtual void Sort(int start, int end, int axis, Node* node) = 0;
 		virtual BBox GetBoundingBox(const std::vector<int>& elements) const = 0;
 
