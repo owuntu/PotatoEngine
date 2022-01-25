@@ -22,6 +22,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         submodules: recursive
+        lfs: true
     - name: Unzip so file
       run: |
            cd ${{github.workspace}}/Engine/Extern/dll
