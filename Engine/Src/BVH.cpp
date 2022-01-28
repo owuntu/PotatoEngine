@@ -127,7 +127,7 @@ namespace PotatoEngine
 		std::thread threadsPool[NUM_THREADS];
 		for (int8_t i = 0; i < NUM_THREADS; ++i)
 		{
-			threadsPool[i] = std::thread(&BVH::SplitTempNodeMT, this, i, std::ref(nodesCount), std::ref(elementDone));
+			threadsPool[i] = std::thread(&BVH::SplitTempNodeMT, this, std::ref(nodesCount), std::ref(elementDone));
 		}
 
 		for (int8_t i = 0; i < NUM_THREADS; ++i)
@@ -144,7 +144,7 @@ namespace PotatoEngine
 			<< " milliseconds\n";
 	}
 
-	void BVH::SplitTempNodeMT(int8_t threadID, uint32_t& nodesCount, uint32_t& elementDone)
+	void BVH::SplitTempNodeMT(uint32_t& nodesCount, uint32_t& elementDone)
 	{
 		static std::mutex s_tmpNodeMutex;
 		static std::mutex s_elementMutex;

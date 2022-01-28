@@ -130,7 +130,7 @@ namespace PotatoEngine
 		uint32_t SplitTempNode(TempNode* pNode);
 
 		void BuildMultiThread(uint32_t numElements);
-		void SplitTempNodeMT(int8_t threadID, uint32_t& nodeCount, uint32_t& elementDone);
+		void SplitTempNodeMT(uint32_t& nodeCount, uint32_t& elementDone);
 
 		unsigned int MeanSplit(TempNode* pNode);
 
