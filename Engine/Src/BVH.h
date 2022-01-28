@@ -3,6 +3,8 @@
 #include <cassert>
 #include <cstdint>
 #include <vector>
+#include <stack>
+
 #include <glm/glm.hpp>
 
 #include "BBox.h"
@@ -122,8 +124,13 @@ namespace PotatoEngine
 			uint32_t elementOffset = 0; // 4 bytes
 		};
 
+		void BuildSingleThread(uint32_t numElements);
+
 		// Return total nodes count start from node
 		uint32_t SplitTempNode(TempNode* pNode);
+
+		void BuildMultiThread(uint32_t numElements);
+		void SplitTempNodeMT(int8_t threadID, uint32_t& nodeCount, uint32_t& elementDone);
 
 		unsigned int MeanSplit(TempNode* pNode);
 
@@ -133,6 +140,8 @@ namespace PotatoEngine
 		void ClearTempNodes(TempNode* pRoot);
 
 		void DebugDraw(ShaderProgram* pShader, std::size_t nodeID, int depth, int depthToDraw);
+
+		std::stack<TempNode*> m_tmpNodeStack;
 	};
 } // namespace PotatoEngine
 

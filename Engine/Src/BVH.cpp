@@ -1,5 +1,8 @@
 #include <iostream>
 #include <stack>
+#include <thread>
+#include <mutex>
+#include <chrono>
 
 #include "HelperDraw.h"
 #include "BVH.h"
@@ -15,6 +18,14 @@ namespace PotatoEngine
 	void BVH::Build(uint32_t numElements)
 	{
 		std::cout << "Building BVH ...\n";
+		//this->BuildSingleThread(numElements);
+		this->BuildMultiThread(numElements);
+	}
+
+	void BVH::BuildSingleThread(uint32_t numElements)
+	{
+		using milli = std::chrono::milliseconds;
+		auto start = std::chrono::high_resolution_clock::now();
 		BBox box;
 		m_elements.resize(numElements);
 
@@ -36,6 +47,10 @@ namespace PotatoEngine
 		m_nodes.resize(nodesCount + GetRootNodeID());
 		ConvertTreeNodesIntoArray(pRoot, GetRootNodeID(), GetRootNodeID() + 1);
 		ClearTempNodes(pRoot);
+		auto finish = std::chrono::high_resolution_clock::now();
+		std::cout << "BVH single thread built took "
+			<< std::chrono::duration_cast<milli>(finish - start).count()
+			<< " milliseconds\n";
 	}
 
 	uint32_t BVH::SplitTempNode(TempNode* pNode)
@@ -88,6 +103,117 @@ namespace PotatoEngine
 		return nodesCount;
 	}
 
+	void BVH::BuildMultiThread(uint32_t numElements)
+	{
+		using milli = std::chrono::milliseconds;
+		auto start = std::chrono::high_resolution_clock::now();
+		m_elements.resize(numElements);
+
+		for (uint32_t i = 0; i < numElements; ++i)
+		{
+			m_elements[i] = i;
+		}
+
+		auto* pRoot = new TempNode();
+		pRoot->elementOffset = 0;
+		pRoot->numElements = numElements;
+
+		m_tmpNodeStack.push(pRoot);
+
+		uint32_t nodesCount = 0;
+		uint32_t elementDone = 0;
+
+		const int8_t NUM_THREADS = 32;
+		std::thread threadsPool[NUM_THREADS];
+		for (int8_t i = 0; i < NUM_THREADS; ++i)
+		{
+			threadsPool[i] = std::thread(&BVH::SplitTempNodeMT, this, i, std::ref(nodesCount), std::ref(elementDone));
+		}
+
+		for (int8_t i = 0; i < NUM_THREADS; ++i)
+		{
+			threadsPool[i].join();
+		}
+
+		m_nodes.resize(nodesCount + GetRootNodeID());
+		ConvertTreeNodesIntoArray(pRoot, GetRootNodeID(), GetRootNodeID() + 1);
+		ClearTempNodes(pRoot);
+		auto finish = std::chrono::high_resolution_clock::now();
+		std::cout << "BVH multithread built took "
+			<< std::chrono::duration_cast<milli>(finish - start).count()
+			<< " milliseconds\n";
+	}
+
+	void BVH::SplitTempNodeMT(int8_t threadID, uint32_t& nodesCount, uint32_t& elementDone)
+	{
+		static std::mutex s_tmpNodeMutex;
+		static std::mutex s_elementMutex;
+		while (true)
+		{
+			TempNode* pNode = nullptr;
+			if (elementDone >= m_elements.size())
+			{
+				break;
+			}
+
+			{
+				const std::lock_guard<std::mutex> lock(s_tmpNodeMutex);
+				if (m_tmpNodeStack.empty() == false)
+				{
+					pNode = m_tmpNodeStack.top();
+					m_tmpNodeStack.pop();
+					nodesCount++;
+				}
+				else
+				{
+					pNode = nullptr;
+					continue;
+				}
+			}
+
+			for (uint32_t i = 0; i < pNode->numElements; ++i)
+			{
+				auto index = m_elements[i + pNode->elementOffset];
+				BBox tBox;
+				GetElementBound(index, tBox);
+				pNode->box += tBox;
+			}
+
+			if (pNode->numElements <= ms_MAX_LEAF_ELEMENT_COUNT)
+			{
+				// we reach the leaf node
+				const std::lock_guard<std::mutex> lock(s_elementMutex);
+				elementDone += pNode->numElements;
+				continue;
+			}
+
+			unsigned int child1NumElements = MeanSplit(pNode);
+			if (child1NumElements == 0 || child1NumElements >= pNode->numElements)
+			{
+				// Force split
+				child1NumElements = pNode->numElements / 2;
+			}
+
+			TempNode* child1 = new TempNode();
+
+			child1->elementOffset = pNode->elementOffset;
+			child1->numElements = child1NumElements;
+
+			TempNode* child2 = new TempNode();
+
+			child2->elementOffset = pNode->elementOffset + child1NumElements;
+			child2->numElements = pNode->numElements - child1NumElements;
+
+			pNode->child1 = child1;
+			pNode->child2 = child2;
+
+			{
+				const std::lock_guard<std::mutex> lock(s_tmpNodeMutex);
+				m_tmpNodeStack.push(child1);
+				m_tmpNodeStack.push(child2);
+			}
+		}
+	}
 
 	unsigned int BVH::MeanSplit(TempNode* node)
 	{
